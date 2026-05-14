@@ -1,0 +1,219 @@
+.landing {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #3d5c3a;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 60px;
+  overflow: hidden;
+
+  // ===================== HEADER =====================
+  &__header {
+    margin-bottom: 80px;
+    z-index: 10;
+  }
+
+  &__logo {
+    display: block;
+    z-index: 10;
+
+    &-img {
+      height: auto;
+      display: block;
+    }
+  }
+
+  // ===================== MAIN CONTENT =====================
+  &__main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    z-index: 5;
+  }
+
+  &__content {
+    max-width: 600px;
+  }
+
+  &__subtitle {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 42px;
+    font-weight: 400;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+
+  &__title {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 110px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 60px;
+    line-height: 0.9;
+  }
+
+  &__btn-primary {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    background-color: #f5f1e9;
+    color: #3d5c3a;
+    padding: 16px 48px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      background-color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  // ===================== PLATES =====================
+  &__plates {
+    position: absolute;
+    right: -100px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: -40px; // Negative gap to overlap
+    width: 600px;
+  }
+
+  &__plate {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.3));
+    transition: transform 0.5s ease-out;
+
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    &--top {
+      margin-bottom: -150px;
+      z-index: 1;
+      transform: translateX(120px);
+    }
+
+    &--middle {
+      z-index: 2;
+      transform: translateX(60px);
+    }
+
+    &--bottom {
+      margin-top: -150px;
+      z-index: 1;
+      transform: translateX(120px);
+    }
+  }
+
+  // ===================== FOOTER =====================
+  &__footer {
+    margin-top: auto;
+    display: flex;
+    align-items: baseline;
+    gap: 30px;
+    z-index: 10;
+
+    &-tagline {
+      font-family: 'Ubuntu', sans-serif;
+      font-size: 32px;
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    &-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.9);
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #ffffff;
+
+        .landing__footer-arrow {
+          transform: translateX(6px);
+        }
+      }
+    }
+
+    &-arrow {
+      transition: transform 0.3s ease;
+    }
+  }
+}
+
+// ===================== RESPONSIVE =====================
+@media (max-width: 1400px) {
+  .landing {
+    &__title {
+      font-size: 90px;
+    }
+    &__subtitle {
+      font-size: 32px;
+    }
+    &__plates {
+      width: 500px;
+      right: -80px;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .landing {
+    padding: 30px 40px;
+
+    &__main {
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+
+    &__content {
+      margin-bottom: 40px;
+    }
+
+    &__plates {
+      position: relative;
+      right: 0;
+      top: 0;
+      transform: none;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    &__plate {
+      &--top, &--bottom {
+        transform: none;
+        margin: -80px 0;
+      }
+      &--middle {
+        transform: none;
+      }
+    }
+
+    &__footer {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 15px;
+    }
+  }
+}

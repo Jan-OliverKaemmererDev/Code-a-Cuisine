@@ -1,0 +1,187 @@
+<section class="generate" id="generate-recipe-page">
+
+  <!-- ===================== HEADER / LOGO ===================== -->
+  <header class="generate__header">
+    <a class="generate__logo" routerLink="/" aria-label="Zurück zur Startseite">
+      <img src="assets/logo-green.svg" alt="Code à Cuisine Logo" width="160" />
+    </a>
+  </header>
+
+  <!-- ===================== TITLE ===================== -->
+  <div class="generate__title-section">
+    <h1 class="generate__title">Generate recipe</h1>
+    <p class="generate__subtitle">
+      Got random stuff in your kitchen? Pop it in—we've got the perfect recipe waiting.
+    </p>
+  </div>
+
+  <!-- ===================== CONTENT AREA ===================== -->
+  <div class="generate__content">
+
+    <!-- LEFT: INPUT CARD -->
+    <div class="generate__input-card">
+      <div class="generate__input-row">
+
+        <!-- Ingredient Input -->
+        <div class="generate__field generate__field--ingredient">
+          <label class="generate__label" for="ingredient-input">Ingredient</label>
+          <div class="generate__input-wrapper">
+            <input
+              id="ingredient-input"
+              class="generate__input"
+              type="text"
+              placeholder=""
+              [ngModel]="ingredientName()"
+              (ngModelChange)="onIngredientInput($event)"
+              (focus)="onIngredientInput(ingredientName())"
+              (blur)="closeSuggestions()"
+              autocomplete="off"
+            />
+            @if (showSuggestions() && filteredSuggestions().length > 0) {
+              <ul class="generate__suggestions">
+                @for (suggestion of filteredSuggestions(); track suggestion) {
+                  <li class="generate__suggestion-item" (mousedown)="selectSuggestion(suggestion)">
+                    {{ suggestion }}
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+        </div>
+
+        <!-- Serving Size -->
+        <div class="generate__field generate__field--serving">
+          <label class="generate__label">Serving size</label>
+          <div class="generate__serving-row">
+            <input
+              id="serving-amount"
+              class="generate__serving-input"
+              type="number"
+              min="1"
+              [ngModel]="servingAmount()"
+              (ngModelChange)="servingAmount.set($event)"
+            />
+
+            <!-- Input Unit Dropdown -->
+            <div class="generate__unit-dropdown" (click)="toggleInputDropdown()">
+              <span class="generate__unit-label">{{ selectedUnit() }}</span>
+              <img src="assets/icons/arrow-dropdown-green.svg" alt="" class="generate__unit-arrow" aria-hidden="true" />
+              @if (showInputDropdown()) {
+                <ul class="generate__unit-options">
+                  <li class="generate__unit-option" (click)="selectInputUnit('gram')">gram</li>
+                  <li class="generate__unit-option" (click)="selectInputUnit('ml')">ml</li>
+                  <li class="generate__unit-option" (click)="selectInputUnit('piece')">piece</li>
+                </ul>
+              }
+            </div>
+
+            <!-- Add Button -->
+            <button
+              id="btn-add-ingredient"
+              class="generate__btn-add"
+              type="button"
+              (click)="addIngredient()"
+              aria-label="Zutat hinzufügen"
+            >
+              <img src="assets/icons/plus-green.svg" alt="" width="24" height="24" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: INGREDIENTS LIST CARD -->
+    <div class="generate__list-card">
+      <p class="generate__list-title">List of your Ingredients</p>
+
+      @if (hasIngredients()) {
+        <ul class="generate__ingredient-list">
+          @for (item of ingredients(); track item.name + $index; let i = $index) {
+            <li class="generate__ingredient-item" [class.is-editing]="editingListIndex() === i">
+
+              <span class="generate__ingredient-bullet">•</span>
+
+              @if (editingListIndex() === i) {
+                <!-- ── INLINE EDIT MODE ── -->
+                <div class="generate__inline-edit">
+                  <input
+                    class="generate__inline-amount"
+                    type="number"
+                    min="1"
+                    [ngModel]="editAmount()"
+                    (ngModelChange)="editAmount.set($event)"
+                  />
+                  <div class="generate__inline-unit-wrap">
+                    <div class="generate__inline-unit-trigger" (click)="toggleListDropdown()">
+                      <span>{{ editUnit() }}</span>
+                      <img src="assets/icons/arrow-dropdown-green.svg" alt="" class="generate__unit-arrow" aria-hidden="true" />
+                    </div>
+                    @if (showListDropdown()) {
+                      <ul class="generate__inline-unit-options">
+                        <li class="generate__inline-unit-option" (click)="selectListUnit('gram')">gram</li>
+                        <li class="generate__inline-unit-option" (click)="selectListUnit('ml')">ml</li>
+                        <li class="generate__inline-unit-option" (click)="selectListUnit('piece')">piece</li>
+                      </ul>
+                    }
+                  </div>
+                </div>
+              } @else {
+                <!-- ── READ MODE ── -->
+                <span class="generate__ingredient-amount">{{ formatAmount(item) }}</span>
+              }
+
+              <span class="generate__ingredient-name">{{ item.name }}</span>
+
+              <div class="generate__ingredient-actions">
+                @if (editingListIndex() === i) {
+                  <button
+                    class="generate__btn-icon"
+                    type="button"
+                    (click)="saveEdit(i)"
+                    aria-label="Änderungen speichern"
+                  >
+                    <img src="assets/icons/check.svg" alt="" width="18" height="18" />
+                  </button>
+                } @else {
+                  <button
+                    class="generate__btn-icon"
+                    type="button"
+                    (click)="startEdit(i)"
+                    aria-label="Zutat bearbeiten"
+                  >
+                    <img src="assets/icons/edit.svg" alt="" width="18" height="18" />
+                  </button>
+                }
+                <button
+                  class="generate__btn-icon"
+                  type="button"
+                  (click)="deleteIngredient(i)"
+                  aria-label="Zutat löschen"
+                >
+                  <img src="assets/icons/delete.svg" alt="" width="18" height="18" />
+                </button>
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+  </div>
+
+  <!-- ===================== NEXT STEP BUTTON ===================== -->
+  @if (hasIngredients()) {
+    <div class="generate__actions">
+      <button
+        id="btn-next-step"
+        class="generate__btn-next"
+        type="button"
+        routerLink="/preferences"
+      >
+        Next step
+      </button>
+    </div>
+  }
+
+</section>

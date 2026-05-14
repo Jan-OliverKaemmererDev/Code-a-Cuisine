@@ -1,0 +1,82 @@
+<section class="landing" id="landing-page">
+
+  <!-- ===================== HEADER / LOGO ===================== -->
+  <header class="landing__header" role="banner">
+    <a class="landing__logo" href="/" aria-label="Code à Cuisine – Startseite">
+      <img
+        src="assets/logo-white.svg"
+        alt="Code à Cuisine Logo"
+        class="landing__logo-img"
+        width="160"
+      />
+    </a>
+  </header>
+
+  <!-- ===================== MAIN CONTENT ===================== -->
+  <main class="landing__main">
+
+    <!-- LEFT COLUMN -->
+    <div class="landing__content">
+      <p class="landing__subtitle">AI-Powered recipe generator</p>
+      <h1 class="landing__title">Code&nbsp;à&nbsp;Cuisine</h1>
+
+      <button
+        id="btn-get-started"
+        class="landing__btn-primary"
+        type="button"
+        aria-label="Jetzt starten"
+        routerLink="/generate-recipe"
+      >
+        Get started
+      </button>
+    </div>
+
+    <!-- RIGHT COLUMN – PLATE IMAGES -->
+    <div class="landing__plates" aria-hidden="true">
+      <div class="landing__plate landing__plate--top">
+        <img
+          src="assets/img/vegtable-plate.png"
+          alt="Gemüseteller"
+          loading="eager"
+        />
+      </div>
+      <div class="landing__plate landing__plate--middle">
+        <img
+          src="assets/img/fish-plate.png"
+          alt="Fischteller"
+          loading="eager"
+        />
+      </div>
+      <div class="landing__plate landing__plate--bottom">
+        <img
+          src="assets/img/meat-plate.png"
+          alt="Fleischteller"
+          loading="lazy"
+        />
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===================== FOOTER / CTA ===================== -->
+  <footer class="landing__footer" role="contentinfo">
+    <p class="landing__footer-tagline">Hungry for inspiration?</p>
+    <a
+      id="link-go-to-cookbook"
+      class="landing__footer-link"
+      href="/cookbook"
+      aria-label="Zum Kochbuch navigieren"
+    >
+      Go to cookbook
+      <img
+        src="assets/icons/arrow-right-white.svg"
+        alt=""
+        class="landing__footer-arrow"
+        width="20"
+        height="14"
+        aria-hidden="true"
+      />
+    </a>
+  </footer>
+
+</section>

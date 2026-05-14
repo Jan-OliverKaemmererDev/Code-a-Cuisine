@@ -1,0 +1,244 @@
+.preferences {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f5f4f0;
+  padding: 40px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  // ===================== HEADER =====================
+  &__header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  &__logo {
+    display: block;
+    width: 160px;
+    height: auto;
+  }
+
+  &__back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1a3c1a;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  &__back-arrow {
+    width: 18px;
+    height: auto;
+    transform: rotate(180deg);
+  }
+
+  // ===================== TITLE =====================
+  &__title-section {
+    text-align: center;
+    margin-bottom: 40px;
+    width: 100%;
+  }
+
+  &__title {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 44px;
+    font-weight: 400;
+    color: #1a3c1a;
+  }
+
+  // ===================== COUNTERS =====================
+  &__counters {
+    display: flex;
+    gap: 80px;
+    margin-bottom: 40px;
+    width: 100%;
+    max-width: 700px;
+  }
+
+  &__counter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__counter-label {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1a3c1a;
+  }
+
+  &__counter-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__counter-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, opacity 0.2s;
+
+    &:hover {
+      opacity: 0.7;
+      transform: scale(1.05);
+    }
+  }
+
+  &__counter-value {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a3c1a;
+    min-width: 24px;
+    text-align: center;
+  }
+
+  &__counter-unit {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1a3c1a;
+  }
+
+  // ===================== PREFERENCE CARD =====================
+  &__card {
+    background-color: #c9d5c6;
+    border-radius: 20px;
+    padding: 36px 40px;
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-bottom: 48px;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__section-title {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a3c1a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__section-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  &__chip {
+    background-color: #f2ede4;
+    border: 2px solid transparent;
+    border-radius: 30px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: 'Quicksand', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+
+    &--single {
+      flex-direction: row;
+    }
+
+    &:hover {
+      border-color: #3d5c3a;
+    }
+
+    &.is-selected {
+      border-color: #3d5c3a;
+      background-color: #e8f0e7;
+    }
+  }
+
+  &__chip-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a3c1a;
+  }
+
+  &__chip-sub {
+    font-size: 11px;
+    font-weight: 400;
+    color: #4a6b4a;
+  }
+
+  // ===================== ACTIONS =====================
+  &__actions {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__btn-generate {
+    background-color: #3d5c3a;
+    color: #ffffff;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    padding: 16px 56px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #1a3c1a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// ===================== RESPONSIVE =====================
+@media (max-width: 700px) {
+  .preferences {
+    padding: 30px 24px;
+
+    &__counters {
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    &__title {
+      font-size: 32px;
+    }
+
+    &__card {
+      padding: 24px 20px;
+    }
+  }
+}

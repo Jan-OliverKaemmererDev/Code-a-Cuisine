@@ -1,0 +1,154 @@
+<section class="preferences" id="preferences-page">
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="preferences__header">
+    <a class="preferences__logo" routerLink="/" aria-label="Zurück zur Startseite">
+      <img src="assets/logo-green.svg" alt="Code à Cuisine Logo" width="160" />
+    </a>
+    <a class="preferences__back" routerLink="/generate-recipe" aria-label="Zurück zu Zutaten">
+      <img src="assets/icons/arrow-right-green.svg" alt="" class="preferences__back-arrow" aria-hidden="true" />
+      Ingredients
+    </a>
+  </header>
+
+  <!-- ===================== TITLE ===================== -->
+  <div class="preferences__title-section">
+    <h1 class="preferences__title">Choose your preferences</h1>
+  </div>
+
+  <!-- ===================== COUNTERS ===================== -->
+  <div class="preferences__counters">
+
+    <div class="preferences__counter-group">
+      <p class="preferences__counter-label">How many portions you need?</p>
+      <div class="preferences__counter-row">
+        <button
+          id="btn-portions-minus"
+          class="preferences__counter-btn"
+          type="button"
+          (click)="decrementPortions()"
+          aria-label="Portionen verringern"
+        >
+          <img src="assets/icons/minus.svg" alt="" width="28" height="28" />
+        </button>
+        <span class="preferences__counter-value">{{ portions() }}</span>
+        <span class="preferences__counter-unit">Portions</span>
+        <button
+          id="btn-portions-plus"
+          class="preferences__counter-btn"
+          type="button"
+          (click)="incrementPortions()"
+          aria-label="Portionen erhöhen"
+        >
+          <img src="assets/icons/plus.svg" alt="" width="28" height="28" />
+        </button>
+      </div>
+    </div>
+
+    <div class="preferences__counter-group">
+      <p class="preferences__counter-label">How many are cooking?</p>
+      <div class="preferences__counter-row">
+        <button
+          id="btn-persons-minus"
+          class="preferences__counter-btn"
+          type="button"
+          (click)="decrementPersons()"
+          aria-label="Personen verringern"
+        >
+          <img src="assets/icons/minus.svg" alt="" width="28" height="28" />
+        </button>
+        <span class="preferences__counter-value">{{ persons() }}</span>
+        <span class="preferences__counter-unit">Person</span>
+        <button
+          id="btn-persons-plus"
+          class="preferences__counter-btn"
+          type="button"
+          (click)="incrementPersons()"
+          aria-label="Personen erhöhen"
+        >
+          <img src="assets/icons/plus.svg" alt="" width="28" height="28" />
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================== PREFERENCE CARD ===================== -->
+  <div class="preferences__card">
+
+    <!-- COOKING TIME -->
+    <div class="preferences__section">
+      <h2 class="preferences__section-title">
+        <img src="assets/icons/clock.svg" alt="" class="preferences__section-icon" aria-hidden="true" />
+        Cooking time:
+      </h2>
+      <div class="preferences__chips">
+        @for (option of cookingTimes; track option.label) {
+          <button
+            class="preferences__chip"
+            type="button"
+            [class.is-selected]="selectedCookingTime() === option.label"
+            (click)="selectCookingTime(option.label)"
+          >
+            <span class="preferences__chip-label">{{ option.label }}</span>
+            <span class="preferences__chip-sub">{{ option.sub }}</span>
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- CUISINE -->
+    <div class="preferences__section">
+      <h2 class="preferences__section-title">
+        <img src="assets/icons/globe.svg" alt="" class="preferences__section-icon" aria-hidden="true" />
+        Cuisine
+      </h2>
+      <div class="preferences__chips">
+        @for (cuisine of cuisines; track cuisine) {
+          <button
+            class="preferences__chip preferences__chip--single"
+            type="button"
+            [class.is-selected]="selectedCuisine() === cuisine"
+            (click)="selectCuisine(cuisine)"
+          >
+            {{ cuisine }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- DIET PREFERENCES -->
+    <div class="preferences__section">
+      <h2 class="preferences__section-title">
+        <img src="assets/icons/fork-spoon.svg" alt="" class="preferences__section-icon" aria-hidden="true" />
+        Diet preferences
+      </h2>
+      <div class="preferences__chips">
+        @for (diet of diets; track diet) {
+          <button
+            class="preferences__chip preferences__chip--single"
+            type="button"
+            [class.is-selected]="selectedDiet() === diet"
+            (click)="selectDiet(diet)"
+          >
+            {{ diet }}
+          </button>
+        }
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================== GENERATE BUTTON ===================== -->
+  <div class="preferences__actions">
+    <button
+      id="btn-generate-recipe"
+      class="preferences__btn-generate"
+      type="button"
+      (click)="generateRecipe()"
+    >
+      Generate a recipe
+    </button>
+  </div>
+
+</section>
