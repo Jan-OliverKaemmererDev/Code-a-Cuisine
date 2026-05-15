@@ -151,4 +151,9 @@
     </button>
   </div>
 
+  @if (showInsufficientPopup()) {
+    <app-insufficient-ingredients-popup
+      (close)="showInsufficientPopup.set(false)"
+    ></app-insufficient-ingredients-popup>
+  }
 </section>

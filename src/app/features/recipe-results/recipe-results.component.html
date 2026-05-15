@@ -1,0 +1,60 @@
+<section class="results-page">
+
+  <!-- Header -->
+  <header class="results-header">
+    <a routerLink="/" aria-label="Zurück zur Startseite">
+      <img src="assets/logo-green.svg" alt="Code à Cuisine Logo" class="results-logo" />
+    </a>
+  </header>
+
+  <!-- Hero Section -->
+  <div class="results-hero">
+    <div class="results-hero-text">
+      <h1 class="results-title">The recipe results</h1>
+      <p class="results-subtitle">
+        We took what you have and let our AI do the thinking.<br>
+        Here are 3 easy recipes you can make right now!
+      </p>
+      <div class="results-tags">
+        <span class="results-tag">{{ selectedCuisine }}</span>
+        <span class="results-tag">{{ selectedCookingTime }}</span>
+      </div>
+    </div>
+    <div class="results-hero-image-wrapper">
+      <img src="assets/img/robot-arm.png" alt="Robot arm serving food" class="results-hero-image" />
+    </div>
+  </div>
+
+  <!-- Recipe Cards -->
+  <div class="results-cards" *ngIf="recipes$ | async as recipes">
+    <!-- Use DB recipes if available and we have 3, otherwise fallback to dummy -->
+    <ng-container *ngFor="let recipe of (recipes.length === 3 ? recipes : dummyRecipes); let i = index">
+      <div class="recipe-card">
+        <div class="recipe-card-header">
+          <img src="assets/icons/foodcover-icon.svg" alt="" class="recipe-card-icon" />
+          <span class="recipe-card-label">Recipe {{ i + 1 }}</span>
+        </div>
+        
+        <h2 class="recipe-card-title">{{ recipe.title }}</h2>
+        
+        <div class="recipe-card-time">
+          <img src="assets/icons/clock.svg" alt="" class="recipe-card-time-icon" />
+          <span>Cooking time: {{ recipe.cookingTime }}</span>
+        </div>
+
+        <button class="recipe-card-btn" routerLink="/recipe-view">
+          View
+        </button>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Footer Link -->
+  <div class="results-footer">
+    <a routerLink="/preferences" class="results-generate-link">
+      Generate new recipie
+      <img src="assets/icons/arrow-right-white.svg" alt="" class="results-arrow" />
+    </a>
+  </div>
+
+</section>

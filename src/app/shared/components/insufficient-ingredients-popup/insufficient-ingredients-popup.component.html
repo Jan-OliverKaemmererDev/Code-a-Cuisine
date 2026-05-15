@@ -1,0 +1,29 @@
+<div class="popup-overlay" (click)="close.emit()">
+  <div class="popup-card" (click)="$event.stopPropagation()">
+    <button class="popup-close" (click)="close.emit()">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="white"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <h2 class="popup-title">Ups! Not quite enough...</h2>
+    <p class="popup-text">
+      It looks like some ingredient quantities aren't<br />
+      sufficient for your selected servings. Please add or<br />
+      adjust quantities and try again.
+    </p>
+    <button class="popup-btn" (click)="goBack()">
+      Go back to ingredients
+      <img src="assets/icons/arrow-right-white.svg" alt="" />
+    </button>
+  </div>
+</div>

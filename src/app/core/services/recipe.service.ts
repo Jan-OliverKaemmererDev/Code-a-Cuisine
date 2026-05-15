@@ -1,14 +1,34 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Firestore, collection, addDoc, collectionData, query, orderBy } from '@angular/fire/firestore';
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  query, 
+  orderBy, 
+  onSnapshot,
+  Firestore
+} from 'firebase/firestore';
 import { Observable, from } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export interface Recipe {
   id?: string;
   title: string;
+  cookingTime: string;
+  cuisine: string;
+  persons: number;
+  portions: number;
+  dietPreferences: string;
   ingredients: string[];
-  instructions: string;
+  instructions: { step: number; description: string }[];
+  nutrition: {
+    energy: string;
+    protein: string;
+    fat: string;
+    carbs: string;
+  };
+  likes: number;
   createdAt: number;
 }
 
@@ -17,16 +37,19 @@ export interface Recipe {
 })
 export class RecipeService {
   private http = inject(HttpClient);
-  private firestore = inject(Firestore);
-  private recipesCollection = collection(this.firestore, 'recipes');
+  private db: Firestore;
 
-  constructor() {}
+  constructor() {
+    // Holt sich die Standard-Instanz, die von provideFirestore() 
+    // in der app.config initialisiert wurde.
+    this.db = getFirestore();
+  }
 
   /**
-   * Sends ingredients to n8n to generate a recipe.
+   * Sends ingredients and preferences to n8n to generate a recipe.
    */
-  generateRecipe(ingredients: string[]): Observable<Recipe> {
-    return this.http.post<Recipe>(environment.n8nWebhookUrl, { ingredients });
+  generateRecipe(payload: any): Observable<Recipe> {
+    return this.http.post<Recipe>(environment.n8nWebhookUrl, payload);
   }
 
   /**
@@ -37,14 +60,31 @@ export class RecipeService {
       ...recipe,
       createdAt: Date.now()
     };
-    return from(addDoc(this.recipesCollection, recipeToSave));
+    return from(addDoc(collection(this.db, 'recipes'), recipeToSave));
   }
 
   /**
    * Fetches all recipes from Firestore, ordered by creation date.
    */
   getRecipes(): Observable<Recipe[]> {
-    const recipesQuery = query(this.recipesCollection, orderBy('createdAt', 'desc'));
-    return collectionData(recipesQuery, { idField: 'id' }) as Observable<Recipe[]>;
+    return new Observable<Recipe[]>(observer => {
+      const recipesCollection = collection(this.db, 'recipes');
+      const recipesQuery = query(recipesCollection, orderBy('createdAt', 'desc'));
+      
+      const unsubscribe = onSnapshot(recipesQuery, 
+        (snapshot) => {
+          const recipes = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          } as Recipe));
+          observer.next(recipes);
+        },
+        (error) => {
+          observer.error(error);
+        }
+      );
+
+      return { unsubscribe };
+    });
   }
 }

@@ -1,0 +1,99 @@
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-card {
+  background-color: #3d5c3a; /* Dark green from mockup */
+  color: white;
+  border-radius: 24px;
+  padding: 40px;
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.popup-title {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.popup-text {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 20px;
+  line-height: 1.5;
+  margin-bottom: 40px;
+  color: #e8f0e7; /* Light text color */
+}
+
+.popup-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 0;
+  align-self: flex-start;
+  transition: opacity 0.2s;
+
+  img {
+    width: 24px;
+    height: auto;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 600px) {
+  .popup-card {
+    margin: 20px;
+    padding: 30px;
+  }
+  
+  .popup-title {
+    font-size: 28px;
+  }
+  
+  .popup-text {
+    font-size: 18px;
+  }
+}

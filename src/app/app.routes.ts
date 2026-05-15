@@ -17,5 +17,19 @@ export const routes: Routes = [
         (m) => m.PreferencesComponent
       ),
   },
+  {
+    path: 'loading',
+    loadComponent: () =>
+      import('./features/loading/loading.component').then(
+        (m) => m.LoadingComponent
+      ),
+  },
+  {
+    path: 'recipe-results',
+    loadComponent: () =>
+      import('./features/recipe-results/recipe-results.component').then(
+        (m) => m.RecipeResultsComponent
+      ),
+  },
   { path: '**', redirectTo: '' },
 ];

@@ -1,6 +1,7 @@
 import { Component, signal, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { RecipeStateService } from '../../core/services/recipe-state.service';
+import { InsufficientIngredientsPopupComponent } from '../../shared/components/insufficient-ingredients-popup/insufficient-ingredients-popup.component';
 
 type CookingTime = 'Quick' | 'Medium' | 'Complex';
 type DietPreference = 'Vegetarian' | 'Vegan' | 'Keto' | 'No preferences';
@@ -8,7 +9,8 @@ type Cuisine = 'German' | 'Italian' | 'Indian' | 'Japanese' | 'Gourmet' | 'Fusio
 
 @Component({
   selector: 'app-preferences',
-  imports: [RouterLink],
+  standalone: true,
+  imports: [RouterLink, InsufficientIngredientsPopupComponent],
   templateUrl: './preferences.component.html',
   styleUrl: './preferences.component.scss',
 })
@@ -21,6 +23,8 @@ export class PreferencesComponent {
   selectedCookingTime = signal<CookingTime | null>(null);
   selectedCuisine = signal<Cuisine | null>(null);
   selectedDiet = signal<DietPreference | null>(null);
+
+  showInsufficientPopup = signal(false);
 
   cookingTimes: { label: CookingTime; sub: string }[] = [
     { label: 'Quick', sub: 'ab to 20min' },
@@ -64,6 +68,27 @@ export class PreferencesComponent {
   }
 
   generateRecipe(): void {
+    // Basic validation: check if total gram/ml is enough for portions
+    // This is just a placeholder logic. You can adjust the threshold.
+    const ingredients = this.state.ingredients();
+    let totalScore = 0;
+    
+    for (const item of ingredients) {
+      if (item.unit === 'gram' || item.unit === 'ml') {
+        totalScore += item.amount;
+      } else if (item.unit === 'piece') {
+        totalScore += item.amount * 100; // Assume 1 piece = 100 score
+      }
+    }
+
+    // Example threshold: 150 score per portion
+    const requiredScore = this.portions() * 150;
+
+    if (ingredients.length === 0 || totalScore < requiredScore) {
+      this.showInsufficientPopup.set(true);
+      return;
+    }
+
     this.state.preferences.set({
       portions: this.portions(),
       persons: this.persons(),
@@ -71,6 +96,7 @@ export class PreferencesComponent {
       cuisine: this.selectedCuisine(),
       diet: this.selectedDiet(),
     });
-    // TODO: trigger n8n call
+    
+    this.router.navigate(['/loading']);
   }
 }
