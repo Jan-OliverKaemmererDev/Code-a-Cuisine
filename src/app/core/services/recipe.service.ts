@@ -1,14 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { 
-  getFirestore, 
   collection, 
   addDoc, 
   query, 
   orderBy, 
   onSnapshot,
-  Firestore
-} from 'firebase/firestore';
+  Firestore,
+  doc,
+  getDoc
+} from '@angular/fire/firestore';
 import { Observable, from } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -22,7 +23,7 @@ export interface Recipe {
   dietPreferences: string;
   ingredients: string[];
   instructions: { step: number; description: string }[];
-  nutrition: {
+  nutrition?: {
     energy: string;
     protein: string;
     fat: string;
@@ -37,19 +38,15 @@ export interface Recipe {
 })
 export class RecipeService {
   private http = inject(HttpClient);
-  private db: Firestore;
+  private db: Firestore = inject(Firestore);
 
-  constructor() {
-    // Holt sich die Standard-Instanz, die von provideFirestore() 
-    // in der app.config initialisiert wurde.
-    this.db = getFirestore();
-  }
+  constructor() {}
 
   /**
    * Sends ingredients and preferences to n8n to generate a recipe.
    */
-  generateRecipe(payload: any): Observable<Recipe> {
-    return this.http.post<Recipe>(environment.n8nWebhookUrl, payload);
+  generateRecipe(payload: any): Observable<any> {
+    return this.http.post<any>(environment.n8nWebhookUrl, payload);
   }
 
   /**
@@ -73,10 +70,14 @@ export class RecipeService {
       
       const unsubscribe = onSnapshot(recipesQuery, 
         (snapshot) => {
-          const recipes = snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          } as Recipe));
+          const recipes = snapshot.docs
+            .map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            } as Recipe))
+            .filter(r => r.title); // filter out broken/old recipes
+          
+          console.log('Fetched recipes from Firestore:', recipes);
           observer.next(recipes);
         },
         (error) => {
@@ -86,5 +87,19 @@ export class RecipeService {
 
       return { unsubscribe };
     });
+  }
+
+  /**
+   * Fetches a single recipe by its ID.
+   */
+  getRecipeById(id: string): Observable<Recipe | undefined> {
+    return from(
+      getDoc(doc(this.db, 'recipes', id)).then(snapshot => {
+        if (snapshot.exists()) {
+          return { id: snapshot.id, ...snapshot.data() } as Recipe;
+        }
+        return undefined;
+      })
+    );
   }
 }

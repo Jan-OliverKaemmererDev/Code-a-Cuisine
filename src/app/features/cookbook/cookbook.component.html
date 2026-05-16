@@ -1,0 +1,55 @@
+<section class="cookbook-page">
+  <header class="page-header">
+    <img src="assets/logo-green.svg" alt="Code à Cuisine" class="logo" />
+    <a (click)="goBack()" class="back-btn" style="cursor: pointer;">
+      <span>&larr; Back</span>
+    </a>
+  </header>
+
+  <!-- Hero Section -->
+  <div class="cookbook-hero">
+    <div class="hero-left">
+      <h1 class="cookbook-title">Cookbook</h1>
+      <p class="cookbook-desc">
+        From quick bites to gourmet delights, explore them all in our ultimate
+        cookbook and get inspired for your next culinary adventure.
+      </p>
+    </div>
+    
+    <div class="hero-right">
+      <div class="most-liked-header">
+        Most liked recipes <img src="assets/icons/heart-unclicked.svg" alt="Heart" />
+      </div>
+      <div class="liked-recipes-scroll">
+        <!-- Most liked recipes cards -->
+        <div class="liked-card" *ngFor="let recipe of mostLikedRecipes$ | async" [routerLink]="['/recipe-view', recipe.id]">
+          <div class="liked-card-top">
+            <span class="liked-time">
+              <img src="assets/icons/clock.svg" alt="Time" /> Cooking time: {{ recipe.cookingTime }}
+            </span>
+            <span class="liked-hearts">
+              <img src="assets/icons/heart-unclicked.svg" alt="Heart" /> {{ recipe.likes || 0 }}
+            </span>
+          </div>
+          <h3 class="liked-card-title">{{ recipe.title }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categories Grid -->
+  <div class="categories-grid">
+    <div class="category-card" *ngFor="let cat of categories" [routerLink]="['/list-of-all-recipes']" [queryParams]="{ cuisine: cat.name }">
+      <div class="category-title">
+        {{ cat.name }} <span class="cat-icon">{{ cat.icon }}</span>
+      </div>
+      <img [src]="cat.image" [alt]="cat.name" class="category-img" />
+    </div>
+  </div>
+
+  <div class="footer-link">
+    <a routerLink="/preferences" class="new-recipe-link">
+      Generate new recipie <span>&rarr;</span>
+    </a>
+  </div>
+</section>

@@ -31,5 +31,26 @@ export const routes: Routes = [
         (m) => m.RecipeResultsComponent
       ),
   },
+  {
+    path: 'recipe-view/:id',
+    loadComponent: () =>
+      import('./features/recipe-view/recipe-view.component').then(
+        (m) => m.RecipeViewComponent
+      ),
+  },
+  {
+    path: 'cookbook',
+    loadComponent: () =>
+      import('./features/cookbook/cookbook.component').then(
+        (m) => m.CookbookComponent
+      ),
+  },
+  {
+    path: 'list-of-all-recipes',
+    loadComponent: () =>
+      import('./features/list-of-all-recipes/list-of-all-recipes.component').then(
+        (m) => m.ListOfAllRecipesComponent
+      ),
+  },
   { path: '**', redirectTo: '' },
 ];

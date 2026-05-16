@@ -1,0 +1,51 @@
+<section class="all-recipes-page">
+  <header class="page-header">
+    <div class="header-left">
+      <img src="assets/logo-green.svg" alt="Code à Cuisine" class="logo" />
+      <a (click)="goBack()" class="back-btn" style="cursor: pointer;">
+        <span>&larr; Cookbook</span>
+      </a>
+    </div>
+    <div class="header-right">
+      <button class="generate-btn" routerLink="/preferences">Generate a recipe</button>
+    </div>
+  </header>
+
+  <div class="banner-container" *ngIf="bannerImage">
+    <img [src]="bannerImage" [alt]="cuisineCategory" class="banner-img" />
+  </div>
+
+  <div class="recipe-list" *ngIf="recipes$ | async as recipes">
+    <div class="recipe-item" *ngFor="let recipe of recipes; let i = index" [routerLink]="['/recipe-view', recipe.id]">
+      
+      <div class="item-left">
+        <div class="item-number">{{ i + 1 }}.</div>
+        <div class="item-content">
+          <div class="item-time">
+            <img src="assets/icons/clock.svg" alt="Time" /> Cooking time: {{ recipe.cookingTime }}
+          </div>
+          <h2 class="item-title">{{ recipe.title }}</h2>
+        </div>
+      </div>
+
+      <div class="item-right">
+        <span class="tag" *ngIf="recipe.dietPreferences">{{ recipe.dietPreferences }}</span>
+        <span class="tag">Quick</span>
+        <span class="tag heart-tag">
+          <img src="assets/icons/heart-unclicked.svg" alt="Heart" /> {{ recipe.likes || 66 }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Pagination Mockup (Static as requested) -->
+    <div class="pagination">
+      <span>&lt;</span>
+      <span class="active">1</span>
+      <span>2</span>
+      <span>3</span>
+      <span>...</span>
+      <span>8</span>
+      <span>&gt;</span>
+    </div>
+  </div>
+</section>

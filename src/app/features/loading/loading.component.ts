@@ -36,18 +36,57 @@ export class LoadingComponent implements OnInit {
     };
 
     this.recipeService.generateRecipe(payload).subscribe({
-      next: (recipe) => {
-        // Save recipe to Firestore, then navigate
-        this.recipeService.saveRecipe(recipe).subscribe({
-          next: () => {
-            this.router.navigate(['/recipe-results']);
-          },
-          error: (err) => {
-            console.error('Error saving recipe to Firestore:', err);
-            alert('Recipe generated but failed to save to Database. Check Firestore rules.');
-            this.router.navigate(['/recipe-results']); // Still navigate so user isn't stuck
+      next: (response: any) => {
+        console.log('Response from n8n:', response);
+        try {
+          // n8n returns an array with an object containing an 'output' property
+          const data = Array.isArray(response) ? response[0] : response;
+          let jsonString = data?.output || data;
+          
+          if (typeof jsonString === 'string') {
+            // Extract everything between the first { or [ and the last } or ]
+            const startObject = jsonString.indexOf('{');
+            const startArray = jsonString.indexOf('[');
+            const isArray = startArray !== -1 && (startObject === -1 || startArray < startObject);
+            const startChar = isArray ? '[' : '{';
+            const endChar = isArray ? ']' : '}';
+            
+            const startIdx = jsonString.indexOf(startChar);
+            const endIdx = jsonString.lastIndexOf(endChar);
+            
+            if (startIdx !== -1 && endIdx !== -1) {
+              jsonString = jsonString.substring(startIdx, endIdx + 1);
+            }
           }
-        });
+          
+          let recipe;
+          try {
+            // Remove trailing commas from LLM output before parsing
+            const safelyFormattedString = jsonString.replace(/,\s*([\]}])/g, '$1');
+            
+            // Parse the clean string into a Recipe object
+            recipe = typeof safelyFormattedString === 'string' ? JSON.parse(safelyFormattedString) : safelyFormattedString;
+          } catch (parseError) {
+            console.error('Failed to parse this exact string:', jsonString);
+            throw parseError; // Rethrow to let the outer catch handle it
+          }
+
+          // Save recipe to Firestore, then navigate
+          this.recipeService.saveRecipe(recipe).subscribe({
+            next: () => {
+              this.router.navigate(['/recipe-results']);
+            },
+            error: (err) => {
+              console.error('Error saving recipe to Firestore:', err);
+              alert('Recipe generated but failed to save to Database. Check Firestore rules.');
+              this.router.navigate(['/recipe-results']);
+            }
+          });
+        } catch (e) {
+          console.error('Error parsing recipe from n8n:', e);
+          alert('Fehler beim Auslesen des Rezeptes. In der Konsole siehst du den genauen Text, der vom Server kam.');
+          this.router.navigate(['/preferences']);
+        }
       },
       error: (err) => {
         console.error('Error from n8n webhook:', err);

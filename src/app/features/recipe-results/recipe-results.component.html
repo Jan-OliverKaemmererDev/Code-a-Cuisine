@@ -13,7 +13,7 @@
       <h1 class="results-title">The recipe results</h1>
       <p class="results-subtitle">
         We took what you have and let our AI do the thinking.<br>
-        Here are 3 easy recipes you can make right now!
+        Here are some easy recipes you can make right now!
       </p>
       <div class="results-tags">
         <span class="results-tag">{{ selectedCuisine }}</span>
@@ -27,8 +27,8 @@
 
   <!-- Recipe Cards -->
   <div class="results-cards" *ngIf="recipes$ | async as recipes">
-    <!-- Use DB recipes if available and we have 3, otherwise fallback to dummy -->
-    <ng-container *ngFor="let recipe of (recipes.length === 3 ? recipes : dummyRecipes); let i = index">
+    <!-- Use DB recipes if available, otherwise fallback to dummy -->
+    <ng-container *ngFor="let recipe of (recipes.length > 0 ? recipes : dummyRecipes); let i = index">
       <div class="recipe-card">
         <div class="recipe-card-header">
           <img src="assets/icons/foodcover-icon.svg" alt="" class="recipe-card-icon" />
@@ -42,7 +42,7 @@
           <span>Cooking time: {{ recipe.cookingTime }}</span>
         </div>
 
-        <button class="recipe-card-btn" routerLink="/recipe-view">
+        <button class="recipe-card-btn" [routerLink]="['/recipe-view', recipe.id]">
           View
         </button>
       </div>

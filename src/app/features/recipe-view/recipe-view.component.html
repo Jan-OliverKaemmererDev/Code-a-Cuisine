@@ -1,0 +1,127 @@
+<section class="recipe-view-page" *ngIf="recipe$ | async as recipe; else loadingOrNotFound">
+  <div class="view-header">
+    <a routerLink="/recipe-results" class="back-btn">
+      <!-- Use the standard back arrow icon, fallback to text if missing -->
+      <span>&larr; Recipe results</span>
+    </a>
+  </div>
+
+  <div class="main-card">
+    <div class="card-top">
+      <div class="cooking-time">
+        <img src="assets/icons/clock.svg" alt="Time" />
+        Cooking time: {{ recipe.cookingTime }}
+      </div>
+      <div class="tags-row">
+        <span class="tag">{{ recipe.dietPreferences }}</span>
+        <span class="tag">Quick</span>
+        <span class="tag heart-tag">
+          <img src="assets/icons/heart-unclicked.svg" alt="Likes" /> {{ recipe.likes || 66 }}
+        </span>
+      </div>
+    </div>
+
+    <h1 class="recipe-title">{{ recipe.title }}</h1>
+
+    <div class="card-mid">
+      <div class="cooking-person">Cooking person: {{ recipe.persons || recipe.portions }}</div>
+      <div class="chef-icons">
+        <img
+          *ngFor="let chefNum of getChefArray(recipe.persons || recipe.portions)"
+          [src]="'assets/icons/chef-icons/chef' + chefNum + '.svg'"
+          alt="Chef {{ chefNum }}"
+        />
+      </div>
+    </div>
+
+    <div class="nutrition-table">
+      <p class="nutrition-title">Nutritional information</p>
+      <div class="nutrition-row">
+        <div class="nutri-col">
+          <strong>Energie</strong><span>{{ recipe.nutrition?.energy || '0 kcal' }}</span>
+        </div>
+        <div class="nutri-col">
+          <strong>Protein</strong><span>{{ recipe.nutrition?.protein || '0g' }}</span>
+        </div>
+        <div class="nutri-col">
+          <strong>Fat</strong><span>{{ recipe.nutrition?.fat || '0g' }}</span>
+        </div>
+        <div class="nutri-col">
+          <strong>Carbs</strong><span>{{ recipe.nutrition?.carbs || '0g' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ingredients -->
+  <div class="section-banner">
+    <img src="assets/icons/detail-view-categories/ingredients.png" alt="Ingredients" />
+  </div>
+
+  <div class="ingredients-content">
+    <div class="ingredients-col">
+      <h3 class="ingredients-subtitle">Your ingredients</h3>
+      <ul>
+        <li *ngFor="let item of getHalf(recipe.ingredients, 1)">
+          {{ item }}
+        </li>
+      </ul>
+    </div>
+    <div class="ingredients-col">
+      <h3 class="ingredients-subtitle">Extra ingredients</h3>
+      <ul>
+        <li *ngFor="let item of getHalf(recipe.ingredients, 2)">
+          {{ item }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Directions -->
+  <div class="section-banner">
+    <img src="assets/icons/detail-view-categories/directions.png" alt="Directions" />
+  </div>
+
+  <div class="directions-grid">
+    <div class="step-card" *ngFor="let step of recipe.instructions; let i = index">
+      <div class="step-header">
+        <div class="step-num">{{ i + 1 }}.</div>
+        <div class="step-title">{{ getStepTitleAndDesc(step.description).title }}</div>
+        <img
+          [src]="
+            'assets/icons/chef-icons/chef' +
+            getChefIndex(i, recipe.persons || recipe.portions) +
+            '.svg'
+          "
+          alt="Chef"
+          class="step-chef"
+        />
+      </div>
+      <p class="step-desc">{{ getStepTitleAndDesc(step.description).desc }}</p>
+    </div>
+  </div>
+
+  <div class="finish-section">
+    <span
+      ><strong>Just finished this meal?</strong> Give it a heart, so that the others know this is
+      delicious.</span
+    >
+    <img src="assets/icons/heart-unclicked.svg" alt="Heart" class="big-heart" />
+  </div>
+
+  <div class="cookbook-section">
+    <span>Find inspiration for your next culinary adventure!</span>
+    <button class="cookbook-btn" routerLink="/cookbook">Cookbook</button>
+  </div>
+
+  <div class="footer-link">
+    <a routerLink="/preferences" class="new-recipe-link">
+      Generate new recipie <span>&rarr;</span>
+    </a>
+  </div>
+</section>
+
+<!-- Loading State -->
+<ng-template #loadingOrNotFound>
+  <div class="loading-state">Lade Rezept...</div>
+</ng-template>
