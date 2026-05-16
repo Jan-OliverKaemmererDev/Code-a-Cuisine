@@ -1,5 +1,11 @@
 @import '../../../styles.scss';
 
+:host {
+  display: block;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
 .all-recipes-page {
   padding: 40px 20px;
   max-width: 1000px;
@@ -99,8 +105,8 @@
     align-items: flex-start;
 
     .item-number {
-      background: #FFF9F3;
-      color: #2E5A27;
+      background: #FDF3EB;
+      color: #333;
       font-weight: bold;
       width: 32px;
       height: 32px;
@@ -117,8 +123,8 @@
         align-items: center;
         gap: 6px;
         color: #555;
-        font-size: 12px;
-        margin-bottom: 4px;
+        font-size: 11px;
+        margin-bottom: 2px;
         img {
           width: 12px;
         }
@@ -139,9 +145,9 @@
     flex-shrink: 0;
 
     .tag {
-      background: #EAECE8;
+      background: #DDE8DF;
       color: #333;
-      padding: 6px 12px;
+      padding: 4px 12px;
       border-radius: 16px;
       font-size: 12px;
       font-weight: 500;
@@ -150,7 +156,6 @@
       display: flex;
       align-items: center;
       gap: 4px;
-      background: #d4e3d4;
       img {
         width: 12px;
       }

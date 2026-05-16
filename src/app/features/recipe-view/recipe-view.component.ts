@@ -21,6 +21,7 @@ export class RecipeViewComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.recipe$ = this.recipeService.getRecipeById(id);
+      this.isLiked = localStorage.getItem(`liked_recipe_${id}`) === 'true';
     }
   }
 
@@ -52,5 +53,33 @@ export class RecipeViewComponent implements OnInit {
   getChefIndex(stepIndex: number, personsCount: number | undefined): number {
     const numChefs = Math.max(1, Math.min(personsCount || 1, 4));
     return (stepIndex % numChefs) + 1;
+  }
+
+  isLiked = false;
+
+  async toggleLike(recipe: Recipe) {
+    if (!recipe.id) return;
+    
+    this.isLiked = !this.isLiked;
+    
+    // Fallback if likes is undefined
+    const currentLikes = recipe.likes || 0;
+    
+    if (this.isLiked) {
+      recipe.likes = currentLikes + 1;
+      localStorage.setItem(`liked_recipe_${recipe.id}`, 'true');
+    } else {
+      recipe.likes = Math.max(0, currentLikes - 1);
+      localStorage.removeItem(`liked_recipe_${recipe.id}`);
+    }
+
+    try {
+      await this.recipeService.updateRecipe(recipe.id, { likes: recipe.likes });
+    } catch (err) {
+      console.error('Failed to update likes', err);
+      // Revert if error
+      this.isLiked = !this.isLiked;
+      recipe.likes = currentLikes;
+    }
   }
 }

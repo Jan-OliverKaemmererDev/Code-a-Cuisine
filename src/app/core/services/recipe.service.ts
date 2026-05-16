@@ -8,7 +8,8 @@ import {
   onSnapshot,
   Firestore,
   doc,
-  getDoc
+  getDoc,
+  updateDoc
 } from '@angular/fire/firestore';
 import { Observable, from } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -101,5 +102,13 @@ export class RecipeService {
         return undefined;
       })
     );
+  }
+
+  /**
+   * Updates an existing recipe in Firestore.
+   */
+  updateRecipe(id: string, updates: Partial<Recipe>): Promise<void> {
+    const docRef = doc(this.db, 'recipes', id);
+    return updateDoc(docRef, updates as any);
   }
 }
