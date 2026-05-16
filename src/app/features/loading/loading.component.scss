@@ -23,7 +23,15 @@
   height: 250px;
   background-color: #c9d5c6; /* Muted green placeholder block */
   border-radius: 16px;
-  animation: pulse 1.5s infinite ease-in-out alternate;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
 }
 
 .loading-text {
@@ -33,13 +41,4 @@
   color: white;
 }
 
-@keyframes pulse {
-  0% {
-    opacity: 0.7;
-    transform: scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1.02);
-  }
-}
+
