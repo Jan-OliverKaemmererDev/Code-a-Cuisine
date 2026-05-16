@@ -1,0 +1,121 @@
+{
+  "name": "code-a-cuisine",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "9af95e4b-4075-4a4a-8623-b55ae53676a0",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -336,
+        0
+      ],
+      "id": "b4512431-4c0b-4189-b608-4c92f7e629d8",
+      "name": "Webhook",
+      "webhookId": "9af95e4b-4075-4a4a-8623-b55ae53676a0"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Du bist ein professioneller Chefkoch. Erstelle ein kreatives und leckeres Rezept basierend auf den folgenden Eingaben.\n\nZutaten: {{ $json.ingredients.join(', ') }} Portionen: {{ $json.preferences.portions }} Personen: {{ $json.preferences.persons }} Küche: {{ $json.preferences.cuisine || 'International' }} Diät: {{ $json.preferences.diet || 'Keine Präferenz' }} Zeitlimit: {{ $json.preferences.cookingTime || 'Flexibel' }}\n\nDEINE AUFGABE: Antworte AUSSCHLIESSLICH mit einem validen JSON-Objekt im folgenden Format. Erfinde nötige Basis-Zutaten (wie Salz, Öl, Wasser) hinzu, falls sie fehlen, um ein vollständiges Rezept zu garantieren.\n\nJSON-Format: { \"title\": \"Name des Gerichts\", \"cookingTime\": \"Zahl in Minuten (z.B. 30min)\", \"cuisine\": \"Art der Küche\", \"persons\": {{ $json.preferences.persons }}, \"portions\": {{ $json.preferences.portions }}, \"dietPreferences\": \"Die gewählte Diät\", \"ingredients\": [\"Liste aller benötigten Zutaten mit Mengenangabe\"], \"instructions\": [ { \"step\": 1, \"description\": \"Schritt 1 Beschreibung\" }, { \"step\": 2, \"description\": \"Schritt 2 Beschreibung\" } ], \"nutrition\": { \"energy\": \"kcal Angabe\", \"protein\": \"Gramm Angabe\", \"fat\": \"Gramm Angabe\", \"carbs\": \"Gramm Angabe\" }, \"likes\": 0 }",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -128,
+        0
+      ],
+      "id": "01435f87-dfd4-4ed0-b01e-27efa45c73a8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -128,
+        176
+      ],
+      "id": "40ca16b9-b853-4f65-ae00-d69586334dae",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "K1ZKZKFxpRNdAMkH",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "b4f329e2-a795-47e2-960b-9802091f633b",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "67f3cc78-bb54-4b5f-91b9-b19f8f326e01",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d9bdae180c241bb7b928320b0a530831b1852d4919f8d013a8452133e5e49e6d"
+  },
+  "id": "bnTWXpmnPoczEWWv",
+  "tags": []
+}
