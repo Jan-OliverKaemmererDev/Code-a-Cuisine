@@ -286,13 +286,28 @@
 
   &__ingredient-amount {
     font-weight: 600;
-    width: 150px;
+    width: auto;
+    max-width: 150px;
     flex-shrink: 0;
+    opacity: 1;
+    transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, margin 0.3s ease;
+    margin-right: 8px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+
+    .is-editing & {
+      max-width: 0;
+      opacity: 0;
+      margin-right: 0;
+      pointer-events: none;
+    }
   }
 
   &__ingredient-name {
     flex: 1;
     font-weight: 600;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &__ingredient-actions {
@@ -317,8 +332,21 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    width: 150px;
+    width: 0;
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
     flex-shrink: 0;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.3s ease;
+    margin-right: 0;
+
+    .is-editing & {
+      width: 165px;
+      opacity: 1;
+      pointer-events: auto;
+      margin-right: 8px;
+      overflow: visible;
+    }
   }
 
   &__inline-amount {

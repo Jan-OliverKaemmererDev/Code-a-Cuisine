@@ -16,12 +16,20 @@ export class RecipeViewComponent implements OnInit {
   private recipeService = inject(RecipeService);
 
   recipe$!: Observable<Recipe | undefined>;
+  backUrl = '/recipe-results';
+  backText = 'Recipe results';
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.recipe$ = this.recipeService.getRecipeById(id);
       this.isLiked = localStorage.getItem(`liked_recipe_${id}`) === 'true';
+    }
+
+    const from = this.route.snapshot.queryParamMap.get('from');
+    if (from === 'cookbook') {
+      this.backUrl = '/cookbook';
+      this.backText = 'Cookbook';
     }
   }
 

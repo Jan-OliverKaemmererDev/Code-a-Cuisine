@@ -1,8 +1,11 @@
 <section class="cookbook-page">
   <header class="page-header">
-    <img src="assets/logo-green.svg" alt="Code à Cuisine" class="logo" />
+    <a routerLink="/" class="logo-link" aria-label="Zurück zur Startseite">
+      <img src="assets/logo-green.svg" alt="Code à Cuisine" class="logo" />
+    </a>
     <a (click)="goBack()" class="back-btn" style="cursor: pointer;">
-      <span>&larr; Back</span>
+      <img src="assets/icons/arrow-right-green.svg" alt="" class="back-arrow" />
+      <span>Back</span>
     </a>
   </header>
 
@@ -20,15 +23,19 @@
       <div class="most-liked-header">
         Most liked recipes <img src="assets/icons/heart-unclicked.svg" alt="Heart" />
       </div>
-      <div class="liked-recipes-scroll">
+      <div class="liked-recipes-scroll"
+           (mousedown)="onMouseDown($event)"
+           (mouseleave)="onMouseLeave($event)"
+           (mouseup)="onMouseUp($event)"
+           (mousemove)="onMouseMove($event)">
         <!-- Most liked recipes cards -->
-        <div class="liked-card" *ngFor="let recipe of mostLikedRecipes$ | async" [routerLink]="['/recipe-view', recipe.id]">
+        <div class="liked-card" *ngFor="let recipe of mostLikedRecipes$ | async" (click)="onCardClick($event, recipe.id)">
           <div class="liked-card-top">
             <span class="liked-time">
               <img src="assets/icons/clock.svg" alt="Time" /> Cooking time: {{ recipe.cookingTime }}
             </span>
             <span class="liked-hearts">
-              <img src="assets/icons/heart-unclicked.svg" alt="Heart" /> {{ recipe.likes || 0 }}
+              <img src="assets/icons/heart-dark.svg" alt="Heart" /> {{ recipe.likes || 0 }}
             </span>
           </div>
           <h3 class="liked-card-title">{{ recipe.title }}</h3>
@@ -49,7 +56,8 @@
 
   <div class="footer-link">
     <a routerLink="/preferences" class="new-recipe-link">
-      Generate new recipie <span>&rarr;</span>
+      <span>Generate new recipe</span>
+      <img src="assets/icons/arrow-right-green.svg" alt="" class="forward-arrow" />
     </a>
   </div>
 </section>

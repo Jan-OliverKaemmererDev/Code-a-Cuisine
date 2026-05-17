@@ -1,8 +1,11 @@
 <section class="recipe-view-page" *ngIf="recipe$ | async as recipe; else loadingOrNotFound">
   <header class="page-header">
-    <img src="assets/logo-green.svg" alt="Code à Cuisine" class="logo" />
-    <a routerLink="/recipe-results" class="back-btn">
-      <span>&larr; Recipe results</span>
+    <a routerLink="/" class="logo-link" aria-label="Zurück zur Startseite">
+      <img src="assets/logo-green.svg" alt="Code à Cuisine" class="logo" />
+    </a>
+    <a [routerLink]="backUrl" class="back-btn">
+      <img src="assets/icons/arrow-right-green.svg" alt="" class="back-arrow" />
+      <span>{{ backText }}</span>
     </a>
   </header>
 
@@ -114,7 +117,8 @@
 
   <div class="footer-link">
     <a routerLink="/preferences" class="new-recipe-link">
-      Generate new recipie <span>&rarr;</span>
+      <span>Generate new recipe</span>
+      <img src="assets/icons/arrow-right-green.svg" alt="" class="forward-arrow" />
     </a>
   </div>
 </section>

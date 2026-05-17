@@ -110,46 +110,44 @@
             <li class="generate__ingredient-item" [class.is-editing]="editingListIndex() === i">
               <span class="generate__ingredient-bullet">•</span>
 
-              @if (editingListIndex() === i) {
-                <!-- ── INLINE EDIT MODE ── -->
-                <div class="generate__inline-edit">
-                  <input
-                    class="generate__inline-amount"
-                    type="number"
-                    min="1"
-                    [ngModel]="editAmount()"
-                    (ngModelChange)="editAmount.set($event)"
-                  />
-                  <div class="generate__inline-unit-wrap">
-                    <div class="generate__inline-unit-trigger" (click)="toggleListDropdown()">
-                      <span>{{ editUnit() }}</span>
-                      <img
-                        src="assets/icons/arrow-dropdown-green.svg"
-                        alt=""
-                        class="generate__unit-arrow"
-                        [class.is-open]="showListDropdown()"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    @if (showListDropdown()) {
-                      <ul class="generate__inline-unit-options">
-                        <li class="generate__inline-unit-option" (click)="selectListUnit('gram')">
-                          gram
-                        </li>
-                        <li class="generate__inline-unit-option" (click)="selectListUnit('ml')">
-                          ml
-                        </li>
-                        <li class="generate__inline-unit-option" (click)="selectListUnit('piece')">
-                          piece
-                        </li>
-                      </ul>
-                    }
+              <!-- ── READ MODE AMOUNT ── -->
+              <span class="generate__ingredient-amount">{{ formatAmount(item) }}</span>
+
+              <!-- ── INLINE EDIT MODE ── -->
+              <div class="generate__inline-edit">
+                <input
+                  class="generate__inline-amount"
+                  type="number"
+                  min="1"
+                  [ngModel]="editAmount()"
+                  (ngModelChange)="editAmount.set($event)"
+                />
+                <div class="generate__inline-unit-wrap">
+                  <div class="generate__inline-unit-trigger" (click)="toggleListDropdown()">
+                    <span>{{ editUnit() }}</span>
+                    <img
+                      src="assets/icons/arrow-dropdown-green.svg"
+                      alt=""
+                      class="generate__unit-arrow"
+                      [class.is-open]="showListDropdown()"
+                      aria-hidden="true"
+                    />
                   </div>
+                  @if (showListDropdown() && editingListIndex() === i) {
+                    <ul class="generate__inline-unit-options">
+                      <li class="generate__inline-unit-option" (click)="selectListUnit('gram')">
+                        gram
+                      </li>
+                      <li class="generate__inline-unit-option" (click)="selectListUnit('ml')">
+                        ml
+                      </li>
+                      <li class="generate__inline-unit-option" (click)="selectListUnit('piece')">
+                        piece
+                      </li>
+                    </ul>
+                  }
                 </div>
-              } @else {
-                <!-- ── READ MODE ── -->
-                <span class="generate__ingredient-amount">{{ formatAmount(item) }}</span>
-              }
+              </div>
 
               <span class="generate__ingredient-name">{{ item.name }}</span>
 

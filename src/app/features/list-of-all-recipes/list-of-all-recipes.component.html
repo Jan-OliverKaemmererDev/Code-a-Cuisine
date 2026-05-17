@@ -16,7 +16,7 @@
   </div>
 
   <div class="recipe-list" *ngIf="recipes$ | async as recipes">
-    <div class="recipe-item" *ngFor="let recipe of recipes; let i = index" [routerLink]="['/recipe-view', recipe.id]">
+    <div class="recipe-item" *ngFor="let recipe of recipes; let i = index" [routerLink]="['/recipe-view', recipe.id]" [queryParams]="{ from: 'cookbook' }">
       
       <div class="item-left">
         <div class="item-number">{{ i + 1 }}.</div>

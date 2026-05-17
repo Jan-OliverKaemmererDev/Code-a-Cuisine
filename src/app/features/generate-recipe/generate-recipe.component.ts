@@ -155,14 +155,12 @@ export class GenerateRecipeComponent {
     const target = event.target as HTMLElement;
 
     // Check if click was outside the main input unit dropdown
-    const inputDropdownEl = this.elementRef.nativeElement.querySelector('.generate__unit-dropdown');
-    if (inputDropdownEl && !inputDropdownEl.contains(target)) {
+    if (!target.closest('.generate__unit-dropdown')) {
       this.showInputDropdown.set(false);
     }
 
     // Check if click was outside the inline edit unit dropdown
-    const inlineDropdownEl = this.elementRef.nativeElement.querySelector('.generate__inline-unit-wrap');
-    if (inlineDropdownEl && !inlineDropdownEl.contains(target)) {
+    if (!target.closest('.generate__inline-unit-wrap')) {
       this.showListDropdown.set(false);
     }
   }

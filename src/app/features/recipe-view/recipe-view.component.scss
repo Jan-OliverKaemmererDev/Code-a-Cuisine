@@ -14,9 +14,17 @@
 
 .page-header {
   margin-bottom: 24px;
+
+  .logo-link {
+    display: block;
+    width: fit-content;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
   .logo {
     height: 48px;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
     display: block;
   }
   .back-btn {
@@ -30,18 +38,23 @@
     &:hover {
       opacity: 0.8;
     }
+    .back-arrow {
+      height: 12px;
+      width: auto;
+      transform: rotate(180deg);
+    }
   }
 }
 
 .recipe-border-box {
-  border: 2px solid #FDF3EB;
+  border: 2px solid #FAF0E6;
   border-radius: 16px;
   padding: 32px;
   margin-bottom: 40px;
 }
 
 .recipe-header-card {
-  background: #FFF9F3;
+  background: #FAF0E6;
   border-radius: 16px;
   padding: 32px;
   display: flex;
@@ -61,8 +74,8 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      color: #555;
-      font-size: 14px;
+      color: #396039;
+      font-size: 16px;
       margin-bottom: 12px;
       img {
         width: 14px;
@@ -83,8 +96,8 @@
       flex-wrap: wrap;
 
       .cooking-person {
-        color: #555;
-        font-size: 14px;
+        color: #396039;
+        font-size: 16px;
       }
 
       .chef-tags {
@@ -108,8 +121,8 @@
       display: flex;
       gap: 8px;
       .tag {
-        background: #d4e3d4;
-        color: #333;
+        background-color: #39603933;
+        color: #10310B;
         padding: 4px 12px;
         border-radius: 16px;
         font-size: 12px;
@@ -119,9 +132,9 @@
         display: flex;
         align-items: center;
         gap: 4px;
-        background: #ccc;
+        background-color: #3960394D;
         img {
-          width: 12px;
+          width: 14px;
         }
       }
     }
@@ -129,12 +142,10 @@
     .nutrition-table {
       .nutrition-title {
         font-size: 12px;
-        color: #777;
+        color: #10310B;
         margin-bottom: 8px;
-        text-align: right;
-        @media (max-width: 768px) {
-          text-align: left;
-        }
+        text-align: left;
+        font-weight: 500;
       }
       .nutrition-row {
         display: flex;
@@ -147,11 +158,11 @@
         gap: 4px;
         strong {
           font-size: 14px;
-          color: #333;
+          color: #10310B;
         }
         span {
           font-size: 14px;
-          color: #666;
+          color: #10310B;
         }
       }
     }
@@ -189,10 +200,10 @@
   max-width: 300px;
 
   .ingredients-subtitle {
-    color: #2b9d42;
+    color: #008000;
     margin-bottom: 16px;
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
   }
   ul {
     list-style: none;
@@ -200,15 +211,16 @@
     margin: 0;
     li {
       margin-bottom: 8px;
-      color: #333;
+      color: #10310B;
       font-size: 15px;
+      font-weight: 600;
       position: relative;
       padding-left: 16px;
       &::before {
         content: '•';
         position: absolute;
         left: 0;
-        color: #333;
+        color: #10310B;
       }
     }
   }
@@ -233,8 +245,8 @@
     margin-bottom: 12px;
   }
   .step-num {
-    background: #FDF3EB;
-    color: #333;
+    background: #FAF0E6;
+    color: #10310B;
     font-weight: bold;
     width: 28px;
     height: 28px;
@@ -245,18 +257,19 @@
     flex-shrink: 0;
   }
   .step-title {
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 530;
     flex: 1;
-    color: #333;
+    color: #10310B;
   }
   .step-chef {
     height: 24px;
     flex-shrink: 0;
   }
   .step-desc {
-    color: #555;
+    color: #10310B;
     font-size: 14px;
+    font-weight: 500;
     line-height: 1.6;
     margin-left: 40px; 
   }
@@ -270,7 +283,7 @@
   justify-content: center;
   gap: 16px;
   span {
-    color: #333;
+    color: #10310B;
     font-size: 14px;
   }
   .big-heart {
@@ -285,7 +298,7 @@
 }
 
 .cookbook-section {
-  background: #EBECE8;
+  background: #3960391A;
   padding: 24px 40px;
   border-radius: 8px;
   display: flex;
@@ -296,8 +309,8 @@
   flex-wrap: wrap;
   span {
     font-size: 16px;
-    color: #333;
-    font-weight: 500;
+    color: #10310B;
+    font-weight: 600;
   }
   .cookbook-btn {
     background: #395F31;
@@ -310,7 +323,7 @@
     font-size: 16px;
     transition: background 0.2s;
     &:hover {
-      background: #2E5A27;
+      background: #055E05;
     }
   }
 }
@@ -318,15 +331,20 @@
 .footer-link {
   text-align: right;
   .new-recipe-link {
-    color: #555;
+    color: #396039;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
+    padding: 16px;
     gap: 8px;
     font-weight: 500;
     transition: color 0.2s;
     &:hover {
-      color: #2E5A27;
+      background-color: #3960391A;
+    }
+    .forward-arrow {
+      height: 12px;
+      width: auto;
     }
   }
 }
