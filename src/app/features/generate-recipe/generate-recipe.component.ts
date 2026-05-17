@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject } from '@angular/core';
+import { Component, signal, computed, inject, HostListener, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { RecipeStateService, IngredientItem } from '../../core/services/recipe-state.service';
@@ -30,6 +30,7 @@ const SUGGESTIONS: string[] = [
 })
 export class GenerateRecipeComponent {
   private state = inject(RecipeStateService);
+  private elementRef = inject(ElementRef);
 
   // ── Top input card signals ──────────────────────────────────
   ingredientName = signal('');
@@ -147,5 +148,22 @@ export class GenerateRecipeComponent {
     this.selectedUnit.set('gram');
     this.showSuggestions.set(false);
     this.showInputDropdown.set(false);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+
+    // Check if click was outside the main input unit dropdown
+    const inputDropdownEl = this.elementRef.nativeElement.querySelector('.generate__unit-dropdown');
+    if (inputDropdownEl && !inputDropdownEl.contains(target)) {
+      this.showInputDropdown.set(false);
+    }
+
+    // Check if click was outside the inline edit unit dropdown
+    const inlineDropdownEl = this.elementRef.nativeElement.querySelector('.generate__inline-unit-wrap');
+    if (inlineDropdownEl && !inlineDropdownEl.contains(target)) {
+      this.showListDropdown.set(false);
+    }
   }
 }

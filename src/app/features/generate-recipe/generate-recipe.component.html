@@ -1,5 +1,4 @@
 <section class="generate" id="generate-recipe-page">
-
   <!-- ===================== HEADER / LOGO ===================== -->
   <header class="generate__header">
     <a class="generate__logo" routerLink="/" aria-label="Zurück zur Startseite">
@@ -17,11 +16,9 @@
 
   <!-- ===================== CONTENT AREA ===================== -->
   <div class="generate__content">
-
     <!-- LEFT: INPUT CARD -->
     <div class="generate__input-card">
       <div class="generate__input-row">
-
         <!-- Ingredient Input -->
         <div class="generate__field generate__field--ingredient">
           <label class="generate__label" for="ingredient-input">Ingredient</label>
@@ -65,7 +62,13 @@
             <!-- Input Unit Dropdown -->
             <div class="generate__unit-dropdown" (click)="toggleInputDropdown()">
               <span class="generate__unit-label">{{ selectedUnit() }}</span>
-              <img src="assets/icons/arrow-dropdown-green.svg" alt="" class="generate__unit-arrow" aria-hidden="true" />
+              <img
+                src="assets/icons/arrow-dropdown-green.svg"
+                alt=""
+                class="generate__unit-arrow"
+                [class.is-open]="showInputDropdown()"
+                aria-hidden="true"
+              />
               @if (showInputDropdown()) {
                 <ul class="generate__unit-options">
                   <li class="generate__unit-option" (click)="selectInputUnit('gram')">gram</li>
@@ -83,11 +86,17 @@
               (click)="addIngredient()"
               aria-label="Zutat hinzufügen"
             >
-              <img src="assets/icons/plus-green.svg" alt="" width="24" height="24" aria-hidden="true" />
+              <img
+                src="assets/icons/plus-green.svg"
+                class="plus-icon"
+                alt="plus-icon"
+                width="16"
+                height="16"
+                aria-hidden="true"
+              />
             </button>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -99,7 +108,6 @@
         <ul class="generate__ingredient-list">
           @for (item of ingredients(); track item.name + $index; let i = $index) {
             <li class="generate__ingredient-item" [class.is-editing]="editingListIndex() === i">
-
               <span class="generate__ingredient-bullet">•</span>
 
               @if (editingListIndex() === i) {
@@ -115,13 +123,25 @@
                   <div class="generate__inline-unit-wrap">
                     <div class="generate__inline-unit-trigger" (click)="toggleListDropdown()">
                       <span>{{ editUnit() }}</span>
-                      <img src="assets/icons/arrow-dropdown-green.svg" alt="" class="generate__unit-arrow" aria-hidden="true" />
+                      <img
+                        src="assets/icons/arrow-dropdown-green.svg"
+                        alt=""
+                        class="generate__unit-arrow"
+                        [class.is-open]="showListDropdown()"
+                        aria-hidden="true"
+                      />
                     </div>
                     @if (showListDropdown()) {
                       <ul class="generate__inline-unit-options">
-                        <li class="generate__inline-unit-option" (click)="selectListUnit('gram')">gram</li>
-                        <li class="generate__inline-unit-option" (click)="selectListUnit('ml')">ml</li>
-                        <li class="generate__inline-unit-option" (click)="selectListUnit('piece')">piece</li>
+                        <li class="generate__inline-unit-option" (click)="selectListUnit('gram')">
+                          gram
+                        </li>
+                        <li class="generate__inline-unit-option" (click)="selectListUnit('ml')">
+                          ml
+                        </li>
+                        <li class="generate__inline-unit-option" (click)="selectListUnit('piece')">
+                          piece
+                        </li>
                       </ul>
                     }
                   </div>
@@ -167,21 +187,14 @@
         </ul>
       }
     </div>
-
   </div>
 
   <!-- ===================== NEXT STEP BUTTON ===================== -->
   @if (hasIngredients()) {
     <div class="generate__actions">
-      <button
-        id="btn-next-step"
-        class="generate__btn-next"
-        type="button"
-        routerLink="/preferences"
-      >
+      <button id="btn-next-step" class="generate__btn-next" type="button" routerLink="/preferences">
         Next step
       </button>
     </div>
   }
-
 </section>

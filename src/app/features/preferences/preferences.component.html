@@ -1,12 +1,16 @@
 <section class="preferences" id="preferences-page">
-
   <!-- ===================== HEADER ===================== -->
   <header class="preferences__header">
     <a class="preferences__logo" routerLink="/" aria-label="Zurück zur Startseite">
       <img src="assets/logo-green.svg" alt="Code à Cuisine Logo" width="160" />
     </a>
     <a class="preferences__back" routerLink="/generate-recipe" aria-label="Zurück zu Zutaten">
-      <img src="assets/icons/arrow-right-green.svg" alt="" class="preferences__back-arrow" aria-hidden="true" />
+      <img
+        src="assets/icons/arrow-right-green.svg"
+        alt=""
+        class="preferences__back-arrow"
+        aria-hidden="true"
+      />
       Ingredients
     </a>
   </header>
@@ -18,7 +22,6 @@
 
   <!-- ===================== COUNTERS ===================== -->
   <div class="preferences__counters">
-
     <div class="preferences__counter-group">
       <p class="preferences__counter-label">How many portions you need?</p>
       <div class="preferences__counter-row">
@@ -70,29 +73,34 @@
         </button>
       </div>
     </div>
-
   </div>
 
   <!-- ===================== PREFERENCE CARD ===================== -->
   <div class="preferences__card">
-
     <!-- COOKING TIME -->
     <div class="preferences__section">
       <h2 class="preferences__section-title">
-        <img src="assets/icons/clock.svg" alt="" class="preferences__section-icon" aria-hidden="true" />
+        <img
+          src="assets/icons/clock.svg"
+          alt=""
+          class="preferences__section-icon"
+          aria-hidden="true"
+        />
         Cooking time:
       </h2>
       <div class="preferences__chips">
         @for (option of cookingTimes; track option.label) {
-          <button
-            class="preferences__chip"
-            type="button"
-            [class.is-selected]="selectedCookingTime() === option.label"
-            (click)="selectCookingTime(option.label)"
-          >
-            <span class="preferences__chip-label">{{ option.label }}</span>
+          <div class="preferences__chip-container">
+            <button
+              class="preferences__chip"
+              type="button"
+              [class.is-selected]="selectedCookingTime() === option.label"
+              (click)="selectCookingTime(option.label)"
+            >
+              <span class="preferences__chip-label">{{ option.label }}</span>
+            </button>
             <span class="preferences__chip-sub">{{ option.sub }}</span>
-          </button>
+          </div>
         }
       </div>
     </div>
@@ -100,7 +108,12 @@
     <!-- CUISINE -->
     <div class="preferences__section">
       <h2 class="preferences__section-title">
-        <img src="assets/icons/globe.svg" alt="" class="preferences__section-icon" aria-hidden="true" />
+        <img
+          src="assets/icons/globe.svg"
+          alt=""
+          class="preferences__section-icon"
+          aria-hidden="true"
+        />
         Cuisine
       </h2>
       <div class="preferences__chips">
@@ -120,7 +133,12 @@
     <!-- DIET PREFERENCES -->
     <div class="preferences__section">
       <h2 class="preferences__section-title">
-        <img src="assets/icons/fork-spoon.svg" alt="" class="preferences__section-icon" aria-hidden="true" />
+        <img
+          src="assets/icons/fork-spoon.svg"
+          alt=""
+          class="preferences__section-icon"
+          aria-hidden="true"
+        />
         Diet preferences
       </h2>
       <div class="preferences__chips">
@@ -136,7 +154,6 @@
         }
       </div>
     </div>
-
   </div>
 
   <!-- ===================== GENERATE BUTTON ===================== -->

@@ -1,12 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { RecipeStateService } from '../../core/services/recipe-state.service';
 import { RecipeService } from '../../core/services/recipe.service';
 
 @Component({
   selector: 'app-loading',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './loading.component.html',
   styleUrl: './loading.component.scss'
 })
