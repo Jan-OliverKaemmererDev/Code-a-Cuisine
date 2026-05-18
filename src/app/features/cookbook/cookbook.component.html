@@ -50,7 +50,9 @@
       <div class="category-title">
         {{ cat.name }} <span class="cat-icon">{{ cat.icon }}</span>
       </div>
-      <img [src]="cat.image" [alt]="cat.name" class="category-img" />
+      <div class="category-img-wrapper">
+        <img [src]="cat.image" [alt]="cat.name" class="category-img" />
+      </div>
     </div>
   </div>
 

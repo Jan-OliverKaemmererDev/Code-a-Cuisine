@@ -29,7 +29,7 @@ export class CookbookComponent {
   );
 
   categories: CuisineCategory[] = [
-    { name: 'Italian cuisine', icon: '🧀', image: 'assets/img/cookbook/italian.jpg' },
+    { name: 'Italian cuisine', icon: '🤌', image: 'assets/img/cookbook/italian.jpg' },
     { name: 'German cuisine', icon: '🥨', image: 'assets/img/cookbook/german.jpg' },
     { name: 'Japanese cuisine', icon: '🥢', image: 'assets/img/cookbook/japanese.jpg' },
     { name: 'Gourmet cuisine', icon: '✨', image: 'assets/img/cookbook/gourmet.jpg' },
