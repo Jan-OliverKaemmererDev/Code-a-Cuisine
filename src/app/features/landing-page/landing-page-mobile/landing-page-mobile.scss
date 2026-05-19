@@ -1,0 +1,152 @@
+@media (max-width: 576px) {
+  .landing {
+    padding: 24px 20px;
+    height: 100vh;
+    height: 100dvh;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+
+    // ===================== HEADER =====================
+    &__header {
+      margin-bottom: 20px;
+      z-index: 10;
+    }
+
+    &__logo {
+      &-img {
+        width: 120px;
+      }
+    }
+
+    // ===================== MAIN CONTENT =====================
+    &__main {
+      flex: 1;
+      display: flex;
+      flex-direction: row; /* Retain side-by-side layout */
+      align-items: flex-start; /* Align content to the top under the logo */
+      justify-content: flex-start;
+      gap: 0;
+      z-index: 5;
+      position: relative;
+      margin-top: 10px; /* Small gap to place content naturally below logo */
+    }
+
+    &__content {
+      max-width: 55%; /* Ensure text doesn't overlap the larger plates */
+      z-index: 10;
+    }
+
+    &__subtitle {
+      text-align: left;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    &__title {
+      text-align: left;
+      font-size: 0; /* Hide original Code&nbsp;à&nbsp;Cuisine on mobile */
+      margin-bottom: 32px;
+      line-height: 1.0;
+
+      &::after {
+        content: "Code à\A Cuisine";
+        font-size: 56px; /* Restore visible font size */
+        font-family: 'Ubuntu', sans-serif;
+        font-weight: 700;
+        color: #F5F5DC;
+        white-space: pre-wrap; /* Force line break at \n */
+        display: block;
+        line-height: 1.0;
+      }
+    }
+
+    &__btn-primary {
+      display: block;
+      font-size: 16px;
+      padding: 16px 14px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      
+      // Disabled hover effects for mobile
+      &:hover {
+        background-color: #f5f1e9;
+        color: #008000;
+        transform: none;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      &:active {
+        transform: none;
+      }
+    }
+
+    // ===================== PLATES =====================
+    &__plates {
+      position: absolute;
+      right: -220px; /* Push plates partially off-screen on the right (half of 380px) */
+      top: 50%;
+      transform: translateY(-50%);
+      width: 380px; /* Scaled up to match the large appearance in the mockup */
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      z-index: 5;
+    }
+
+    &__plate {
+      filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+
+      &--top {
+        margin-bottom: -100px; /* Larger negative margin for overlap of larger plates */
+        z-index: 1;
+        transform: none;
+      }
+
+      &--middle {
+        z-index: 2;
+        transform: rotate(-90deg);
+      }
+
+      &--bottom {
+        margin-top: -100px; /* Larger negative margin for overlap of larger plates */
+        z-index: 3;
+        transform: none;
+      }
+    }
+
+    // ===================== FOOTER =====================
+    &__footer {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; /* Align left */
+      text-align: left;
+      gap: 6px;
+      z-index: 10;
+
+      &-tagline {
+        font-size: 20px;
+        margin: 0;
+      }
+
+      &-link {
+        font-size: 16px;
+        padding: 8px 0;
+        background-color: transparent;
+        
+        // Disabled hover effects for mobile
+        &:hover {
+          color: #F5F5DC;
+          background-color: transparent;
+          
+          .landing__footer-arrow {
+            transform: none;
+          }
+        }
+      }
+    }
+  }
+}

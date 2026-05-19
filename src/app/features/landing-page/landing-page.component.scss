@@ -42,7 +42,7 @@
     font-family: 'Quicksand', sans-serif;
     font-size: 42px;
     font-weight: 400;
-    color: #ffffff;
+    color: #F5F5DC;
     margin-bottom: 10px;
   }
 
@@ -50,7 +50,7 @@
     font-family: 'Ubuntu', sans-serif;
     font-size: 110px;
     font-weight: 700;
-    color: #ffffff;
+    color: #F5F5DC;
     margin-bottom: 60px;
     line-height: 0.9;
   }
@@ -68,8 +68,6 @@
 
     &:hover {
       background-color: #FAE0C6;
-      font-weight: 800;
-      transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
 
@@ -81,12 +79,11 @@
   // ===================== PLATES =====================
   &__plates {
     position: absolute;
-    right: -100px;
+    right: 80px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
-    gap: -40px; // Negative gap to overlap
     width: 600px;
   }
 
@@ -105,18 +102,15 @@
     &--top {
       margin-bottom: -150px;
       z-index: 1;
-      transform: translateX(120px);
     }
 
     &--middle {
       z-index: 2;
-      transform: translateX(60px);
     }
 
     &--bottom {
       margin-top: -150px;
-      z-index: 1;
-      transform: translateX(120px);
+      z-index: 3;
     }
   }
 
@@ -132,7 +126,7 @@
       font-family: 'Ubuntu', sans-serif;
       font-size: 32px;
       font-weight: 500;
-      color: #ffffff;
+      color: #F5F5DC;
     }
 
     &-link {
@@ -143,13 +137,12 @@
       font-family: 'Quicksand', sans-serif;
       font-size: 20px;
       font-weight: 400;
-      color: rgba(255, 255, 255, 0.9);
+      color: #F5F5DC;
       transition: color 0.3s ease;
 
       &:hover {
-        color: #ffffff;
+        
         background-color: #607A56;
-
         .landing__footer-arrow {
           transform: translateX(6px);
         }
@@ -173,7 +166,7 @@
     }
     &__plates {
       width: 500px;
-      right: -80px;
+      right: 60px;
     }
   }
 }
@@ -220,3 +213,6 @@
     }
   }
 }
+
+// ===================== MOBILE IMPORT =====================
+@import 'landing-page-mobile/landing-page-mobile';
