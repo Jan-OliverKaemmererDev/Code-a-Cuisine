@@ -64,6 +64,16 @@ export class RecipeViewComponent implements OnInit {
   }
 
   isLiked = false;
+  ingredientsVisible = true;
+  directionsVisible = true;
+
+  toggleIngredients() {
+    this.ingredientsVisible = !this.ingredientsVisible;
+  }
+
+  toggleDirections() {
+    this.directionsVisible = !this.directionsVisible;
+  }
 
   async toggleLike(recipe: Recipe) {
     if (!recipe.id) return;

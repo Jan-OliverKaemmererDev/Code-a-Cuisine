@@ -1,0 +1,82 @@
+@media (max-width: 480px) {
+  .cookbook-page {
+    padding: 24px 16px;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+    
+    .logo {
+      width: 100px;
+      height: auto;
+      margin-bottom: 16px;
+    }
+
+    .back-btn {
+      span {
+        display: none;
+      }
+      .back-arrow {
+        width: 24px;
+        height: auto;
+      }
+    }
+  }
+
+  .cookbook-hero {
+    padding: 24px 16px;
+    border-radius: 12px;
+    gap: 24px;
+    margin-bottom: 32px;
+
+    .hero-left {
+      .cookbook-title {
+        font-size: 32px;
+        margin-bottom: 12px;
+      }
+      .cookbook-desc {
+        font-size: 14px;
+      }
+    }
+
+    .hero-right {
+      .most-liked-header {
+        font-size: 16px;
+      }
+
+      .liked-card {
+        padding: 12px;
+        min-width: 200px;
+        max-width: 200px;
+
+        .liked-card-top {
+          font-size: 12px;
+        }
+
+        .liked-card-title {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  .categories-grid {
+    gap: 24px;
+    margin-bottom: 40px;
+    grid-template-columns: 1fr;
+  }
+
+  .category-card {
+    .category-title {
+      font-size: 18px;
+    }
+  }
+
+  .footer-link {
+    text-align: center;
+    
+    .new-recipe-link {
+      font-size: 14px;
+    }
+  }
+}

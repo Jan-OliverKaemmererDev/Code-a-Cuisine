@@ -355,3 +355,10 @@
   font-size: 18px;
   color: #666;
 }
+
+.mobile-ingredients-toggle,
+.mobile-directions-toggle {
+  display: none;
+}
+
+@import './recipe-view-mobile/recipe-view-mobile';

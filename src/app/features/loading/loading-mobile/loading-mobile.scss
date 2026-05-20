@@ -1,0 +1,19 @@
+@media (max-width: 480px) {
+  .loading-header {
+    top: 24px;
+    left: 16px;
+  }
+
+  .loading-logo {
+    width: 100px;
+  }
+
+  .loading-spinner {
+    width: 220px;
+    height: 280px;
+  }
+
+  .loading-text {
+    font-size: 28px;
+  }
+}

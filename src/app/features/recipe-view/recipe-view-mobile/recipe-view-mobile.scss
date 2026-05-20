@@ -1,0 +1,214 @@
+@media (max-width: 480px) {
+  :host {
+    display: block;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .recipe-view-page {
+    padding: 24px 16px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+    
+    .logo {
+      height: auto;
+      width: 100px;
+      margin-bottom: 16px;
+    }
+
+    .back-btn {
+      span {
+        display: none;
+      }
+      .back-arrow {
+        width: 24px;
+        height: auto;
+      }
+    }
+  }
+
+  .recipe-border-box {
+    padding: 16px;
+    border-width: 1px;
+    margin-bottom: 24px;
+  }
+
+  .recipe-header-card {
+    padding: 16px;
+    gap: 24px;
+    margin-bottom: 24px;
+
+    .header-card-left {
+      .recipe-title {
+        font-size: 24px;
+      }
+      .card-mid {
+        .cooking-person {
+          display: none;
+        }
+        .chef-tags {
+          display: grid;
+          grid-template-columns: auto auto;
+          gap: 8px;
+        }
+      }
+    }
+
+    .header-card-right {
+      gap: 24px;
+      
+      .tags-row {
+        flex-wrap: wrap;
+      }
+
+      .nutrition-table {
+        width: 100%;
+        .nutrition-row {
+          justify-content: space-between;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+        .nutrition-title {
+          font-weight: 700;
+        }
+        .nutri-col {
+          strong {
+            font-size: 12px;
+          }
+          span {
+            font-size: 12px;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+
+  .section-banner {
+    margin: 24px 0 16px;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    img[src*="ingredients"] {
+      content: url('/assets/icons/detail-view-categories-mobile/ingredients.png');
+    }
+    img[src*="directions"] {
+      content: url('/assets/icons/detail-view-categories-mobile/directions.png');
+    }
+  }
+
+  .ingredients-content {
+    padding: 0;
+    gap: 16px;
+    max-height: 1000px;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, margin-bottom 0.4s ease-in-out;
+    opacity: 1;
+
+    &.is-hidden {
+      max-height: 0;
+      opacity: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .mobile-ingredients-toggle,
+  .mobile-directions-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #396039;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    padding: 12px;
+    cursor: pointer;
+
+    img {
+      width: 14px;
+      transition: transform 0.3s ease;
+      transform: rotate(180deg);
+
+      &.rotated {
+        transform: rotate(0deg);
+      }
+    }
+  }
+
+  .ingredients-col {
+    .ingredients-subtitle {
+      font-size: 16px;
+    }
+    ul li {
+      font-size: 14px;
+    }
+  }
+
+  .directions-grid {
+    padding: 0;
+    gap: 24px;
+    max-height: 2000px;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, margin-bottom 0.4s ease-in-out;
+    opacity: 1;
+
+    &.is-hidden {
+      max-height: 0;
+      opacity: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .step-card {
+    .step-header {
+      margin-bottom: 8px;
+    }
+    .step-title {
+      font-size: 16px;
+    }
+    .step-desc {
+      font-size: 14px;
+      margin-left: 0;
+    }
+  }
+
+  .finish-section {
+    margin: 40px 0 16px;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    gap: 16px;
+    span {
+      font-size: 13px;
+      flex: 1;
+    }
+  }
+
+  .cookbook-section {
+    padding: 16px;
+    justify-content: space-between;
+    gap: 16px;
+    span {
+      font-size: 14px;
+      flex: 1;
+    }
+    .cookbook-btn {
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+  }
+
+  .footer-link {
+    text-align: center;
+  }
+}

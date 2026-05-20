@@ -6,16 +6,19 @@
       </a>
       <a (click)="goBack()" class="back-btn" style="cursor: pointer">
         <img src="assets/icons/arrow-right-green.svg" alt="" class="back-arrow" />
-        <span>Cookbook</span>
+        <span class="back-text">Cookbook</span>
       </a>
     </div>
-    <div class="header-right">
+    <div class="header-right desktop-only">
       <button class="generate-btn" routerLink="/generate-recipe">Generate a recipe</button>
     </div>
   </header>
 
   <div class="banner-container" *ngIf="bannerImage">
-    <img [src]="bannerImage" [alt]="cuisineCategory" class="banner-img" />
+    <picture>
+      <source media="(max-width: 480px)" [srcset]="getMobileBannerImage(cuisineCategory)">
+      <img [src]="bannerImage" [alt]="cuisineCategory" class="banner-img" />
+    </picture>
   </div>
 
   <div class="recipe-list" *ngIf="recipes$ | async as recipes">
@@ -66,6 +69,9 @@
       </ng-container>
 
       <span (click)="nextPage()" [class.disabled]="currentPage === totalPages">&gt;</span>
+    </div>
+    <div class="mobile-generate-btn-container mobile-only">
+      <button class="generate-btn" routerLink="/generate-recipe">Generate recipe</button>
     </div>
   </div>
 </section>

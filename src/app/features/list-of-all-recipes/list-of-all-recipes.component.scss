@@ -212,3 +212,9 @@
     }
   }
 }
+
+.mobile-only {
+  display: none;
+}
+
+@import './list-of-all-recipes-mobile/list-of-all-recipes-mobile.scss';

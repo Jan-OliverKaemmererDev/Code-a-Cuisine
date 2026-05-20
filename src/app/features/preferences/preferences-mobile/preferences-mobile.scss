@@ -1,0 +1,113 @@
+@media (max-width: 480px) {
+  .preferences {
+    padding: 24px 16px;
+
+    &__header {
+      margin-bottom: 24px;
+      gap: 24px;
+    }
+
+    &__logo {
+      width: 100px;
+    }
+
+    &__back {
+      font-size: 16px;
+      gap: 8px;
+    }
+
+    &__back-arrow {
+      width: 24px;
+    }
+
+    &__back-text {
+      display: none;
+    }
+
+    &__title-section {
+      text-align: left;
+      margin-bottom: 24px;
+    }
+
+    &__title {
+      font-size: 24px;
+    }
+
+    &__counters {
+      flex-direction: column;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    &__counter-label {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    &__counter-row {
+      gap: 12px;
+      justify-content: flex-start;
+    }
+
+    &__counter-btn {
+      width: 32px;
+      height: 32px;
+      
+      img {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    &__counter-value {
+      font-size: 18px;
+      min-width: 28px;
+      padding: 4px 0;
+    }
+
+    &__counter-unit {
+      font-size: 16px;
+      margin-right: 12px;
+    }
+
+    &__card {
+      padding: 24px 16px;
+      border-radius: 16px;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    &__section-title {
+      font-size: 20px;
+    }
+
+    &__section-icon {
+      width: 22px;
+      height: 22px;
+    }
+
+    &__chips {
+      gap: 12px 10px;
+    }
+
+    &__chip {
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+
+    &__chip-sub {
+      font-size: 11px;
+    }
+
+    &__actions {
+      margin-bottom: 24px;
+    }
+
+    &__btn-generate {
+      font-size: 18px;
+      padding: 14px 24px;
+      width: auto;
+      min-width: 200px;
+    }
+  }
+}

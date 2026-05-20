@@ -64,7 +64,7 @@
       <img src="assets/icons/detail-view-categories/ingredients.png" alt="Ingredients" />
     </div>
 
-    <div class="ingredients-content">
+    <div class="ingredients-content" [class.is-hidden]="!ingredientsVisible">
       <div class="ingredients-col">
         <h3 class="ingredients-subtitle">Your ingredients</h3>
         <ul>
@@ -83,12 +83,17 @@
       </div>
     </div>
 
+    <button class="mobile-ingredients-toggle" (click)="toggleIngredients()">
+      {{ ingredientsVisible ? 'Hide ingredients' : 'Show ingredients' }}
+      <img src="assets/icons/arrow-dropdown-green-mobile.svg" alt="" [class.rotated]="!ingredientsVisible">
+    </button>
+
     <!-- Directions -->
     <div class="section-banner">
       <img src="assets/icons/detail-view-categories/directions.png" alt="Directions" />
     </div>
 
-    <div class="directions-grid">
+    <div class="directions-grid" [class.is-hidden]="!directionsVisible">
       <div class="step-card" *ngFor="let step of recipe.instructions; let i = index">
         <div class="step-header">
           <div class="step-num">{{ i + 1 }}.</div>
@@ -100,6 +105,11 @@
         <p class="step-desc">{{ getStepTitleAndDesc(step.description).desc }}</p>
       </div>
     </div>
+
+    <button class="mobile-directions-toggle" (click)="toggleDirections()">
+      {{ directionsVisible ? 'Hide directions' : 'Show directions' }}
+      <img src="assets/icons/arrow-dropdown-green-mobile.svg" alt="" [class.rotated]="!directionsVisible">
+    </button>
 
     <div class="finish-section">
       <span><strong>Just finished this meal?</strong> Give it a heart, so that the others know this is delicious.</span>

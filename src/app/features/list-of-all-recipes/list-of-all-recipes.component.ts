@@ -86,6 +86,11 @@ export class ListOfAllRecipesComponent implements OnInit {
     return `assets/icons/food-categories/${prefix}-food.png`;
   }
 
+  getMobileBannerImage(category: string): string {
+    const prefix = category.split(' ')[0].toLowerCase();
+    return `assets/icons/food-categories-mobile/${prefix}.png`;
+  }
+
   goBack() {
     this.location.back();
   }
