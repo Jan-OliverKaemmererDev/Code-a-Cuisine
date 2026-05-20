@@ -6,6 +6,10 @@ import { RecipeStateService } from '../../core/services/recipe-state.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+/**
+ * Displays the most recently generated recipes along with
+ * fallback dummy recipes for layout preview when the database is empty.
+ */
 @Component({
   selector: 'app-recipe-results',
   standalone: true,
@@ -17,16 +21,17 @@ export class RecipeResultsComponent {
   private recipeService = inject(RecipeService);
   private state = inject(RecipeStateService);
 
-  // Fallback preference values for the tags
+  /** Cuisine preference used as a display tag, defaults to 'Italian'. */
   selectedCuisine = this.state.preferences().cuisine || 'Italian';
+  /** Cooking time preference used as a display tag, defaults to 'Quick'. */
   selectedCookingTime = this.state.preferences().cookingTime || 'Quick';
 
-  // Get the latest 3 recipes
+  /** Observable of the latest 3 recipes from the database. */
   recipes$: Observable<Recipe[]> = this.recipeService.getRecipes().pipe(
     map(recipes => recipes.slice(0, 3))
   );
 
-  // Fallback dummy recipes to show the layout even if DB is empty
+  /** Fallback recipes shown when no real data is available. */
   dummyRecipes: Recipe[] = [
     {
       title: 'Pasta with spinach and cherry tomatoes',

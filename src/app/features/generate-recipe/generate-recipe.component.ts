@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { RecipeStateService, IngredientItem } from '../../core/services/recipe-state.service';
 
+/** Static list of ingredient auto-complete suggestions. */
 const SUGGESTIONS: string[] = [
   'Pasta', 'Pastrami', 'Passionfruit', 'Parsley', 'Parmesan',
   'Baby spinach', 'Bacon', 'Basil', 'Banana', 'Butter',
@@ -22,6 +23,10 @@ const SUGGESTIONS: string[] = [
   'Zucchini',
 ];
 
+/**
+ * Provides the ingredient entry form where users can add, edit,
+ * and remove ingredients before generating a recipe.
+ */
 @Component({
   selector: 'app-generate-recipe',
   imports: [FormsModule, RouterLink],
@@ -32,21 +37,30 @@ export class GenerateRecipeComponent {
   private state = inject(RecipeStateService);
   private elementRef = inject(ElementRef);
 
-  // ── Top input card signals ──────────────────────────────────
+  /** Current ingredient name typed by the user. */
   ingredientName = signal('');
+  /** Serving amount for the ingredient being added. */
   servingAmount = signal(100);
+  /** Selected unit for the ingredient being added. */
   selectedUnit = signal<'gram' | 'ml' | 'piece'>('gram');
+  /** Whether the unit dropdown on the input card is open. */
   showInputDropdown = signal(false);
+  /** Whether the suggestion list is visible. */
   showSuggestions = signal(false);
 
-  // ── Inline list-edit signals ────────────────────────────────
+  /** Index of the ingredient currently being edited inline, or null. */
   editingListIndex = signal<number | null>(null);
+  /** Amount value while editing an existing ingredient. */
   editAmount = signal(0);
+  /** Unit value while editing an existing ingredient. */
   editUnit = signal<'gram' | 'ml' | 'piece'>('gram');
+  /** Whether the unit dropdown on the inline editor is open. */
   showListDropdown = signal(false);
 
+  /** Reactive list of ingredients from shared state. */
   ingredients = this.state.ingredients;
 
+  /** Filtered auto-complete suggestions based on the current input. */
   filteredSuggestions = computed(() => {
     const query = this.ingredientName().toLowerCase().trim();
     if (!query) return [];
@@ -55,29 +69,46 @@ export class GenerateRecipeComponent {
     ).slice(0, 5);
   });
 
+  /** Whether at least one ingredient has been added. */
   hasIngredients = computed(() => this.ingredients().length > 0);
 
-  // ── Top input card methods ──────────────────────────────────
-
+  /**
+   * Updates the ingredient name signal and toggles the suggestion list.
+   * @param value - The current value of the ingredient input field.
+   */
   onIngredientInput(value: string): void {
     this.ingredientName.set(value);
     this.showSuggestions.set(value.trim().length > 0);
   }
 
+  /**
+   * Selects an auto-complete suggestion and closes the suggestion list.
+   * @param suggestion - The selected suggestion string.
+   */
   selectSuggestion(suggestion: string): void {
     this.ingredientName.set(suggestion);
     this.showSuggestions.set(false);
   }
 
+  /**
+   * Toggles visibility of the unit dropdown on the input card.
+   */
   toggleInputDropdown(): void {
     this.showInputDropdown.update((v) => !v);
   }
 
+  /**
+   * Sets the unit on the input card and closes its dropdown.
+   * @param unit - The unit to select.
+   */
   selectInputUnit(unit: 'gram' | 'ml' | 'piece'): void {
     this.selectedUnit.set(unit);
     this.showInputDropdown.set(false);
   }
 
+  /**
+   * Adds the current ingredient to the list and resets the input fields.
+   */
   addIngredient(): void {
     const name = this.ingredientName().trim();
     if (!name) return;
@@ -90,16 +121,24 @@ export class GenerateRecipeComponent {
     this.resetInputFields();
   }
 
+  /**
+   * Closes the suggestion dropdown.
+   */
   closeSuggestions(): void {
     this.showSuggestions.set(false);
   }
 
+  /**
+   * Closes the input card unit dropdown.
+   */
   closeInputDropdown(): void {
     this.showInputDropdown.set(false);
   }
 
-  // ── Inline list-edit methods ────────────────────────────────
-
+  /**
+   * Starts inline editing for the ingredient at the given index.
+   * @param index - Index of the ingredient to edit.
+   */
   startEdit(index: number): void {
     const item = this.ingredients()[index];
     this.editingListIndex.set(index);
@@ -108,6 +147,10 @@ export class GenerateRecipeComponent {
     this.showListDropdown.set(false);
   }
 
+  /**
+   * Saves the inline edits for the ingredient at the given index.
+   * @param index - Index of the ingredient to save.
+   */
   saveEdit(index: number): void {
     this.ingredients.update((list) =>
       list.map((item, i) =>
@@ -120,15 +163,27 @@ export class GenerateRecipeComponent {
     this.showListDropdown.set(false);
   }
 
+  /**
+   * Toggles visibility of the inline edit unit dropdown.
+   */
   toggleListDropdown(): void {
     this.showListDropdown.update((v) => !v);
   }
 
+  /**
+   * Sets the unit on the inline editor and closes its dropdown.
+   * @param unit - The unit to select.
+   */
   selectListUnit(unit: 'gram' | 'ml' | 'piece'): void {
     this.editUnit.set(unit);
     this.showListDropdown.set(false);
   }
 
+  /**
+   * Removes an ingredient from the list by index.
+   * Clears the editing state if the deleted item was being edited.
+   * @param index - Index of the ingredient to delete.
+   */
   deleteIngredient(index: number): void {
     this.ingredients.update((list) => list.filter((_, i) => i !== index));
     if (this.editingListIndex() === index) {
@@ -136,12 +191,20 @@ export class GenerateRecipeComponent {
     }
   }
 
+  /**
+   * Returns a human-readable string for the ingredient amount with unit suffix.
+   * @param item - The ingredient item.
+   * @returns Formatted amount string (e.g. "100g", "50ml", "2").
+   */
   formatAmount(item: IngredientItem): string {
     if (item.unit === 'piece') return `${item.amount}`;
     if (item.unit === 'ml') return `${item.amount}ml`;
     return `${item.amount}g`;
   }
 
+  /**
+   * Resets all input card fields to their default values.
+   */
   private resetInputFields(): void {
     this.ingredientName.set('');
     this.servingAmount.set(100);
@@ -150,16 +213,16 @@ export class GenerateRecipeComponent {
     this.showInputDropdown.set(false);
   }
 
+  /**
+   * Closes open dropdowns when the user clicks outside of them.
+   * @param event - The global document click event.
+   */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-
-    // Check if click was outside the main input unit dropdown
     if (!target.closest('.generate__unit-dropdown')) {
       this.showInputDropdown.set(false);
     }
-
-    // Check if click was outside the inline edit unit dropdown
     if (!target.closest('.generate__inline-unit-wrap')) {
       this.showListDropdown.set(false);
     }
