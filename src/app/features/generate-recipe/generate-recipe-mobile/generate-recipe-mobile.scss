@@ -1,0 +1,178 @@
+@media (max-width: 576px) {
+  .generate {
+    padding: 24px 20px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    
+    // Header & Logo
+    &__header {
+      margin-bottom: 30px;
+      text-align: left;
+    }
+    
+    &__logo {
+      width: 120px;
+      margin: 0;
+      display: inline-block;
+    }
+
+    // Title Section
+    &__title-section {
+      text-align: left;
+      margin-bottom: 30px;
+      max-width: 100%;
+    }
+
+    &__title {
+      font-size: 36px;
+      margin-bottom: 12px;
+      line-height: 1.1;
+    }
+
+    &__subtitle {
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    // Content Area
+    &__content {
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    &__input-card,
+    &__list-card {
+      padding: 24px 20px;
+      min-height: unset;
+      border-radius: 15px;
+    }
+
+    // Input Row
+    &__input-row {
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    &__field {
+      width: 100%;
+    }
+
+    &__label {
+      font-size: 16px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    &__input {
+      padding: 12px 20px;
+      font-size: 16px;
+    }
+
+    // Suggestions Dropdown (Makes room)
+    &__suggestions {
+      position: relative;
+      top: 0;
+      background-color: transparent;
+      box-shadow: none;
+      border-radius: 0;
+      margin-top: 0;
+      padding: 0 20px;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform-origin: top;
+      animation: expandDropdownSmooth 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    &__suggestion-item {
+      padding: 6px 0;
+      font-size: 16px;
+      color: #1a3c1a;
+      
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    // Serving Size row
+    &__serving-row {
+      gap: 12px;
+      flex-wrap: nowrap;
+    }
+
+    &__serving-input {
+      width: 65px;
+      padding: 12px;
+    }
+
+    &__unit-dropdown {
+      min-width: 85px;
+      padding: 10px 15px;
+    }
+
+    &__btn-add {
+      img {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    // List of Ingredients
+    &__list-title {
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+
+    &__ingredient-list {
+      padding-right: 0;
+    }
+
+    &__ingredient-item {
+      font-size: 16px;
+      padding: 8px 0;
+      background-color: transparent !important;
+      gap: 6px;
+      
+      &:hover:not(.is-editing) {
+        background-color: transparent;
+      }
+
+      &.is-editing {
+        flex-wrap: wrap;
+      }
+    }
+
+    &__ingredient-amount {
+      margin-right: 4px;
+    }
+    
+    // Actions / Next step button
+    &__actions {
+      justify-content: center;
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+
+    &__btn-next {
+      font-size: 16px;
+      padding: 12px 30px;
+    }
+  }
+}
+
+@keyframes expandDropdownSmooth {
+  0% {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  100% {
+    max-height: 250px;
+    opacity: 1;
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
