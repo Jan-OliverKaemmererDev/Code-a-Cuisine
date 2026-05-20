@@ -9,6 +9,7 @@
   overflow: hidden;
 
   // ===================== HEADER =====================
+
   &__header {
     margin-bottom: 80px;
     z-index: 10;
@@ -25,6 +26,7 @@
   }
 
   // ===================== MAIN CONTENT =====================
+
   &__main {
     flex: 1;
     display: flex;
@@ -77,6 +79,7 @@
   }
 
   // ===================== PLATES =====================
+
   &__plates {
     position: absolute;
     right: 80px;
@@ -115,6 +118,7 @@
   }
 
   // ===================== FOOTER =====================
+
   &__footer {
     margin-top: auto;
     display: flex;
@@ -155,7 +159,8 @@
   }
 }
 
-// ===================== RESPONSIVE =====================
+// ===================== RESPONSIVE (1400px) =====================
+
 @media (max-width: 1400px) {
   .landing {
     &__title {
@@ -170,6 +175,8 @@
     }
   }
 }
+
+// ===================== RESPONSIVE (1024px) =====================
 
 @media (max-width: 1024px) {
   .landing {
@@ -215,4 +222,5 @@
 }
 
 // ===================== MOBILE IMPORT =====================
+
 @import 'landing-page-mobile/landing-page-mobile';

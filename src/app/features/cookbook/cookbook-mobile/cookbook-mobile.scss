@@ -1,7 +1,12 @@
 @media (max-width: 480px) {
+
+  // ===================== PAGE LAYOUT =====================
+
   .cookbook-page {
     padding: 24px 16px;
   }
+
+  // ===================== PAGE HEADER =====================
 
   .page-header {
     margin-bottom: 24px;
@@ -22,6 +27,8 @@
       }
     }
   }
+
+  // ===================== HERO SECTION =====================
 
   .cookbook-hero {
     padding: 24px 16px;
@@ -60,6 +67,8 @@
     }
   }
 
+  // ===================== CATEGORIES GRID =====================
+
   .categories-grid {
     gap: 24px;
     margin-bottom: 40px;
@@ -71,6 +80,8 @@
       font-size: 18px;
     }
   }
+
+  // ===================== FOOTER =====================
 
   .footer-link {
     text-align: center;

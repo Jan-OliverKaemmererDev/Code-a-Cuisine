@@ -3,8 +3,9 @@
     padding: 24px 20px;
     min-height: 100vh;
     min-height: 100dvh;
-    
-    // Header & Logo
+
+    // ===================== HEADER =====================
+
     &__header {
       margin-bottom: 30px;
       text-align: left;
@@ -16,7 +17,8 @@
       display: inline-block;
     }
 
-    // Title Section
+    // ===================== TITLE SECTION =====================
+
     &__title-section {
       text-align: left;
       margin-bottom: 30px;
@@ -34,7 +36,8 @@
       line-height: 1.4;
     }
 
-    // Content Area
+    // ===================== CONTENT AREA =====================
+
     &__content {
       flex-direction: column;
       gap: 20px;
@@ -47,7 +50,8 @@
       border-radius: 15px;
     }
 
-    // Input Row
+    // ===================== INPUT ROW =====================
+
     &__input-row {
       flex-direction: column;
       gap: 20px;
@@ -68,7 +72,8 @@
       font-size: 16px;
     }
 
-    // Suggestions Dropdown (Makes room)
+    // ===================== SUGGESTIONS DROPDOWN =====================
+
     &__suggestions {
       position: relative;
       top: 0;
@@ -94,7 +99,8 @@
       }
     }
 
-    // Serving Size row
+    // ===================== SERVING INPUT =====================
+
     &__serving-row {
       gap: 12px;
       flex-wrap: nowrap;
@@ -117,7 +123,8 @@
       }
     }
 
-    // List of Ingredients
+    // ===================== INGREDIENT LIST =====================
+
     &__list-title {
       font-size: 16px;
       margin-bottom: 16px;
@@ -145,8 +152,9 @@
     &__ingredient-amount {
       margin-right: 4px;
     }
-    
-    // Actions / Next step button
+
+    // ===================== ACTIONS =====================
+
     &__actions {
       justify-content: center;
       margin-top: 40px;
@@ -159,6 +167,8 @@
     }
   }
 }
+
+// ===================== ANIMATIONS =====================
 
 @keyframes expandDropdownSmooth {
   0% {

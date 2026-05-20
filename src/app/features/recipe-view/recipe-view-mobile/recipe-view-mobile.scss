@@ -1,4 +1,7 @@
 @media (max-width: 480px) {
+
+  // ===================== HOST =====================
+
   :host {
     display: block;
     width: 100%;
@@ -6,12 +9,16 @@
     overflow-x: hidden;
   }
 
+  // ===================== PAGE LAYOUT =====================
+
   .recipe-view-page {
     padding: 24px 16px;
     width: 100%;
     box-sizing: border-box;
     overflow-x: hidden;
   }
+
+  // ===================== PAGE HEADER =====================
 
   .page-header {
     margin-bottom: 24px;
@@ -33,11 +40,15 @@
     }
   }
 
+  // ===================== RECIPE BORDER BOX =====================
+
   .recipe-border-box {
     padding: 16px;
     border-width: 1px;
     margin-bottom: 24px;
   }
+
+  // ===================== RECIPE HEADER CARD =====================
 
   .recipe-header-card {
     padding: 16px;
@@ -90,6 +101,8 @@
     }
   }
 
+  // ===================== SECTION BANNER =====================
+
   .section-banner {
     margin: 24px 0 16px;
     width: 100%;
@@ -102,6 +115,8 @@
       content: url('/assets/icons/detail-view-categories-mobile/directions.png');
     }
   }
+
+  // ===================== INGREDIENTS =====================
 
   .ingredients-content {
     padding: 0;
@@ -117,6 +132,8 @@
       margin-bottom: 0;
     }
   }
+
+  // ===================== MOBILE TOGGLE BUTTONS =====================
 
   .mobile-ingredients-toggle,
   .mobile-directions-toggle {
@@ -145,6 +162,8 @@
     }
   }
 
+  // ===================== INGREDIENTS COLUMN =====================
+
   .ingredients-col {
     .ingredients-subtitle {
       font-size: 16px;
@@ -153,6 +172,8 @@
       font-size: 14px;
     }
   }
+
+  // ===================== DIRECTIONS =====================
 
   .directions-grid {
     padding: 0;
@@ -182,6 +203,8 @@
     }
   }
 
+  // ===================== FINISH SECTION =====================
+
   .finish-section {
     margin: 40px 0 16px;
     flex-direction: row;
@@ -193,6 +216,8 @@
       flex: 1;
     }
   }
+
+  // ===================== COOKBOOK SECTION =====================
 
   .cookbook-section {
     padding: 16px;
@@ -207,6 +232,8 @@
       font-size: 14px;
     }
   }
+
+  // ===================== FOOTER =====================
 
   .footer-link {
     text-align: center;

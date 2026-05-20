@@ -1,4 +1,7 @@
 @media (max-width: 480px) {
+
+  // ===================== VISIBILITY HELPERS =====================
+
   .desktop-only {
     display: none !important;
   }
@@ -7,9 +10,13 @@
     display: flex !important;
   }
 
+  // ===================== PAGE LAYOUT =====================
+
   .all-recipes-page {
     padding: 24px 16px;
   }
+
+  // ===================== PAGE HEADER =====================
 
   .page-header {
     margin-bottom: 24px;
@@ -28,6 +35,8 @@
     }
   }
 
+  // ===================== BANNER =====================
+
   .banner-container {
     margin-bottom: 32px;
     width: 100%;
@@ -44,6 +53,8 @@
       display: block;
     }
   }
+
+  // ===================== RECIPE ITEM =====================
 
   .recipe-item {
     flex-direction: column;
@@ -90,11 +101,15 @@
     }
   }
 
+  // ===================== PAGINATION =====================
+
   .pagination {
     margin-top: 24px;
     margin-bottom: 40px;
     gap: 12px;
   }
+
+  // ===================== MOBILE GENERATE BUTTON =====================
 
   .mobile-generate-btn-container {
     justify-content: center;

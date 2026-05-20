@@ -1,4 +1,4 @@
-
+// ===================== HOST =====================
 
 :host {
   display: block;
@@ -6,11 +6,15 @@
   min-height: 100vh;
 }
 
+// ===================== PAGE LAYOUT =====================
+
 .all-recipes-page {
   padding: 40px 20px;
   max-width: 1000px;
   margin: 0 auto;
 }
+
+// ===================== PAGE HEADER =====================
 
 .page-header {
   display: flex;
@@ -73,6 +77,8 @@
   }
 }
 
+// ===================== BANNER =====================
+
 .banner-container {
   display: flex;
   justify-content: center;
@@ -87,6 +93,8 @@
   }
 }
 
+// ===================== RECIPE LIST =====================
+
 .recipe-list {
   display: flex;
   flex-direction: column;
@@ -94,6 +102,8 @@
   margin: 0 auto;
   width: 100%;
 }
+
+// ===================== RECIPE ITEM =====================
 
 .recipe-item {
   display: flex;
@@ -180,6 +190,8 @@
   }
 }
 
+// ===================== PAGINATION =====================
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -213,8 +225,12 @@
   }
 }
 
+// ===================== VISIBILITY HELPERS =====================
+
 .mobile-only {
   display: none;
 }
+
+// ===================== MOBILE IMPORT =====================
 
 @import './list-of-all-recipes-mobile/list-of-all-recipes-mobile.scss';

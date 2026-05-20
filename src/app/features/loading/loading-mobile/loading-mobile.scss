@@ -1,4 +1,7 @@
 @media (max-width: 480px) {
+
+  // ===================== HEADER =====================
+
   .loading-header {
     top: 24px;
     left: 16px;
@@ -8,10 +11,14 @@
     width: 100px;
   }
 
+  // ===================== SPINNER =====================
+
   .loading-spinner {
     width: 220px;
     height: 280px;
   }
+
+  // ===================== TEXT =====================
 
   .loading-text {
     font-size: 28px;

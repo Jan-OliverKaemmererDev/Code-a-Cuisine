@@ -10,6 +10,7 @@
     overflow: hidden;
 
     // ===================== HEADER =====================
+
     &__header {
       margin-bottom: 20px;
       z-index: 10;
@@ -22,20 +23,21 @@
     }
 
     // ===================== MAIN CONTENT =====================
+
     &__main {
       flex: 1;
       display: flex;
-      flex-direction: row; /* Retain side-by-side layout */
-      align-items: flex-start; /* Align content to the top under the logo */
+      flex-direction: row;
+      align-items: flex-start;
       justify-content: flex-start;
       gap: 0;
       z-index: 5;
       position: relative;
-      margin-top: 10px; /* Small gap to place content naturally below logo */
+      margin-top: 10px;
     }
 
     &__content {
-      max-width: 55%; /* Ensure text doesn't overlap the larger plates */
+      max-width: 55%;
       z-index: 10;
     }
 
@@ -48,17 +50,17 @@
 
     &__title {
       text-align: left;
-      font-size: 0; /* Hide original Code&nbsp;à&nbsp;Cuisine on mobile */
+      font-size: 0;
       margin-bottom: 32px;
       line-height: 1.0;
 
       &::after {
         content: "Code à\A Cuisine";
-        font-size: 56px; /* Restore visible font size */
+        font-size: 56px;
         font-family: 'Ubuntu', sans-serif;
         font-weight: 700;
         color: #F5F5DC;
-        white-space: pre-wrap; /* Force line break at \n */
+        white-space: pre-wrap;
         display: block;
         line-height: 1.0;
       }
@@ -70,7 +72,6 @@
       padding: 16px 14px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       
-      // Disabled hover effects for mobile
       &:hover {
         background-color: #f5f1e9;
         color: #008000;
@@ -84,12 +85,13 @@
     }
 
     // ===================== PLATES =====================
+
     &__plates {
       position: absolute;
-      right: -220px; /* Push plates partially off-screen on the right (half of 380px) */
+      right: -220px;
       top: 50%;
       transform: translateY(-50%);
-      width: 380px; /* Scaled up to match the large appearance in the mockup */
+      width: 380px;
       display: flex;
       flex-direction: column;
       margin: 0;
@@ -100,7 +102,7 @@
       filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
 
       &--top {
-        margin-bottom: -100px; /* Larger negative margin for overlap of larger plates */
+        margin-bottom: -100px;
         z-index: 1;
         transform: none;
       }
@@ -111,18 +113,19 @@
       }
 
       &--bottom {
-        margin-top: -100px; /* Larger negative margin for overlap of larger plates */
+        margin-top: -100px;
         z-index: 3;
         transform: none;
       }
     }
 
     // ===================== FOOTER =====================
+
     &__footer {
       margin-top: auto;
       display: flex;
       flex-direction: column;
-      align-items: flex-start; /* Align left */
+      align-items: flex-start;
       text-align: left;
       gap: 6px;
       z-index: 10;
@@ -137,7 +140,6 @@
         padding: 8px 0;
         background-color: transparent;
         
-        // Disabled hover effects for mobile
         &:hover {
           color: #F5F5DC;
           background-color: transparent;

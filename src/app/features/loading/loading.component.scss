@@ -1,3 +1,5 @@
+// ===================== PAGE LAYOUT =====================
+
 .loading-page {
   height: 100vh;
   width: 100vw;
@@ -11,6 +13,8 @@
   z-index: 1000;
 }
 
+// ===================== LOADING CONTAINER =====================
+
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -18,10 +22,12 @@
   gap: 24px;
 }
 
+// ===================== SPINNER =====================
+
 .loading-spinner {
   width: 200px;
   height: 250px;
-  background-color: #c9d5c6; /* Muted green placeholder block */
+  background-color: #c9d5c6;
   border-radius: 16px;
   display: flex;
   justify-content: center;
@@ -34,12 +40,16 @@
   }
 }
 
+// ===================== TEXT =====================
+
 .loading-text {
   font-family: 'Ubuntu', sans-serif;
   font-size: 36px;
   font-weight: 700;
   color: white;
 }
+
+// ===================== HEADER =====================
 
 .loading-header {
   position: absolute;
@@ -54,5 +64,6 @@
   height: auto;
 }
 
+// ===================== MOBILE IMPORT =====================
 
 @import './loading-mobile/loading-mobile';
