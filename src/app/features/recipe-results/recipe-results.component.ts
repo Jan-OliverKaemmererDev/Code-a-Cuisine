@@ -3,8 +3,8 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RecipeService, Recipe } from '../../core/services/recipe.service';
 import { RecipeStateService } from '../../core/services/recipe-state.service';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 /**
  * Displays the most recently generated recipes along with
@@ -28,7 +28,22 @@ export class RecipeResultsComponent {
 
   /** Observable of the latest 3 recipes from the database. */
   recipes$: Observable<Recipe[]> = this.recipeService.getRecipes().pipe(
-    map(recipes => recipes.slice(0, 3))
+    map(recipes => {
+      const latest = this.state.latestRecipe();
+      let list = [...recipes];
+      if (latest) {
+        const alreadyExists = list.some(r => r.title === latest.title || (r.id && latest.id && r.id === latest.id));
+        if (!alreadyExists) {
+          list.unshift(latest);
+        }
+      }
+      return list.slice(0, 3);
+    }),
+    catchError(err => {
+      console.error('Error fetching recipes from Firebase:', err);
+      const latest = this.state.latestRecipe();
+      return of(latest ? [latest] : []);
+    })
   );
 
   /** Fallback recipes shown when no real data is available. */

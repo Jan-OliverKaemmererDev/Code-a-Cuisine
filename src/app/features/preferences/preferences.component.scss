@@ -108,6 +108,14 @@
       background-color: #D7DFD7;
       transform: scale(1.05);
     }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      pointer-events: none;
+      transform: none;
+      background-color: transparent;
+    }
   }
 
   &__counter-value {

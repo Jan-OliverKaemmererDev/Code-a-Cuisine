@@ -71,6 +71,7 @@ export class LoadingComponent implements OnInit {
     try {
       const jsonString = this.extractJsonString(response);
       const recipe = this.parseRecipeJson(jsonString);
+      this.state.latestRecipe.set(recipe);
       this.saveAndNavigate(recipe);
       return recipe;
     } catch (e) {

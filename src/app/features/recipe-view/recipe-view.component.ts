@@ -2,7 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { RecipeService, Recipe } from '../../core/services/recipe.service';
-import { Observable } from 'rxjs';
+import { RecipeStateService } from '../../core/services/recipe-state.service';
+import { Observable, of } from 'rxjs';
 
 /**
  * Displays the full detail view of a single recipe including
@@ -18,6 +19,7 @@ import { Observable } from 'rxjs';
 export class RecipeViewComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private recipeService = inject(RecipeService);
+  private state = inject(RecipeStateService);
 
   /** Observable of the recipe being displayed. */
   recipe$!: Observable<Recipe | undefined>;
@@ -39,7 +41,11 @@ export class RecipeViewComponent implements OnInit {
    */
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
+    if (id === 'latest') {
+      const latest = this.state.latestRecipe();
+      this.recipe$ = of(latest || undefined);
+      this.isLiked = false;
+    } else if (id) {
       this.recipe$ = this.recipeService.getRecipeById(id);
       this.isLiked = localStorage.getItem(`liked_recipe_${id}`) === 'true';
     }

@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { Recipe } from './recipe.service';
 
 export interface IngredientItem {
   name: string;
@@ -26,4 +27,6 @@ export class RecipeStateService {
     cuisine: null,
     diet: null,
   });
+  latestRecipe = signal<Recipe | null>(null);
 }
+

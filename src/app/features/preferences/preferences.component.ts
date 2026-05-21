@@ -74,7 +74,7 @@ export class PreferencesComponent {
    * @returns The updated persons count.
    */
   incrementPersons(): number {
-    this.persons.update((v) => v + 1);
+    this.persons.update((v) => Math.min(4, v + 1));
     return this.persons();
   }
 

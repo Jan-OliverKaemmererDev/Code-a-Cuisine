@@ -42,7 +42,7 @@
           <span>Cooking time: {{ recipe.cookingTime }}</span>
         </div>
 
-        <button class="recipe-card-btn" [routerLink]="['/recipe-view', recipe.id]">
+        <button class="recipe-card-btn" [routerLink]="['/recipe-view', recipe.id || 'latest']">
           View
         </button>
       </div>

@@ -30,6 +30,7 @@
           class="preferences__counter-btn"
           type="button"
           (click)="decrementPortions()"
+          [disabled]="portions() <= 1"
           aria-label="Portionen verringern"
         >
           <img src="assets/icons/minus.svg" alt="" width="28" height="28" />
@@ -56,6 +57,7 @@
           class="preferences__counter-btn"
           type="button"
           (click)="decrementPersons()"
+          [disabled]="persons() <= 1"
           aria-label="Personen verringern"
         >
           <img src="assets/icons/minus.svg" alt="" width="28" height="28" />
@@ -67,6 +69,7 @@
           class="preferences__counter-btn"
           type="button"
           (click)="incrementPersons()"
+          [disabled]="persons() >= 4"
           aria-label="Personen erhöhen"
         >
           <img src="assets/icons/plus.svg" alt="" width="28" height="28" />
