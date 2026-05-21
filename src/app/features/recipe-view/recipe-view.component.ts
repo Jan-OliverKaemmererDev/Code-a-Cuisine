@@ -42,7 +42,7 @@ export class RecipeViewComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id === 'latest') {
-      const latest = this.state.latestRecipe();
+      const latest = this.state.latestRecipes()[0];
       this.recipe$ = of(latest || undefined);
       this.isLiked = false;
     } else if (id) {

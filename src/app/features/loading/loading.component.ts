@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { RecipeStateService } from '../../core/services/recipe-state.service';
 import { RecipeService } from '../../core/services/recipe.service';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 
 /**
  * Displays a loading animation while the recipe is being generated
@@ -70,10 +70,22 @@ export class LoadingComponent implements OnInit {
     console.log('Response from n8n:', response);
     try {
       const jsonString = this.extractJsonString(response);
-      const recipe = this.parseRecipeJson(jsonString);
-      this.state.latestRecipe.set(recipe);
-      this.saveAndNavigate(recipe);
-      return recipe;
+      const parsedData = this.parseRecipeJson(jsonString);
+      let recipesArray: any[] = [];
+      
+      if (Array.isArray(parsedData)) {
+        recipesArray = parsedData;
+      } else if (parsedData && Array.isArray(parsedData.recipes)) {
+        recipesArray = parsedData.recipes;
+      } else if (parsedData) {
+        recipesArray = [parsedData];
+      } else {
+        throw new Error('Parsed recipe data is null or invalid');
+      }
+      
+      this.state.latestRecipes.set(recipesArray);
+      this.saveAndNavigate(recipesArray);
+      return recipesArray;
     } catch (e) {
       console.error('Error parsing recipe from n8n:', e);
       alert('Fehler beim Auslesen des Rezeptes. In der Konsole siehst du den genauen Text, der vom Server kam.');
@@ -134,20 +146,23 @@ export class LoadingComponent implements OnInit {
     }
   }
 
-  /**
-   * Saves the parsed recipe to Firestore and navigates to the results page.
-   * Falls back to the results page even if saving fails.
-   * @param recipe - The parsed recipe object.
-   * @returns The RxJS subscription for saving the recipe.
-   */
-  private saveAndNavigate(recipe: any): Subscription {
-    return this.recipeService.saveRecipe(recipe).subscribe({
-      next: () => {
+  private saveAndNavigate(recipes: any[]): void {
+    const saveObservables = recipes.map(recipe => this.recipeService.saveRecipe(recipe));
+    
+    forkJoin(saveObservables).subscribe({
+      next: (docs) => {
+        // Update the recipes with their new Firestore IDs
+        docs.forEach((docRef, index) => {
+          if (docRef && docRef.id) {
+            recipes[index].id = docRef.id;
+          }
+        });
+        this.state.latestRecipes.set([...recipes]);
         this.router.navigate(['/recipe-results']);
       },
       error: (err) => {
-        console.error('Error saving recipe to Firestore:', err);
-        alert('Recipe generated but failed to save to Database. Check Firestore rules.');
+        console.error('Error saving recipes to Firestore:', err);
+        alert('Recipes generated but failed to save to Database. Check Firestore rules.');
         this.router.navigate(['/recipe-results']);
       }
     });

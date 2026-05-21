@@ -29,20 +29,23 @@ export class RecipeResultsComponent {
   /** Observable of the latest 3 recipes from the database. */
   recipes$: Observable<Recipe[]> = this.recipeService.getRecipes().pipe(
     map(recipes => {
-      const latest = this.state.latestRecipe();
+      const latest = this.state.latestRecipes();
       let list = [...recipes];
-      if (latest) {
-        const alreadyExists = list.some(r => r.title === latest.title || (r.id && latest.id && r.id === latest.id));
-        if (!alreadyExists) {
-          list.unshift(latest);
-        }
+      if (latest && latest.length > 0) {
+        // Unshift in reverse order to maintain the original sequence of the generated recipes
+        [...latest].reverse().forEach(lr => {
+          const alreadyExists = list.some(r => r.title === lr.title || (r.id && lr.id && r.id === lr.id));
+          if (!alreadyExists) {
+            list.unshift(lr);
+          }
+        });
       }
       return list.slice(0, 3);
     }),
     catchError(err => {
       console.error('Error fetching recipes from Firebase:', err);
-      const latest = this.state.latestRecipe();
-      return of(latest ? [latest] : []);
+      const latest = this.state.latestRecipes();
+      return of(latest.length > 0 ? latest : []);
     })
   );
 

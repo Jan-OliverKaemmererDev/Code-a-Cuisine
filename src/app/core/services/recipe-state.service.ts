@@ -27,6 +27,6 @@ export class RecipeStateService {
     cuisine: null,
     diet: null,
   });
-  latestRecipe = signal<Recipe | null>(null);
+  latestRecipes = signal<Recipe[]>([]);
 }
 
