@@ -104,16 +104,20 @@ export class RecipeViewComponent implements OnInit {
 
   /**
    * Toggles the visibility of the ingredients section.
+   * @returns The new visibility state of the ingredients section.
    */
-  toggleIngredients(): void {
+  toggleIngredients(): boolean {
     this.ingredientsVisible = !this.ingredientsVisible;
+    return this.ingredientsVisible;
   }
 
   /**
    * Toggles the visibility of the directions section.
+   * @returns The new visibility state of the directions section.
    */
-  toggleDirections(): void {
+  toggleDirections(): boolean {
     this.directionsVisible = !this.directionsVisible;
+    return this.directionsVisible;
   }
 
   /**
@@ -121,9 +125,10 @@ export class RecipeViewComponent implements OnInit {
    * the updated count to Firestore and localStorage.
    * Reverts on error.
    * @param recipe - The recipe to like or unlike.
+   * @returns A Promise resolving to the final like status of the recipe.
    */
-  async toggleLike(recipe: Recipe): Promise<void> {
-    if (!recipe.id) return;
+  async toggleLike(recipe: Recipe): Promise<boolean> {
+    if (!recipe.id) return this.isLiked;
     this.isLiked = !this.isLiked;
     const currentLikes = recipe.likes || 0;
     this.applyLikeChange(recipe, currentLikes);
@@ -133,6 +138,7 @@ export class RecipeViewComponent implements OnInit {
       console.error('Failed to update likes', err);
       this.revertLikeChange(recipe, currentLikes);
     }
+    return this.isLiked;
   }
 
   /**
@@ -140,8 +146,9 @@ export class RecipeViewComponent implements OnInit {
    * and updates localStorage.
    * @param recipe - The recipe being modified.
    * @param previousLikes - The like count before the change.
+   * @returns The updated Recipe object.
    */
-  private applyLikeChange(recipe: Recipe, previousLikes: number): void {
+  private applyLikeChange(recipe: Recipe, previousLikes: number): Recipe {
     if (this.isLiked) {
       recipe.likes = previousLikes + 1;
       localStorage.setItem(`liked_recipe_${recipe.id}`, 'true');
@@ -149,15 +156,18 @@ export class RecipeViewComponent implements OnInit {
       recipe.likes = Math.max(0, previousLikes - 1);
       localStorage.removeItem(`liked_recipe_${recipe.id}`);
     }
+    return recipe;
   }
 
   /**
    * Reverts the like state and count when the Firestore update fails.
    * @param recipe - The recipe to revert.
    * @param originalLikes - The original like count to restore.
+   * @returns The reverted Recipe object.
    */
-  private revertLikeChange(recipe: Recipe, originalLikes: number): void {
+  private revertLikeChange(recipe: Recipe, originalLikes: number): Recipe {
     this.isLiked = !this.isLiked;
     recipe.likes = originalLikes;
+    return recipe;
   }
 }

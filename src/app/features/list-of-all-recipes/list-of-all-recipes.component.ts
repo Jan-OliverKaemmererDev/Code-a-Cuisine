@@ -64,8 +64,9 @@ export class ListOfAllRecipesComponent implements OnInit {
   /**
    * Sets the cuisine category and banner image from the route parameter.
    * @param cuisine - The cuisine query param value, or undefined.
+   * @returns The updated banner image path.
    */
-  private applyCategory(cuisine: string | undefined): void {
+  private applyCategory(cuisine: string | undefined): string {
     if (cuisine) {
       this.cuisineCategory = cuisine;
       this.bannerImage = this.getBannerImage(cuisine);
@@ -73,19 +74,22 @@ export class ListOfAllRecipesComponent implements OnInit {
       this.cuisineCategory = 'All recipes';
       this.bannerImage = '';
     }
+    return this.bannerImage;
   }
 
   /**
    * Fetches recipes from the service, filters by cuisine if applicable,
    * and sets up the paginated observable pipeline.
+   * @returns The constructed recipes Observable pipeline.
    */
-  fetchRecipes(): void {
+  fetchRecipes(): Observable<Recipe[]> {
     const rawRecipes$ = this.recipeService.getRecipes().pipe(
       map(recipes => this.filterByCuisine(recipes))
     );
     this.recipes$ = combineLatest([rawRecipes$, this.currentPage$]).pipe(
       map(([recipes, page]) => this.paginateRecipes(recipes, page))
     );
+    return this.recipes$;
   }
 
   /**
@@ -151,42 +155,51 @@ export class ListOfAllRecipesComponent implements OnInit {
   /**
    * Sets the current page to the given value if it is a number.
    * @param page - The page number or string identifier.
+   * @returns The newly set page number, or undefined if the input was not a number.
    */
-  setPage(page: number | string): void {
+  setPage(page: number | string): number | undefined {
     if (typeof page === 'number') {
       this.currentPage = page;
+      return this.currentPage;
     }
+    return undefined;
   }
 
   /**
    * Navigates to the previous page if not already on the first page.
+   * @returns The updated page number.
    */
-  prevPage(): void {
+  prevPage(): number {
     if (this.currentPage > 1) {
       this.currentPage--;
     }
+    return this.currentPage;
   }
 
   /**
    * Navigates to the next page if not already on the last page.
+   * @returns The updated page number.
    */
-  nextPage(): void {
+  nextPage(): number {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
     }
+    return this.currentPage;
   }
 
   /**
    * Handles clicks on pagination ellipsis elements.
    * Jumps to page 4 for forward ellipsis or page 3 for backward ellipsis.
    * @param pageType - The ellipsis identifier string.
+   * @returns The updated page number.
    */
-  onEllipsisClick(pageType: string | number): void {
+  onEllipsisClick(pageType: string | number): number {
     if (pageType === 'ellipsis' || pageType === 'ellipsis-next') {
       this.currentPage = 4;
     } else if (pageType === 'ellipsis-prev') {
       this.currentPage = 3;
     }
+    return this.currentPage;
   }
 
   /**

@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { RecipeStateService } from '../../core/services/recipe-state.service';
 import { RecipeService } from '../../core/services/recipe.service';
+import { Subscription } from 'rxjs';
 
 /**
  * Displays a loading animation while the recipe is being generated
@@ -30,10 +31,11 @@ export class LoadingComponent implements OnInit {
   /**
    * Builds the payload from the current state and sends it to the
    * n8n webhook for recipe generation.
+   * @returns The RxJS subscription for the webhook request.
    */
-  private callN8n(): void {
+  private callN8n(): Subscription {
     const payload = this.buildPayload();
-    this.recipeService.generateRecipe(payload).subscribe({
+    return this.recipeService.generateRecipe(payload).subscribe({
       next: (response: any) => this.handleResponse(response),
       error: (err) => this.handleRequestError(err)
     });
@@ -62,17 +64,20 @@ export class LoadingComponent implements OnInit {
    * Handles the successful response from the n8n webhook.
    * Parses the recipe JSON and persists it to Firestore.
    * @param response - The raw response from the webhook.
+   * @returns The parsed recipe object.
    */
-  private handleResponse(response: any): void {
+  private handleResponse(response: any): any {
     console.log('Response from n8n:', response);
     try {
       const jsonString = this.extractJsonString(response);
       const recipe = this.parseRecipeJson(jsonString);
       this.saveAndNavigate(recipe);
+      return recipe;
     } catch (e) {
       console.error('Error parsing recipe from n8n:', e);
       alert('Fehler beim Auslesen des Rezeptes. In der Konsole siehst du den genauen Text, der vom Server kam.');
       this.router.navigate(['/preferences']);
+      throw e;
     }
   }
 
@@ -132,9 +137,10 @@ export class LoadingComponent implements OnInit {
    * Saves the parsed recipe to Firestore and navigates to the results page.
    * Falls back to the results page even if saving fails.
    * @param recipe - The parsed recipe object.
+   * @returns The RxJS subscription for saving the recipe.
    */
-  private saveAndNavigate(recipe: any): void {
-    this.recipeService.saveRecipe(recipe).subscribe({
+  private saveAndNavigate(recipe: any): Subscription {
+    return this.recipeService.saveRecipe(recipe).subscribe({
       next: () => {
         this.router.navigate(['/recipe-results']);
       },
@@ -150,10 +156,11 @@ export class LoadingComponent implements OnInit {
    * Handles network or webhook errors by logging, alerting, and
    * navigating back to the preferences page.
    * @param err - The HTTP error object.
+   * @returns A Promise resolving to whether the navigation succeeded.
    */
-  private handleRequestError(err: any): void {
+  private handleRequestError(err: any): Promise<boolean> {
     console.error('Error from n8n webhook:', err);
     alert('Error connecting to n8n. Please check browser console for CORS or network issues.');
-    this.router.navigate(['/preferences']);
+    return this.router.navigate(['/preferences']);
   }
 }

@@ -49,6 +49,7 @@
   &__content {
     display: flex;
     justify-content: center;
+    align-items: flex-start;
     gap: 30px;
     width: 100%;
     max-width: 1200px;
@@ -123,20 +124,22 @@
   // ===================== SUGGESTIONS DROPDOWN =====================
 
   &__suggestions {
-    position: absolute;
-    top: calc(100% + 5px);
-    left: 0;
-    right: 0;
-    background-color: #f2ede4;
-    border-radius: 15px;
+    position: relative;
+    background-color: transparent;
     list-style: none;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    z-index: 100;
+    box-shadow: none;
+    border-radius: 0;
+    margin-top: 0;
+    padding: 0 20px;
+    max-height: 0;
+    opacity: 0;
+    transform-origin: top;
+    animation: expandDropdownSmooth 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
   &__suggestion-item {
-    padding: 10px 20px;
+    padding: 8px 0;
     font-family: 'Quicksand', sans-serif;
     font-size: 14px;
     color: #1a3c1a;
@@ -144,7 +147,7 @@
     transition: background 0.2s;
 
     &:hover {
-      background-color: #e5dfd4;
+      background-color: transparent;
     }
   }
 
@@ -471,6 +474,23 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@keyframes expandDropdownSmooth {
+  0% {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  100% {
+    max-height: 250px;
+    opacity: 1;
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 }
 

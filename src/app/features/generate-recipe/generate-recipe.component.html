@@ -70,7 +70,7 @@
                 aria-hidden="true"
               />
               @if (showInputDropdown()) {
-                <ul class="generate__unit-options">
+                <ul class="generate__unit-options" (click)="$event.stopPropagation()">
                   <li class="generate__unit-option" (click)="selectInputUnit('gram')">gram</li>
                   <li class="generate__unit-option" (click)="selectInputUnit('ml')">ml</li>
                   <li class="generate__unit-option" (click)="selectInputUnit('piece')">piece</li>

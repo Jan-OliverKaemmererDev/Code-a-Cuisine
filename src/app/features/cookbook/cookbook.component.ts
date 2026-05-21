@@ -67,8 +67,9 @@ export class CookbookComponent {
    * Handles mouse-down on the carousel container.
    * Initialises drag tracking and velocity measurement.
    * @param e - The mouse event from the container.
+   * @returns The starting X-coordinate of the drag.
    */
-  onMouseDown(e: MouseEvent): void {
+  onMouseDown(e: MouseEvent): number {
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
     }
@@ -81,41 +82,47 @@ export class CookbookComponent {
     this.lastX = e.pageX;
     this.lastTime = Date.now();
     this.velocity = 0;
+    return this.startX;
   }
 
   /**
    * Handles mouse-leave on the carousel container.
    * Ends drag and triggers momentum scrolling.
    * @param e - The mouse event from the container.
+   * @returns True if a drag was actively ended, false if not dragging.
    */
-  onMouseLeave(e: MouseEvent): void {
-    if (!this.isDown) return;
+  onMouseLeave(e: MouseEvent): boolean {
+    if (!this.isDown) return false;
     this.isDown = false;
     const container = e.currentTarget as HTMLElement;
     container.classList.remove('active');
     this.startMomentumScroll(container);
+    return true;
   }
 
   /**
    * Handles mouse-up on the carousel container.
    * Ends drag and triggers momentum scrolling.
    * @param e - The mouse event from the container.
+   * @returns True if a drag was actively ended, false if not dragging.
    */
-  onMouseUp(e: MouseEvent): void {
-    if (!this.isDown) return;
+  onMouseUp(e: MouseEvent): boolean {
+    if (!this.isDown) return false;
     this.isDown = false;
     const container = e.currentTarget as HTMLElement;
     container.classList.remove('active');
     this.startMomentumScroll(container);
+    return true;
   }
 
   /**
    * Handles mouse-move on the carousel container.
    * Updates scroll position and tracks velocity for momentum.
    * @param e - The mouse event from the container.
+   * @returns The computed scroll walk distance if dragging, otherwise null.
    */
-  onMouseMove(e: MouseEvent): void {
-    if (!this.isDown) return;
+  onMouseMove(e: MouseEvent): number | null {
+    if (!this.isDown) return null;
     e.preventDefault();
     const container = e.currentTarget as HTMLElement;
     this.updateVelocity(e.pageX);
@@ -125,13 +132,15 @@ export class CookbookComponent {
       this.hasDragged = true;
     }
     container.scrollLeft = this.scrollLeft - walk;
+    return walk;
   }
 
   /**
    * Updates the scroll velocity based on the current mouse X position.
    * @param currentX - The current horizontal mouse position.
+   * @returns The updated velocity.
    */
-  private updateVelocity(currentX: number): void {
+  private updateVelocity(currentX: number): number {
     const currentTime = Date.now();
     const elapsed = currentTime - this.lastTime;
     if (elapsed > 0) {
@@ -140,14 +149,16 @@ export class CookbookComponent {
       this.lastX = currentX;
       this.lastTime = currentTime;
     }
+    return this.velocity;
   }
 
   /**
    * Starts a momentum-based scroll animation after the user releases the drag.
    * Applies friction each frame until the velocity drops below a threshold.
    * @param container - The scrollable carousel element.
+   * @returns The animation frame ID.
    */
-  private startMomentumScroll(container: HTMLElement): void {
+  private startMomentumScroll(container: HTMLElement): number {
     this.clampInitialVelocity();
     const friction = 0.95;
     const step = () => {
@@ -160,13 +171,15 @@ export class CookbookComponent {
       this.animationId = requestAnimationFrame(step);
     };
     this.animationId = requestAnimationFrame(step);
+    return this.animationId;
   }
 
   /**
    * Clamps the velocity to a reasonable range and zeroes it
    * if the mouse was held still before releasing.
+   * @returns The clamped velocity.
    */
-  private clampInitialVelocity(): void {
+  private clampInitialVelocity(): number {
     const timeSinceLastMove = Date.now() - this.lastTime;
     if (timeSinceLastMove > 100) {
       this.velocity = 0;
@@ -174,6 +187,7 @@ export class CookbookComponent {
     const maxVelocity = 3;
     if (this.velocity > maxVelocity) this.velocity = maxVelocity;
     if (this.velocity < -maxVelocity) this.velocity = -maxVelocity;
+    return this.velocity;
   }
 
   /**
@@ -181,15 +195,16 @@ export class CookbookComponent {
    * did not drag the carousel.
    * @param e - The click event.
    * @param recipeId - The ID of the clicked recipe.
+   * @returns A Promise that resolves to the navigation success, or null if ignored.
    */
-  onCardClick(e: MouseEvent, recipeId: string | undefined): void {
-    if (!recipeId) return;
+  onCardClick(e: MouseEvent, recipeId: string | undefined): Promise<boolean> | null {
+    if (!recipeId) return null;
     if (this.hasDragged) {
       e.preventDefault();
       e.stopPropagation();
-      return;
+      return null;
     }
-    this.router.navigate(['/recipe-view', recipeId], { queryParams: { from: 'cookbook' } });
+    return this.router.navigate(['/recipe-view', recipeId], { queryParams: { from: 'cookbook' } });
   }
 
   /**

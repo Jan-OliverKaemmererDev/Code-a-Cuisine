@@ -1,6 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
-import { RecipeStateService } from '../../core/services/recipe-state.service';
+import { RecipeStateService, Preferences } from '../../core/services/recipe-state.service';
 import { InsufficientIngredientsPopupComponent } from '../../shared/components/insufficient-ingredients-popup/insufficient-ingredients-popup.component';
 
 /** Available cooking time options. */
@@ -53,71 +53,86 @@ export class PreferencesComponent {
 
   /**
    * Increments the portions counter by one.
+   * @returns The updated portions count.
    */
-  incrementPortions(): void {
+  incrementPortions(): number {
     this.portions.update((v) => v + 1);
+    return this.portions();
   }
 
   /**
    * Decrements the portions counter, with a minimum of 1.
+   * @returns The updated portions count.
    */
-  decrementPortions(): void {
+  decrementPortions(): number {
     this.portions.update((v) => Math.max(1, v - 1));
+    return this.portions();
   }
 
   /**
    * Increments the persons counter by one.
+   * @returns The updated persons count.
    */
-  incrementPersons(): void {
+  incrementPersons(): number {
     this.persons.update((v) => v + 1);
+    return this.persons();
   }
 
   /**
    * Decrements the persons counter, with a minimum of 1.
+   * @returns The updated persons count.
    */
-  decrementPersons(): void {
+  decrementPersons(): number {
     this.persons.update((v) => Math.max(1, v - 1));
+    return this.persons();
   }
 
   /**
    * Toggles the selected cooking time. Deselects if already active.
    * @param time - The cooking time to toggle.
+   * @returns The newly selected CookingTime, or null if deselected.
    */
-  selectCookingTime(time: CookingTime): void {
+  selectCookingTime(time: CookingTime): CookingTime | null {
     this.selectedCookingTime.set(
       this.selectedCookingTime() === time ? null : time
     );
+    return this.selectedCookingTime();
   }
 
   /**
    * Toggles the selected cuisine. Deselects if already active.
    * @param cuisine - The cuisine to toggle.
+   * @returns The newly selected Cuisine, or null if deselected.
    */
-  selectCuisine(cuisine: Cuisine): void {
+  selectCuisine(cuisine: Cuisine): Cuisine | null {
     this.selectedCuisine.set(
       this.selectedCuisine() === cuisine ? null : cuisine
     );
+    return this.selectedCuisine();
   }
 
   /**
    * Toggles the selected diet preference. Deselects if already active.
    * @param diet - The diet preference to toggle.
+   * @returns The newly selected DietPreference, or null if deselected.
    */
-  selectDiet(diet: DietPreference): void {
+  selectDiet(diet: DietPreference): DietPreference | null {
     this.selectedDiet.set(this.selectedDiet() === diet ? null : diet);
+    return this.selectedDiet();
   }
 
   /**
    * Validates ingredients, saves preferences to shared state,
    * and navigates to the loading page to start recipe generation.
+   * @returns A Promise resolving to whether the navigation succeeded, or void if validation failed.
    */
-  generateRecipe(): void {
+  generateRecipe(): Promise<boolean> | void {
     if (!this.hasEnoughIngredients()) {
       this.showInsufficientPopup.set(true);
       return;
     }
     this.savePreferences();
-    this.router.navigate(['/loading']);
+    return this.router.navigate(['/loading']);
   }
 
   /**
@@ -141,14 +156,17 @@ export class PreferencesComponent {
 
   /**
    * Persists the current preference selections into the shared state service.
+   * @returns The saved Preferences object.
    */
-  private savePreferences(): void {
-    this.state.preferences.set({
+  private savePreferences(): Preferences {
+    const saved: Preferences = {
       portions: this.portions(),
       persons: this.persons(),
       cookingTime: this.selectedCookingTime(),
       cuisine: this.selectedCuisine(),
       diet: this.selectedDiet(),
-    });
+    };
+    this.state.preferences.set(saved);
+    return saved;
   }
 }

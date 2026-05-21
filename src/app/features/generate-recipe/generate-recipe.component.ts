@@ -75,43 +75,53 @@ export class GenerateRecipeComponent {
   /**
    * Updates the ingredient name signal and toggles the suggestion list.
    * @param value - The current value of the ingredient input field.
+   * @returns True if suggestion list is now shown, false otherwise.
    */
-  onIngredientInput(value: string): void {
+  onIngredientInput(value: string): boolean {
     this.ingredientName.set(value);
-    this.showSuggestions.set(value.trim().length > 0);
+    const show = value.trim().length > 0;
+    this.showSuggestions.set(show);
+    return show;
   }
 
   /**
    * Selects an auto-complete suggestion and closes the suggestion list.
    * @param suggestion - The selected suggestion string.
+   * @returns The selected suggestion.
    */
-  selectSuggestion(suggestion: string): void {
+  selectSuggestion(suggestion: string): string {
     this.ingredientName.set(suggestion);
     this.showSuggestions.set(false);
+    return suggestion;
   }
 
   /**
    * Toggles visibility of the unit dropdown on the input card.
+   * @returns The new visibility state of the input card unit dropdown.
    */
-  toggleInputDropdown(): void {
+  toggleInputDropdown(): boolean {
     this.showInputDropdown.update((v) => !v);
+    return this.showInputDropdown();
   }
 
   /**
    * Sets the unit on the input card and closes its dropdown.
    * @param unit - The unit to select.
+   * @returns The selected unit.
    */
-  selectInputUnit(unit: 'gram' | 'ml' | 'piece'): void {
+  selectInputUnit(unit: 'gram' | 'ml' | 'piece'): 'gram' | 'ml' | 'piece' {
     this.selectedUnit.set(unit);
     this.showInputDropdown.set(false);
+    return unit;
   }
 
   /**
    * Adds the current ingredient to the list and resets the input fields.
+   * @returns The newly added IngredientItem, or null if validation failed.
    */
-  addIngredient(): void {
+  addIngredient(): IngredientItem | null {
     const name = this.ingredientName().trim();
-    if (!name) return;
+    if (!name) return null;
     const newItem: IngredientItem = {
       name,
       amount: this.servingAmount(),
@@ -119,76 +129,93 @@ export class GenerateRecipeComponent {
     };
     this.ingredients.update((list) => [newItem, ...list]);
     this.resetInputFields();
+    return newItem;
   }
 
   /**
    * Closes the suggestion dropdown.
+   * @returns False representing the closed state.
    */
-  closeSuggestions(): void {
+  closeSuggestions(): boolean {
     this.showSuggestions.set(false);
+    return false;
   }
 
   /**
    * Closes the input card unit dropdown.
+   * @returns False representing the closed state.
    */
-  closeInputDropdown(): void {
+  closeInputDropdown(): boolean {
     this.showInputDropdown.set(false);
+    return false;
   }
 
   /**
    * Starts inline editing for the ingredient at the given index.
    * @param index - Index of the ingredient to edit.
+   * @returns The IngredientItem selected for editing, or null if index is out of bounds.
    */
-  startEdit(index: number): void {
+  startEdit(index: number): IngredientItem | null {
     const item = this.ingredients()[index];
+    if (!item) return null;
     this.editingListIndex.set(index);
     this.editAmount.set(item.amount);
     this.editUnit.set(item.unit);
     this.showListDropdown.set(false);
+    return item;
   }
 
   /**
    * Saves the inline edits for the ingredient at the given index.
    * @param index - Index of the ingredient to save.
+   * @returns The newly updated IngredientItem, or null if saving failed or index is out of bounds.
    */
-  saveEdit(index: number): void {
+  saveEdit(index: number): IngredientItem | null {
+    const item = this.ingredients()[index];
+    if (!item) return null;
+    const updatedItem: IngredientItem = { ...item, amount: this.editAmount(), unit: this.editUnit() };
     this.ingredients.update((list) =>
-      list.map((item, i) =>
-        i === index
-          ? { ...item, amount: this.editAmount(), unit: this.editUnit() }
-          : item
-      )
+      list.map((it, i) => i === index ? updatedItem : it)
     );
     this.editingListIndex.set(null);
     this.showListDropdown.set(false);
+    return updatedItem;
   }
 
   /**
    * Toggles visibility of the inline edit unit dropdown.
+   * @returns The new visibility state of the inline edit unit dropdown.
    */
-  toggleListDropdown(): void {
+  toggleListDropdown(): boolean {
     this.showListDropdown.update((v) => !v);
+    return this.showListDropdown();
   }
 
   /**
    * Sets the unit on the inline editor and closes its dropdown.
    * @param unit - The unit to select.
+   * @returns The selected unit.
    */
-  selectListUnit(unit: 'gram' | 'ml' | 'piece'): void {
+  selectListUnit(unit: 'gram' | 'ml' | 'piece'): 'gram' | 'ml' | 'piece' {
     this.editUnit.set(unit);
     this.showListDropdown.set(false);
+    return unit;
   }
 
   /**
    * Removes an ingredient from the list by index.
    * Clears the editing state if the deleted item was being edited.
    * @param index - Index of the ingredient to delete.
+   * @returns The deleted IngredientItem, or null if index is out of bounds.
    */
-  deleteIngredient(index: number): void {
+  deleteIngredient(index: number): IngredientItem | null {
+    const item = this.ingredients()[index];
+    if (!item) return null;
     this.ingredients.update((list) => list.filter((_, i) => i !== index));
     if (this.editingListIndex() === index) {
       this.editingListIndex.set(null);
     }
+    return item;
   }
 
   /**
