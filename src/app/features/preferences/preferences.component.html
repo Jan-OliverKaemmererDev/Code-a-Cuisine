@@ -42,6 +42,7 @@
           class="preferences__counter-btn"
           type="button"
           (click)="incrementPortions()"
+          [disabled]="portions() >= 12"
           aria-label="Portionen erhöhen"
         >
           <img src="assets/icons/plus.svg" alt="" width="28" height="28" />

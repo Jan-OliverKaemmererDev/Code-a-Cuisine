@@ -56,7 +56,7 @@ export class PreferencesComponent {
    * @returns The updated portions count.
    */
   incrementPortions(): number {
-    this.portions.update((v) => v + 1);
+    this.portions.update((v) => Math.min(12, v + 1));
     return this.portions();
   }
 
