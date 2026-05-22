@@ -60,6 +60,40 @@
     color: #1a3c1a;
   }
 
+  // ===================== QUOTA INFO =====================
+
+  &__quota-banner {
+    background-color: #E8F5E9;
+    border: 1px solid #A5D6A7;
+    border-radius: 8px;
+    padding: 16px 24px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #1a3c1a;
+    font-family: 'Quicksand', sans-serif;
+
+    &.is-empty {
+      background-color: #FFEBEE;
+      border-color: #EF9A9A;
+      color: #B71C1C;
+    }
+  }
+
+  &__quota-main {
+    font-size: 18px;
+    margin-bottom: 4px;
+
+    strong {
+      font-weight: 700;
+      font-size: 20px;
+    }
+  }
+
+  &__quota-sub {
+    font-size: 14px;
+    opacity: 0.8;
+  }
+
   // ===================== COUNTERS =====================
 
   &__counters {

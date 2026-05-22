@@ -1,6 +1,7 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnInit } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { RecipeStateService, Preferences } from '../../core/services/recipe-state.service';
+import { RecipeService } from '../../core/services/recipe.service';
 import { InsufficientIngredientsPopupComponent } from '../../shared/components/insufficient-ingredients-popup/insufficient-ingredients-popup.component';
 
 /** Available cooking time options. */
@@ -21,9 +22,10 @@ type Cuisine = 'German' | 'Italian' | 'Indian' | 'Japanese' | 'Gourmet' | 'Fusio
   templateUrl: './preferences.component.html',
   styleUrl: './preferences.component.scss',
 })
-export class PreferencesComponent {
-  private state = inject(RecipeStateService);
+export class PreferencesComponent implements OnInit {
+  state = inject(RecipeStateService);
   private router = inject(Router);
+  private recipeService = inject(RecipeService);
 
   /** Number of portions to generate. */
   portions = signal(2);
@@ -50,6 +52,22 @@ export class PreferencesComponent {
   cuisines: Cuisine[] = ['German', 'Italian', 'Indian', 'Japanese', 'Gourmet', 'Fusion'];
   /** Available diet preference options. */
   diets: DietPreference[] = ['Vegetarian', 'Vegan', 'Keto', 'No preferences'];
+
+  ngOnInit(): void {
+    this.recipeService.getQuota().subscribe({
+      next: (response) => {
+        // n8n 'Respond to Webhook' returns an array of items by default
+        let info = Array.isArray(response) ? response[0] : response;
+        if (info && info.json) {
+          info = info.json;
+        }
+        this.state.quotaInfo.set(info);
+      },
+      error: (err) => {
+        console.error('Error fetching quota', err);
+      }
+    });
+  }
 
   /**
    * Increments the portions counter by one.
@@ -127,6 +145,11 @@ export class PreferencesComponent {
    * @returns A Promise resolving to whether the navigation succeeded, or void if validation failed.
    */
   generateRecipe(): Promise<boolean> | void {
+    const quota = this.state.quotaInfo();
+    if (quota && (quota.ipRemaining <= 0 || quota.systemRemaining <= 0)) {
+      alert('Quota erreicht! Bitte versuche es morgen wieder.');
+      return;
+    }
     if (!this.hasEnoughIngredients()) {
       this.showInsufficientPopup.set(true);
       return;

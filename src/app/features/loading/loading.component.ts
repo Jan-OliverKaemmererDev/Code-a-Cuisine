@@ -176,7 +176,11 @@ export class LoadingComponent implements OnInit {
    */
   private handleRequestError(err: any): Promise<boolean> {
     console.error('Error from n8n webhook:', err);
-    alert('Error connecting to n8n. Please check browser console for CORS or network issues.');
+    if (err.status === 429) {
+      alert('Quota erreicht! Du hast dein tägliches Limit erreicht oder das systemweite Limit ist ausgeschöpft. Bitte versuche es morgen wieder.');
+    } else {
+      alert('Error connecting to n8n. Please check browser console for CORS or network issues.');
+    }
     return this.router.navigate(['/preferences']);
   }
 }

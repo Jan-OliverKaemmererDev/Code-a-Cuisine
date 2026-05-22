@@ -20,7 +20,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const data = $input.item.json.body || $input.item.json;\n\n// --- 1. DATENVALIDIERUNG ---\nconst ingredients = data.ingredients;\nconst preferences = data.preferences;\n\nif (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) {\n  return { json: { allowed: false, status: 400, message: \"Ungültige Daten: 'ingredients' fehlt oder ist leer.\" } };\n}\n\nif (!preferences || typeof preferences.portions !== 'number' || typeof preferences.persons !== 'number') {\n  return { json: { allowed: false, status: 400, message: \"Ungültige Daten: 'portions' oder 'persons' fehlerhaft.\" } };\n}\n\n// --- 2. RATE-LIMITING (Kostenairbag) ---\nconst staticData = $getWorkflowStaticData('global');\nconst now = new Date().getTime();\nconst ONE_HOUR = 60 * 60 * 1000;\nconst MAX_REQUESTS_PER_HOUR = 50; // Kostenairbag\n\nif (!staticData.lastReset || (now - staticData.lastReset) > ONE_HOUR) {\n  staticData.requestCount = 0;\n  staticData.lastReset = now;\n}\n\nif (staticData.requestCount >= MAX_REQUESTS_PER_HOUR) {\n  return { json: { allowed: false, status: 429, message: \"Rate-Limit erreicht. Zu viele Anfragen in der letzten Stunde (Kostenairbag aktiv).\" } };\n}\n\nstaticData.requestCount++;\n\nreturn { json: { allowed: true, data: data } };"
+        "jsCode": "const data = $input.item.json.body || $input.item.json;\n\n// --- 1. DATENVALIDIERUNG ---\nconst ingredients = data.ingredients;\nconst preferences = data.preferences;\n\nif (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) {\n  return { json: { allowed: false, status: 400, message: \"Ungültige Daten: 'ingredients' fehlt oder ist leer.\" } };\n}\n\nif (!preferences || typeof preferences.portions !== 'number' || typeof preferences.persons !== 'number') {\n  return { json: { allowed: false, status: 400, message: \"Ungültige Daten: 'portions' oder 'persons' fehlerhaft.\" } };\n}\n\n// --- 2. QUOTA-MANAGEMENT ---\nconst staticData = $getWorkflowStaticData('global');\nconst today = new Date().toISOString().split('T')[0];\nconst SYSTEM_QUOTA = 12;\nconst IP_QUOTA = 3;\n\nif (staticData.date !== today) {\n  staticData.date = today;\n  staticData.systemCount = 0;\n  staticData.ipCounts = {};\n}\n\nconst headers = $input.item.headers || {};\nlet clientIp = headers['x-forwarded-for'] || headers['x-real-ip'] || headers['host'] || 'unknown';\nif (clientIp.includes(',')) {\n  clientIp = clientIp.split(',')[0].trim();\n}\n\nconst currentIpCount = staticData.ipCounts[clientIp] || 0;\n\nif (staticData.systemCount >= SYSTEM_QUOTA) {\n  return { json: { allowed: false, status: 429, message: \"System-weite Quota von 12 Rezepten pro Tag erreicht.\" } };\n}\n\nif (currentIpCount >= IP_QUOTA) {\n  return { json: { allowed: false, status: 429, message: `Dein IP-Limit ist erreicht. Du kannst maximal ${IP_QUOTA} Rezepte pro Tag generieren.` } };\n}\n\nstaticData.systemCount++;\nstaticData.ipCounts[clientIp] = currentIpCount + 1;\n\nreturn { json: { allowed: true, data: data } };"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -34,7 +34,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Du bist ein professioneller Chefkoch. Erstelle 3 kreative und leckere Rezepte basierend auf den folgenden Eingaben.\n\nZutaten: {{ $json.data.ingredients.join(', ') }} \nPortionen: {{ $json.data.preferences.portions }} \nPersonen: {{ $json.data.preferences.persons }} \nKüche: {{ $json.data.preferences.cuisine || 'International' }} \nDiät: {{ $json.data.preferences.diet || 'Keine Präferenz' }} \nZeitlimit: {{ $json.data.preferences.cookingTime || 'Flexibel' }}\n\nDEINE AUFGABE: Antworte AUSSCHLIESSLICH mit einem validen JSON-Objekt im folgenden Format. Es müssen zwingend 3 verschiedene Rezepte in dem \"recipes\" Array enthalten sein. Erfinde nötige Basis-Zutaten (wie Salz, Öl, Wasser) hinzu, falls sie fehlen, um vollständige Rezepte zu garantieren.\n\nWICHTIG ZUR SKALIERUNG:\nSkaliere die Mengen ALLER Zutaten (auch von hinzugefügten Basis-Zutaten) unbedingt so, dass sie für EXAKT {{ $json.data.preferences.portions }} Portionen (bzw. {{ $json.data.preferences.persons }} Personen) ausreichen! 1 EL Öl oder 1 Prise reicht beispielsweise nicht für 12 Portionen. Alle Mengen müssen im Array \"ingredients\" an die Portionen angepasst sein.\n\nBeurteile außerdem den tatsächlichen Aufwand des Rezeptes und setze die Eigenschaft \"difficulty\" strikt auf einen dieser drei Werte: \"Quick\", \"Medium\" oder \"Complex\".\n\nJSON-Format:\n{\n  \"recipes\": [\n    {\n      \"title\": \"Name des Gerichts 1\",\n      \"cookingTime\": \"Zahl in Minuten (z.B. 30min)\",\n      \"difficulty\": \"Quick\",\n      \"cuisine\": \"Art der Küche\",\n      \"persons\": {{ $json.data.preferences.persons }},\n      \"portions\": {{ $json.data.preferences.portions }},\n      \"dietPreferences\": \"Die gewählte Diät\",\n      \"ingredients\": [\"Liste aller benötigten Zutaten mit Mengenangabe (exakt skaliert für {{ $json.data.preferences.portions }} Portionen)\"],\n      \"instructions\": [\n        { \"step\": 1, \"description\": \"Schritt 1 Beschreibung\" },\n        { \"step\": 2, \"description\": \"Schritt 2 Beschreibung\" }\n      ],\n      \"nutrition\": {\n        \"energy\": \"kcal Angabe\",\n        \"protein\": \"Gramm Angabe\",\n        \"fat\": \"Gramm Angabe\",\n        \"carbs\": \"Gramm Angabe\"\n      },\n      \"likes\": 0\n    }\n  ]\n}",
+        "text": "=Du bist ein professioneller Chefkoch. Erstelle 3 kreative und leckere Rezepte basierend auf den folgenden Eingaben.\n\nZutaten: {{ $json.data.ingredients.join(', ') }} \nPortionen: {{ $json.data.preferences.portions }} \nPersonen: {{ $json.data.preferences.persons }} \nKüche: {{ $json.data.preferences.cuisine || 'International' }} \nDiät: {{ $json.data.preferences.diet || 'Keine Präferenz' }} \nZeitlimit: {{ $json.data.preferences.cookingTime || 'Flexibel' }}\n\nDEINE AUFGABE: Antworte AUSSCHLIESSLICH mit einem validen JSON-Objekt im folgenden Format. Es müssen zwingend 3 verschiedene Rezepte in dem \"recipes\" Array enthalten sein.\n\nWICHTIGE REGELN FÜR DIE REZEPTERSTELLUNG:\n1. Einheitliche Schwierigkeit: Alle 3 Rezepte MÜSSEN exakt denselben Schwierigkeitsgrad haben. Beurteile den Aufwand und wähle EINEN der folgenden Werte (\"Quick\", \"Medium\", \"Complex\") und wende ihn auf alle drei Rezepte an. Mische die Schwierigkeitsgrade nicht!\n2. Authentizität: Berücksichtige zwingend die typischen Gewürze, Aromen und Zubereitungsarten der gewählten Küche. Schließe unpassende Zutaten und Rezepte, die nicht zum Stil passen, automatisch aus.\n3. Diät-Vorgaben: Die gewählte Diät (z.B. Vegetarisch, Vegan, Keto) muss von allen 3 Rezepten strikt und kompromisslos eingehalten werden.\n4. Zutaten-Nutzung: Jedes Rezept muss mindestens 70% der oben angegebenen Zutaten sinnvoll verwenden.\n5. Basis-Zutaten: Erfinde nötige Basis-Zutaten (wie Salz, Öl, Wasser) hinzu, falls sie fehlen, um vollständige Rezepte zu garantieren. Limitiere dies jedoch auf maximal 3 zusätzliche Basis-Zutaten pro Rezept.\n6. Anfängerfreundliche Anleitung: Die Schritt-für-Schritt-Anleitungen müssen auch für absolute Kochanfänger leicht verständlich sein. Nutze zudem Wartezeiten (z. B. während etwas kocht oder im Ofen ist) explizit für andere Vorbereitungen (z. B. \"Während die Nudeln kochen, schneide das Gemüse...\").\n\nWICHTIG ZUR SKALIERUNG:\nSkaliere die Mengen ALLER Zutaten (auch von hinzugefügten Basis-Zutaten) unbedingt so, dass sie für EXAKT {{ $json.data.preferences.portions }} Portionen (bzw. {{ $json.data.preferences.persons }} Personen) ausreichen! 1 EL Öl oder 1 Prise reicht beispielsweise nicht für 12 Portionen. Alle Mengen müssen im Array \"ingredients\" an die Portionen angepasst sein.\n\nJSON-Format:\n{\n  \"recipes\": [\n    {\n      \"title\": \"Name des Gerichts 1\",\n      \"cookingTime\": \"Zahl in Minuten (z.B. 30min)\",\n      \"difficulty\": \"Hier bei allen 3 Rezepten exakt den gleichen Wert (Quick, Medium oder Complex) eintragen\",\n      \"cuisine\": \"Art der Küche\",\n      \"persons\": {{ $json.data.preferences.persons }},\n      \"portions\": {{ $json.data.preferences.portions }},\n      \"dietPreferences\": \"Die gewählte Diät\",\n      \"ingredients\": [\"Liste aller benötigten Zutaten mit Mengenangabe (exakt skaliert für {{ $json.data.preferences.portions }} Portionen)\"],\n      \"instructions\": [\n        { \"step\": 1, \"description\": \"Schritt 1 Beschreibung (für Anfänger verständlich)\" },\n        { \"step\": 2, \"description\": \"Während X im Ofen ist, Beschreibung für Schritt 2\" }\n      ],\n      \"nutrition\": {\n        \"energy\": \"kcal Angabe\",\n        \"protein\": \"Gramm Angabe\",\n        \"fat\": \"Gramm Angabe\",\n        \"carbs\": \"Gramm Angabe\"\n      },\n      \"likes\": 0\n    }\n  ]\n}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -132,6 +132,52 @@
       ],
       "id": "13420945-cc0d-4dc5-bcb5-cd821245b694",
       "name": "Is allowed?"
+    },
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "9af95e4b-4075-4a4a-8623-b55ae53676a0-quota",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        32,
+        350
+      ],
+      "id": "99dfa529-49df-44a5-a89e-873871292b0c",
+      "name": "GET Quota Webhook",
+      "webhookId": "f76bb8d5-2ee9-46c9-a1cc-d5f81733bae2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\nconst today = new Date().toISOString().split('T')[0];\nconst SYSTEM_QUOTA = 12;\nconst IP_QUOTA = 3;\n\nif (staticData.date !== today) {\n  staticData.date = today;\n  staticData.systemCount = 0;\n  staticData.ipCounts = {};\n}\n\nconst headers = $input.item.headers || {};\nlet clientIp = headers['x-forwarded-for'] || headers['x-real-ip'] || headers['host'] || 'unknown';\nif (clientIp.includes(',')) {\n  clientIp = clientIp.split(',')[0].trim();\n}\n\nconst currentIpCount = staticData.ipCounts[clientIp] || 0;\n\nreturn {\n  json: {\n    systemQuota: SYSTEM_QUOTA,\n    systemUsed: staticData.systemCount || 0,\n    systemRemaining: Math.max(0, SYSTEM_QUOTA - (staticData.systemCount || 0)),\n    ipQuota: IP_QUOTA,\n    ipUsed: currentIpCount,\n    ipRemaining: Math.max(0, IP_QUOTA - currentIpCount)\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        256,
+        350
+      ],
+      "id": "9f79fd6f-4f40-4a77-86ce-844658f40489",
+      "name": "Calculate Quota"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        464,
+        350
+      ],
+      "id": "a6b06314-000d-46de-8ecf-ffd6894d4ac2",
+      "name": "Respond Quota"
     }
   ],
   "pinData": {},
@@ -197,6 +243,28 @@
           }
         ]
       ]
+    },
+    "GET Quota Webhook": {
+      "main": [
+        [
+          {
+            "node": "Calculate Quota",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Quota": {
+      "main": [
+        [
+          {
+            "node": "Respond Quota",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -204,7 +272,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "b36d9981-572a-44eb-8dad-be7bc21d1e96",
+  "versionId": "90d90bb0-f2d5-49a5-b310-e14f02218901",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "d9bdae180c241bb7b928320b0a530831b1852d4919f8d013a8452133e5e49e6d"

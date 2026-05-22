@@ -28,5 +28,13 @@ export class RecipeStateService {
     diet: null,
   });
   latestRecipes = signal<Recipe[]>([]);
+  quotaInfo = signal<{
+    systemQuota: number;
+    systemUsed: number;
+    systemRemaining: number;
+    ipQuota: number;
+    ipUsed: number;
+    ipRemaining: number;
+  } | null>(null);
 }
 

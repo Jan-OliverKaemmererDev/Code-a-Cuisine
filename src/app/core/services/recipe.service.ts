@@ -52,6 +52,14 @@ export class RecipeService {
   }
 
   /**
+   * Retrieves the current quota for the user's IP and system-wide from n8n.
+   */
+  getQuota(): Observable<any> {
+    const quotaUrl = environment.n8nWebhookUrl + '-quota';
+    return this.http.get<any>(quotaUrl);
+  }
+
+  /**
    * Saves a generated recipe to Firestore.
    */
   saveRecipe(recipe: Recipe): Observable<any> {
