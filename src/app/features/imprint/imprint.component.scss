@@ -1,0 +1,108 @@
+.imprint-container {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #FFFFFF;
+  padding: 40px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Quicksand', sans-serif;
+  color: #1a3c1a;
+  box-sizing: border-box;
+
+  .imprint-header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .imprint-logo {
+    display: block;
+    width: 160px;
+    height: auto;
+  }
+
+  .imprint-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1a3c1a;
+    transition: opacity 0.2s;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  .imprint-back-arrow {
+    width: 18px;
+    height: auto;
+    transform: rotate(180deg);
+  }
+
+  h1 {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 40px;
+  }
+
+  .imprint-content {
+    background-color: #f2ede4;
+    border-radius: 20px;
+    padding: 36px 40px;
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+
+    p {
+      margin: 0;
+    }
+
+    .imprint-credits {
+      margin-top: 24px;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+  }
+}
+
+// ===================== RESPONSIVE =====================
+
+@media (max-width: 700px) {
+  .imprint-container {
+    padding: 30px 24px;
+
+    .imprint-header {
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 24px;
+    }
+
+    .imprint-content {
+      padding: 24px 20px;
+      font-size: 16px;
+      
+      .imprint-credits {
+        font-size: 12px;
+      }
+    }
+  }
+}

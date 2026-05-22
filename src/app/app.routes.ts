@@ -52,5 +52,12 @@ export const routes: Routes = [
         (m) => m.ListOfAllRecipesComponent
       ),
   },
+  {
+    path: 'imprint',
+    loadComponent: () =>
+      import('./features/imprint/imprint.component').then(
+        (m) => m.ImprintComponent
+      ),
+  },
   { path: '**', redirectTo: '' },
 ];
