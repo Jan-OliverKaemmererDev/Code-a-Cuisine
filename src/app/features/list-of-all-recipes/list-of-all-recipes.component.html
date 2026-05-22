@@ -16,7 +16,7 @@
 
   <div class="banner-container" *ngIf="bannerImage">
     <picture>
-      <source media="(max-width: 480px)" [srcset]="getMobileBannerImage(cuisineCategory)">
+      <source media="(max-width: 480px)" [srcset]="getMobileBannerImage(cuisineCategory)" />
       <img [src]="bannerImage" [alt]="cuisineCategory" class="banner-img" />
     </picture>
   </div>
@@ -40,7 +40,7 @@
 
       <div class="item-right">
         <span class="tag" *ngIf="recipe.dietPreferences">{{ recipe.dietPreferences }}</span>
-        <span class="tag">Quick</span>
+        <span class="tag">{{ recipe.difficulty || 'Quick' }}</span>
         <span class="tag heart-tag">
           <img src="/assets/icons/heart-dark.svg" alt="Heart" /> {{ recipe.likes }}
         </span>

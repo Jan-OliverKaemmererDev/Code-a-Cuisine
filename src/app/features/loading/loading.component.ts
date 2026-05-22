@@ -80,7 +80,7 @@ export class LoadingComponent implements OnInit {
       } else if (parsedData) {
         recipesArray = [parsedData];
       } else {
-        throw new Error('Parsed recipe data is null or invalid');
+        throw new Error('Parsed recipe data is null or invalid. Raw response from n8n: ' + JSON.stringify(response));
       }
       
       this.state.latestRecipes.set(recipesArray);

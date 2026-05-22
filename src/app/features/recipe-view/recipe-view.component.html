@@ -16,16 +16,18 @@
           <img src="assets/icons/clock.svg" alt="Time" />
           Cooking time: {{ recipe.cookingTime }}
         </div>
-        
+
         <h1 class="recipe-title">{{ recipe.title }}</h1>
-        
+
         <div class="card-mid">
           <div class="cooking-person">Cooking person: {{ recipe.persons || recipe.portions }}</div>
           <div class="chef-tags">
-            <img *ngFor="let chefNum of getChefArray(recipe.persons || recipe.portions)" 
-                 [src]="'assets/icons/chef-icons/chef' + chefNum + '.svg'" 
-                 alt="Chef {{ chefNum }}" 
-                 class="chef-icon" />
+            <img
+              *ngFor="let chefNum of getChefArray(recipe.persons || recipe.portions)"
+              [src]="'assets/icons/chef-icons/chef' + chefNum + '.svg'"
+              alt="Chef {{ chefNum }}"
+              class="chef-icon"
+            />
           </div>
         </div>
       </div>
@@ -33,9 +35,15 @@
       <div class="header-card-right">
         <div class="tags-row">
           <span class="tag" *ngIf="recipe.dietPreferences">{{ recipe.dietPreferences }}</span>
-          <span class="tag">Quick</span>
+          <span class="tag">{{ recipe.difficulty || 'Quick' }}</span>
           <span class="tag heart-tag">
-            <img [src]="isLiked ? 'assets/icons/heart-clicked.svg' : 'assets/icons/heart-unclicked.svg'" alt="Likes" /> {{ recipe.likes || 0 }}
+            <img
+              [src]="
+                isLiked ? 'assets/icons/heart-clicked.svg' : 'assets/icons/heart-unclicked.svg'
+              "
+              alt="Likes"
+            />
+            {{ recipe.likes || 0 }}
           </span>
         </div>
 
@@ -85,7 +93,11 @@
 
     <button class="mobile-ingredients-toggle" (click)="toggleIngredients()">
       {{ ingredientsVisible ? 'Hide ingredients' : 'Show ingredients' }}
-      <img src="assets/icons/arrow-dropdown-green-mobile.svg" alt="" [class.rotated]="!ingredientsVisible">
+      <img
+        src="assets/icons/arrow-dropdown-green-mobile.svg"
+        alt=""
+        [class.rotated]="!ingredientsVisible"
+      />
     </button>
 
     <!-- Directions -->
@@ -98,9 +110,15 @@
         <div class="step-header">
           <div class="step-num">{{ i + 1 }}.</div>
           <div class="step-title">{{ getStepTitleAndDesc(step.description).title }}</div>
-          <img [src]="'assets/icons/chef-icons/chef' + getChefIndex(i, recipe.persons || recipe.portions) + '.svg'" 
-               alt="Chef" 
-               class="step-chef" />
+          <img
+            [src]="
+              'assets/icons/chef-icons/chef' +
+              getChefIndex(i, recipe.persons || recipe.portions) +
+              '.svg'
+            "
+            alt="Chef"
+            class="step-chef"
+          />
         </div>
         <p class="step-desc">{{ getStepTitleAndDesc(step.description).desc }}</p>
       </div>
@@ -108,15 +126,24 @@
 
     <button class="mobile-directions-toggle" (click)="toggleDirections()">
       {{ directionsVisible ? 'Hide directions' : 'Show directions' }}
-      <img src="assets/icons/arrow-dropdown-green-mobile.svg" alt="" [class.rotated]="!directionsVisible">
+      <img
+        src="assets/icons/arrow-dropdown-green-mobile.svg"
+        alt=""
+        [class.rotated]="!directionsVisible"
+      />
     </button>
 
     <div class="finish-section">
-      <span><strong>Just finished this meal?</strong> Give it a heart, so that the others know this is delicious.</span>
-      <img [src]="isLiked ? 'assets/icons/heart-clicked.svg' : 'assets/icons/heart-unclicked.svg'" 
-           alt="Heart" 
-           class="big-heart" 
-           (click)="toggleLike(recipe)" />
+      <span
+        ><strong>Just finished this meal?</strong> Give it a heart, so that the others know this is
+        delicious.</span
+      >
+      <img
+        [src]="isLiked ? 'assets/icons/heart-clicked.svg' : 'assets/icons/heart-unclicked.svg'"
+        alt="Heart"
+        class="big-heart"
+        (click)="toggleLike(recipe)"
+      />
     </div>
   </div>
 

@@ -22,6 +22,7 @@ export interface Recipe {
   persons: number;
   portions: number;
   dietPreferences: string;
+  difficulty?: string;
   ingredients: string[];
   instructions: { step: number; description: string }[];
   nutrition?: {
