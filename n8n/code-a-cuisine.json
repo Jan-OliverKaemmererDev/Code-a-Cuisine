@@ -11,40 +11,53 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -336,
-        0
+        32,
+        128
       ],
-      "id": "b4512431-4c0b-4189-b608-4c92f7e629d8",
+      "id": "921d5d46-a7d3-4199-9a55-eb8b03d2c185",
       "name": "Webhook",
-      "webhookId": "9af95e4b-4075-4a4a-8623-b55ae53676a0"
+      "webhookId": "d3098611-1087-4775-a7bc-506f0be4bcb5"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json.body || $input.item.json;\n\n// --- 1. DATENVALIDIERUNG ---\nconst ingredients = data.ingredients;\nconst preferences = data.preferences;\n\nif (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) {\n  return { json: { allowed: false, status: 400, message: \"Ungültige Daten: 'ingredients' fehlt oder ist leer.\" } };\n}\n\nif (!preferences || typeof preferences.portions !== 'number' || typeof preferences.persons !== 'number') {\n  return { json: { allowed: false, status: 400, message: \"Ungültige Daten: 'portions' oder 'persons' fehlerhaft.\" } };\n}\n\n// --- 2. RATE-LIMITING (Kostenairbag) ---\nconst staticData = $getWorkflowStaticData('global');\nconst now = new Date().getTime();\nconst ONE_HOUR = 60 * 60 * 1000;\nconst MAX_REQUESTS_PER_HOUR = 50; // Kostenairbag\n\nif (!staticData.lastReset || (now - staticData.lastReset) > ONE_HOUR) {\n  staticData.requestCount = 0;\n  staticData.lastReset = now;\n}\n\nif (staticData.requestCount >= MAX_REQUESTS_PER_HOUR) {\n  return { json: { allowed: false, status: 429, message: \"Rate-Limit erreicht. Zu viele Anfragen in der letzten Stunde (Kostenairbag aktiv).\" } };\n}\n\nstaticData.requestCount++;\n\nreturn { json: { allowed: true, data: data } };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        256,
+        128
+      ],
+      "id": "29aeacc8-2abc-4c5c-a463-af4635430327",
+      "name": "Validation & Rate Limit"
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Du bist ein professioneller Chefkoch. Erstelle 3 kreative und leckere Rezepte basierend auf den folgenden Eingaben.\n\nZutaten: {{ $json.ingredients.join(', ') }} \nPortionen: {{ $json.preferences.portions }} \nPersonen: {{ $json.preferences.persons }} \nKüche: {{ $json.preferences.cuisine || 'International' }} \nDiät: {{ $json.preferences.diet || 'Keine Präferenz' }} \nZeitlimit: {{ $json.preferences.cookingTime || 'Flexibel' }}\n\nDEINE AUFGABE: Antworte AUSSCHLIESSLICH mit einem validen JSON-Objekt im folgenden Format. Es müssen zwingend 3 verschiedene Rezepte in dem \"recipes\" Array enthalten sein. Erfinde nötige Basis-Zutaten (wie Salz, Öl, Wasser) hinzu, falls sie fehlen, um vollständige Rezepte zu garantieren.\n\nJSON-Format:\n{\n  \"recipes\": [\n    {\n      \"title\": \"Name des Gerichts 1\",\n      \"cookingTime\": \"Zahl in Minuten (z.B. 30min)\",\n      \"cuisine\": \"Art der Küche\",\n      \"persons\": {{ $json.preferences.persons }},\n      \"portions\": {{ $json.preferences.portions }},\n      \"dietPreferences\": \"Die gewählte Diät\",\n      \"ingredients\": [\"Liste aller benötigten Zutaten mit Mengenangabe\"],\n      \"instructions\": [\n        { \"step\": 1, \"description\": \"Schritt 1 Beschreibung\" },\n        { \"step\": 2, \"description\": \"Schritt 2 Beschreibung\" }\n      ],\n      \"nutrition\": {\n        \"energy\": \"kcal Angabe\",\n        \"protein\": \"Gramm Angabe\",\n        \"fat\": \"Gramm Angabe\",\n        \"carbs\": \"Gramm Angabe\"\n      },\n      \"likes\": 0\n    },\n    {\n      \"title\": \"Name des Gerichts 2\",\n      \"cookingTime\": \"Zahl in Minuten (z.B. 30min)\",\n      \"cuisine\": \"Art der Küche\",\n      \"persons\": {{ $json.preferences.persons }},\n      \"portions\": {{ $json.preferences.portions }},\n      \"dietPreferences\": \"Die gewählte Diät\",\n      \"ingredients\": [\"Liste aller benötigten Zutaten mit Mengenangabe\"],\n      \"instructions\": [\n        { \"step\": 1, \"description\": \"Schritt 1 Beschreibung\" },\n        { \"step\": 2, \"description\": \"Schritt 2 Beschreibung\" }\n      ],\n      \"nutrition\": {\n        \"energy\": \"kcal Angabe\",\n        \"protein\": \"Gramm Angabe\",\n        \"fat\": \"Gramm Angabe\",\n        \"carbs\": \"Gramm Angabe\"\n      },\n      \"likes\": 0\n    },\n    {\n      \"title\": \"Name des Gerichts 3\",\n      \"cookingTime\": \"Zahl in Minuten (z.B. 30min)\",\n      \"cuisine\": \"Art der Küche\",\n      \"persons\": {{ $json.preferences.persons }},\n      \"portions\": {{ $json.preferences.portions }},\n      \"dietPreferences\": \"Die gewählte Diät\",\n      \"ingredients\": [\"Liste aller benötigten Zutaten mit Mengenangabe\"],\n      \"instructions\": [\n        { \"step\": 1, \"description\": \"Schritt 1 Beschreibung\" },\n        { \"step\": 2, \"description\": \"Schritt 2 Beschreibung\" }\n      ],\n      \"nutrition\": {\n        \"energy\": \"kcal Angabe\",\n        \"protein\": \"Gramm Angabe\",\n        \"fat\": \"Gramm Angabe\",\n        \"carbs\": \"Gramm Angabe\"\n      },\n      \"likes\": 0\n    }\n  ]\n}\n",
+        "text": "=Du bist ein professioneller Chefkoch. Erstelle 3 kreative und leckere Rezepte basierend auf den folgenden Eingaben.\n\nZutaten: {{ $json.data.ingredients.join(', ') }} \nPortionen: {{ $json.data.preferences.portions }} \nPersonen: {{ $json.data.preferences.persons }} \nKüche: {{ $json.data.preferences.cuisine || 'International' }} \nDiät: {{ $json.data.preferences.diet || 'Keine Präferenz' }} \nZeitlimit: {{ $json.data.preferences.cookingTime || 'Flexibel' }}\n\nDEINE AUFGABE: Antworte AUSSCHLIESSLICH mit einem validen JSON-Objekt im folgenden Format. Es müssen zwingend 3 verschiedene Rezepte in dem \"recipes\" Array enthalten sein. Erfinde nötige Basis-Zutaten (wie Salz, Öl, Wasser) hinzu, falls sie fehlen, um vollständige Rezepte zu garantieren.\n\nWICHTIG ZUR SKALIERUNG:\nSkaliere die Mengen ALLER Zutaten (auch von hinzugefügten Basis-Zutaten) unbedingt so, dass sie für EXAKT {{ $json.data.preferences.portions }} Portionen (bzw. {{ $json.data.preferences.persons }} Personen) ausreichen! 1 EL Öl oder 1 Prise reicht beispielsweise nicht für 12 Portionen. Alle Mengen müssen im Array \"ingredients\" an die Portionen angepasst sein.\n\nBeurteile außerdem den tatsächlichen Aufwand des Rezeptes und setze die Eigenschaft \"difficulty\" strikt auf einen dieser drei Werte: \"Quick\", \"Medium\" oder \"Complex\".\n\nJSON-Format:\n{\n  \"recipes\": [\n    {\n      \"title\": \"Name des Gerichts 1\",\n      \"cookingTime\": \"Zahl in Minuten (z.B. 30min)\",\n      \"difficulty\": \"Quick\",\n      \"cuisine\": \"Art der Küche\",\n      \"persons\": {{ $json.data.preferences.persons }},\n      \"portions\": {{ $json.data.preferences.portions }},\n      \"dietPreferences\": \"Die gewählte Diät\",\n      \"ingredients\": [\"Liste aller benötigten Zutaten mit Mengenangabe (exakt skaliert für {{ $json.data.preferences.portions }} Portionen)\"],\n      \"instructions\": [\n        { \"step\": 1, \"description\": \"Schritt 1 Beschreibung\" },\n        { \"step\": 2, \"description\": \"Schritt 2 Beschreibung\" }\n      ],\n      \"nutrition\": {\n        \"energy\": \"kcal Angabe\",\n        \"protein\": \"Gramm Angabe\",\n        \"fat\": \"Gramm Angabe\",\n        \"carbs\": \"Gramm Angabe\"\n      },\n      \"likes\": 0\n    }\n  ]\n}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -128,
+        800,
         0
       ],
-      "id": "01435f87-dfd4-4ed0-b01e-27efa45c73a8",
+      "id": "e3a9ed1b-05f1-43b3-9069-2478e14516df",
       "name": "AI Agent"
     },
     {
       "parameters": {
-        "modelName": "models/gemini-2.5-flash",
+        "modelName": "models/gemini-3.1-flash-lite",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1.1,
       "position": [
-        -128,
+        800,
         176
       ],
-      "id": "40ca16b9-b853-4f65-ae00-d69586334dae",
+      "id": "2f4a62fe-a096-444e-b59d-abf488e1e694",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -63,11 +76,62 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        224,
+        1088,
         0
       ],
-      "id": "b4f329e2-a795-47e2-960b-9802091f633b",
+      "id": "17804ce2-05a5-41a5-a798-0a688ec8aebb",
       "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.message }}",
+        "options": {
+          "responseCode": "={{ $json.status }}"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        800,
+        336
+      ],
+      "id": "e72c7886-b3a8-4bb0-81df-da18da8c9472",
+      "name": "Error Response"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f61f35e8-9c5e-4bb5-93dd-8d0188a66609",
+              "leftValue": "={{ $json.allowed }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        464,
+        128
+      ],
+      "id": "13420945-cc0d-4dc5-bcb5-cd821245b694",
+      "name": "Is allowed?"
     }
   ],
   "pinData": {},
@@ -76,7 +140,7 @@
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "Validation & Rate Limit",
             "type": "main",
             "index": 0
           }
@@ -104,6 +168,35 @@
           }
         ]
       ]
+    },
+    "Validation & Rate Limit": {
+      "main": [
+        [
+          {
+            "node": "Is allowed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is allowed?": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -111,7 +204,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "38366821-3dac-4ff6-a971-83118acf27d1",
+  "versionId": "b36d9981-572a-44eb-8dad-be7bc21d1e96",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "d9bdae180c241bb7b928320b0a530831b1852d4919f8d013a8452133e5e49e6d"
