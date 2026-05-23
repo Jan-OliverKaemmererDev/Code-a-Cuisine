@@ -10,7 +10,7 @@
   position: relative;
   min-height: 100vh;
   width: 100%;
-  max-width: 1600px;
+  max-width: 1440px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -47,19 +47,20 @@
 
   &__content {
     max-width: 600px;
+    transform: translateY(-168px);
   }
 
   &__subtitle {
     font-family: 'Quicksand', sans-serif;
     font-size: 42px;
-    font-weight: 400;
+    font-weight: 600;
     color: #F5F5DC;
     margin-bottom: 10px;
   }
 
   &__title {
     font-family: 'Ubuntu', sans-serif;
-    font-size: 110px;
+    font-size: 100px;
     font-weight: 700;
     color: #F5F5DC;
     margin-bottom: 60px;
@@ -185,9 +186,9 @@
   }
 }
 
-// ===================== RESPONSIVE (1024px) =====================
+// ===================== RESPONSIVE (1140px) =====================
 
-@media (max-width: 1024px) {
+@media (max-width: 1140px) {
   .landing {
     padding: 40px 30px;
 
@@ -254,6 +255,32 @@
       &-link {
         padding: 8px 0;
       }
+    }
+  }
+}
+
+// ===================== RESPONSIVE (790px) =====================
+
+@media (max-width: 790px) {
+  .landing {
+    &__title {
+      font-size: 0;
+      line-height: 1.0;
+
+      &::after {
+        content: "Code à\A Cuisine";
+        font-size: 54px;
+        font-family: 'Ubuntu', sans-serif;
+        font-weight: 700;
+        color: #F5F5DC;
+        white-space: pre-wrap;
+        display: block;
+        line-height: 1.0;
+      }
+    }
+
+    &__subtitle {
+      font-size: 26px;
     }
   }
 }
