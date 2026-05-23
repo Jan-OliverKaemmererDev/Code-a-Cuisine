@@ -10,7 +10,7 @@ import { DialogComponent } from './shared/components/dialog/dialog.component';
     <app-dialog></app-dialog>
     <router-outlet></router-outlet>
     @if (showImprint) {
-      <div class="global-footer">
+      <div class="global-footer" [class.recipe-results-footer]="isRecipeResults">
         <a routerLink="/imprint" class="global-imprint">Imprint</a>
       </div>
     }
@@ -30,6 +30,10 @@ import { DialogComponent } from './shared/components/dialog/dialog.component';
       width: 100%;
     }
 
+    .recipe-results-footer {
+      background-color: #396039;
+    }
+
     .global-imprint {
       font-family: 'Quicksand', sans-serif;
       font-size: 16px;
@@ -37,6 +41,10 @@ import { DialogComponent } from './shared/components/dialog/dialog.component';
       color: #1a3c1a;
       text-decoration: none;
       transition: opacity 0.2s;
+    }
+
+    .recipe-results-footer .global-imprint {
+      color: white;
     }
     
     .global-imprint:hover {
@@ -47,12 +55,14 @@ import { DialogComponent } from './shared/components/dialog/dialog.component';
 export class App {
   private router = inject(Router);
   showImprint = false;
+  isRecipeResults = false;
 
   constructor() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
       this.showImprint = event.urlAfterRedirects !== '/';
+      this.isRecipeResults = event.urlAfterRedirects.startsWith('/recipe-results');
     });
   }
 }

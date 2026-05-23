@@ -37,13 +37,13 @@
     }
 
     &__content {
-      max-width: 55%;
+      max-width: 60%;
       z-index: 10;
     }
 
     &__subtitle {
       text-align: left;
-      font-size: 24px;
+      font-size: 20px;
       font-weight: 600;
       margin-bottom: 8px;
     }
@@ -51,12 +51,12 @@
     &__title {
       text-align: left;
       font-size: 0;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
       line-height: 1.0;
 
       &::after {
         content: "Code à\A Cuisine";
-        font-size: 56px;
+        font-size: 48px;
         font-family: 'Ubuntu', sans-serif;
         font-weight: 700;
         color: #F5F5DC;
@@ -69,8 +69,9 @@
     &__btn-primary {
       display: block;
       font-size: 16px;
-      padding: 16px 14px;
+      padding: 12px 24px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: fit-content;
       
       &:hover {
         background-color: #f5f1e9;
@@ -88,10 +89,10 @@
 
     &__plates {
       position: absolute;
-      right: -220px;
+      right: -160px;
       top: 50%;
       transform: translateY(-50%);
-      width: 380px;
+      width: 300px;
       display: flex;
       flex-direction: column;
       margin: 0;
@@ -102,7 +103,7 @@
       filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
 
       &--top {
-        margin-bottom: -100px;
+        margin-bottom: -90px;
         z-index: 1;
         transform: none;
       }
@@ -113,7 +114,7 @@
       }
 
       &--bottom {
-        margin-top: -100px;
+        margin-top: -90px;
         z-index: 3;
         transform: none;
       }
@@ -129,9 +130,10 @@
       text-align: left;
       gap: 6px;
       z-index: 10;
+      position: relative;
 
       &-tagline {
-        font-size: 20px;
+        font-size: 18px;
         margin: 0;
       }
 
@@ -149,6 +151,38 @@
           }
         }
       }
+    }
+  }
+}
+
+// ===================== EXTRA SMALL (Galaxy S9+) =====================
+
+@media (max-width: 400px) {
+  .landing {
+    &__title::after {
+      font-size: 40px;
+    }
+    
+    &__subtitle {
+      font-size: 18px;
+    }
+
+    &__plates {
+      width: 260px;
+      right: -140px;
+    }
+
+    &__plate {
+      &--top {
+        margin-bottom: -70px;
+      }
+      &--bottom {
+        margin-top: -70px;
+      }
+    }
+    
+    &__footer-tagline {
+      font-size: 16px;
     }
   }
 }
