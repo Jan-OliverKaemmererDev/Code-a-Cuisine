@@ -125,6 +125,13 @@ export class GenerateRecipeComponent {
     const name = this.ingredientName().trim();
     const amount = this.servingAmount();
     if (!name || amount === null || amount <= 0) return null;
+
+    // Bearbeitungsmodus schließen, bevor eine neue Zutat hinzugefügt wird,
+    // um Index-Verschiebungen zu vermeiden.
+    if (this.editingListIndex() !== null) {
+      this.editingListIndex.set(null);
+    }
+
     const newItem: IngredientItem = {
       name,
       amount,

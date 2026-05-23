@@ -343,6 +343,7 @@
   &__ingredient-actions {
     display: flex;
     gap: 14px;
+    flex-shrink: 0;
   }
 
   &__btn-icon {
@@ -451,6 +452,7 @@
 
   &__inline-name {
     flex: 1;
+    min-width: 50px;
     background-color: #f2ede4;
     border: none;
     padding: 8px 12px;
