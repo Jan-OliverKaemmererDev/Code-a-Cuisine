@@ -1,10 +1,18 @@
+// ===================== HOST =====================
+
+:host {
+  display: block;
+  background-color: #396039;
+  min-height: 100vh;
+}
+
 // ===================== PAGE LAYOUT =====================
 
 .results-page {
-  min-height: 100vh;
   width: 100%;
-  background-color: #396039;
-  padding: 40px 60px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
   color: white;
