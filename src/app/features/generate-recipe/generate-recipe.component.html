@@ -27,7 +27,7 @@
               id="ingredient-input"
               class="generate__input"
               type="text"
-              placeholder=""
+              placeholder="e.g. Tomato"
               [ngModel]="ingredientName()"
               (ngModelChange)="onIngredientInput($event)"
               (focus)="onIngredientInput(ingredientName())"
@@ -55,6 +55,7 @@
               class="generate__serving-input"
               type="number"
               min="1"
+              placeholder="e.g. 100"
               [ngModel]="servingAmount()"
               (ngModelChange)="servingAmount.set($event)"
             />
@@ -149,7 +150,16 @@
                 </div>
               </div>
 
-              <span class="generate__ingredient-name">{{ item.name }}</span>
+              @if (editingListIndex() === i) {
+                <input
+                  class="generate__inline-name"
+                  type="text"
+                  [ngModel]="editName()"
+                  (ngModelChange)="editName.set($event)"
+                />
+              } @else {
+                <span class="generate__ingredient-name">{{ item.name }}</span>
+              }
 
               <div class="generate__ingredient-actions">
                 @if (editingListIndex() === i) {

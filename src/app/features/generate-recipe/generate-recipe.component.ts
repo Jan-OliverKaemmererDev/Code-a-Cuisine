@@ -40,7 +40,7 @@ export class GenerateRecipeComponent {
   /** Current ingredient name typed by the user. */
   ingredientName = signal('');
   /** Serving amount for the ingredient being added. */
-  servingAmount = signal(100);
+  servingAmount = signal<number | null>(null);
   /** Selected unit for the ingredient being added. */
   selectedUnit = signal<'gram' | 'ml' | 'piece'>('gram');
   /** Whether the unit dropdown on the input card is open. */
@@ -50,6 +50,8 @@ export class GenerateRecipeComponent {
 
   /** Index of the ingredient currently being edited inline, or null. */
   editingListIndex = signal<number | null>(null);
+  /** Name value while editing an existing ingredient. */
+  editName = signal('');
   /** Amount value while editing an existing ingredient. */
   editAmount = signal(0);
   /** Unit value while editing an existing ingredient. */
@@ -121,10 +123,11 @@ export class GenerateRecipeComponent {
    */
   addIngredient(): IngredientItem | null {
     const name = this.ingredientName().trim();
-    if (!name) return null;
+    const amount = this.servingAmount();
+    if (!name || amount === null || amount <= 0) return null;
     const newItem: IngredientItem = {
       name,
-      amount: this.servingAmount(),
+      amount,
       unit: this.selectedUnit(),
     };
     this.ingredients.update((list) => [newItem, ...list]);
@@ -159,6 +162,7 @@ export class GenerateRecipeComponent {
     const item = this.ingredients()[index];
     if (!item) return null;
     this.editingListIndex.set(index);
+    this.editName.set(item.name);
     this.editAmount.set(item.amount);
     this.editUnit.set(item.unit);
     this.showListDropdown.set(false);
@@ -173,7 +177,7 @@ export class GenerateRecipeComponent {
   saveEdit(index: number): IngredientItem | null {
     const item = this.ingredients()[index];
     if (!item) return null;
-    const updatedItem: IngredientItem = { ...item, amount: this.editAmount(), unit: this.editUnit() };
+    const updatedItem: IngredientItem = { ...item, name: this.editName().trim() || item.name, amount: this.editAmount(), unit: this.editUnit() };
     this.ingredients.update((list) =>
       list.map((it, i) => i === index ? updatedItem : it)
     );
@@ -234,7 +238,7 @@ export class GenerateRecipeComponent {
    */
   private resetInputFields(): void {
     this.ingredientName.set('');
-    this.servingAmount.set(100);
+    this.servingAmount.set(null);
     this.selectedUnit.set('gram');
     this.showSuggestions.set(false);
     this.showInputDropdown.set(false);

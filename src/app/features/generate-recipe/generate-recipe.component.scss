@@ -178,6 +178,10 @@
       appearance: none;
       margin: 0;
     }
+
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.3);
+    }
   }
 
   // ===================== UNIT DROPDOWN =====================
@@ -304,7 +308,7 @@
 
   &__ingredient-amount {
     font-weight: 600;
-    width: auto;
+    width: 75px;
     max-width: 150px;
     flex-shrink: 0;
     opacity: 1;
@@ -437,6 +441,19 @@
     }
   }
 
+  &__inline-name {
+    flex: 1;
+    background-color: #f2ede4;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a3c1a;
+    outline: none;
+  }
+
   // ===================== ACTIONS =====================
 
   &__actions {
@@ -500,6 +517,11 @@
   .generate {
     &__content {
       flex-direction: column;
+    }
+
+    &__input-card,
+    &__list-card {
+      width: 100%;
     }
 
     &__title {
