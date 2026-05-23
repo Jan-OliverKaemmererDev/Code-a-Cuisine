@@ -87,7 +87,6 @@ export class RecipeService {
             } as Recipe))
             .filter(r => r.title); // filter out broken/old recipes
           
-          console.log('Fetched recipes from Firestore:', recipes);
           observer.next(recipes);
         },
         (error) => {

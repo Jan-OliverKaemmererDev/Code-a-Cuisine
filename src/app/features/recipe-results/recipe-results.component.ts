@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RecipeService, Recipe } from '../../core/services/recipe.service';
 import { RecipeStateService } from '../../core/services/recipe-state.service';
+import { DialogService } from '../../core/services/dialog.service';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
@@ -20,6 +21,7 @@ import { map, catchError } from 'rxjs/operators';
 export class RecipeResultsComponent {
   private recipeService = inject(RecipeService);
   private state = inject(RecipeStateService);
+  private dialogService = inject(DialogService);
 
   /** Cuisine preference used as a display tag, defaults to 'Italian'. */
   selectedCuisine = this.state.preferences().cuisine || 'Italian';
@@ -43,7 +45,7 @@ export class RecipeResultsComponent {
       return list.slice(0, 3);
     }),
     catchError(err => {
-      console.error('Error fetching recipes from Firebase:', err);
+      this.dialogService.showError('Error fetching recipes from Firebase. Please check your connection.');
       const latest = this.state.latestRecipes();
       return of(latest.length > 0 ? latest : []);
     })

@@ -1,11 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { DialogComponent } from './shared/components/dialog/dialog.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink],
+  imports: [RouterOutlet, RouterLink, DialogComponent],
   template: `
+    <app-dialog></app-dialog>
     <router-outlet></router-outlet>
     @if (showImprint) {
       <div class="global-footer">

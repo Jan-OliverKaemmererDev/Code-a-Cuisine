@@ -2,6 +2,7 @@ import { Component, signal, inject, OnInit } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { RecipeStateService, Preferences } from '../../core/services/recipe-state.service';
 import { RecipeService } from '../../core/services/recipe.service';
+import { DialogService } from '../../core/services/dialog.service';
 import { InsufficientIngredientsPopupComponent } from '../../shared/components/insufficient-ingredients-popup/insufficient-ingredients-popup.component';
 
 /** Available cooking time options. */
@@ -26,6 +27,7 @@ export class PreferencesComponent implements OnInit {
   state = inject(RecipeStateService);
   private router = inject(Router);
   private recipeService = inject(RecipeService);
+  private dialogService = inject(DialogService);
 
   /** Number of portions to generate. */
   portions = signal(2);
@@ -64,7 +66,7 @@ export class PreferencesComponent implements OnInit {
         this.state.quotaInfo.set(info);
       },
       error: (err) => {
-        console.error('Error fetching quota', err);
+        this.dialogService.showError('Error fetching quota. Please check network connection.');
       }
     });
   }
@@ -147,7 +149,7 @@ export class PreferencesComponent implements OnInit {
   generateRecipe(): Promise<boolean> | void {
     const quota = this.state.quotaInfo();
     if (quota && (quota.ipRemaining <= 0 || quota.systemRemaining <= 0)) {
-      alert('Quota erreicht! Bitte versuche es morgen wieder.');
+      this.dialogService.showError('Quota erreicht! Bitte versuche es morgen wieder.');
       return;
     }
     if (!this.hasEnoughIngredients()) {

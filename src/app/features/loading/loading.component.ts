@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { RecipeStateService } from '../../core/services/recipe-state.service';
 import { RecipeService } from '../../core/services/recipe.service';
 import { Subscription, forkJoin } from 'rxjs';
+import { DialogService } from '../../core/services/dialog.service';
 
 /**
  * Displays a loading animation while the recipe is being generated
@@ -20,6 +21,7 @@ export class LoadingComponent implements OnInit {
   private router = inject(Router);
   private state = inject(RecipeStateService);
   private recipeService = inject(RecipeService);
+  private dialogService = inject(DialogService);
 
   /**
    * Triggers the recipe generation call on component initialisation.
@@ -67,7 +69,6 @@ export class LoadingComponent implements OnInit {
    * @returns The parsed recipe object.
    */
   private handleResponse(response: any): any {
-    console.log('Response from n8n:', response);
     try {
       const jsonString = this.extractJsonString(response);
       const parsedData = this.parseRecipeJson(jsonString);
@@ -87,8 +88,7 @@ export class LoadingComponent implements OnInit {
       this.saveAndNavigate(recipesArray);
       return recipesArray;
     } catch (e) {
-      console.error('Error parsing recipe from n8n:', e);
-      alert('Fehler beim Auslesen des Rezeptes. In der Konsole siehst du den genauen Text, der vom Server kam.');
+      this.dialogService.showError('Fehler beim Auslesen des Rezeptes. Es gab ein Problem mit den Daten vom Server.');
       this.router.navigate(['/preferences']);
       throw e;
     }
@@ -141,7 +141,6 @@ export class LoadingComponent implements OnInit {
         : jsonString;
       return typeof safeString === 'string' ? JSON.parse(safeString) : safeString;
     } catch (parseError) {
-      console.error('Failed to parse this exact string:', jsonString);
       throw parseError;
     }
   }
@@ -161,8 +160,7 @@ export class LoadingComponent implements OnInit {
         this.router.navigate(['/recipe-results']);
       },
       error: (err) => {
-        console.error('Error saving recipes to Firestore:', err);
-        alert('Recipes generated but failed to save to Database. Check Firestore rules.');
+        this.dialogService.showError('Recipes generated but failed to save to Database. Check Firestore rules.');
         this.router.navigate(['/recipe-results']);
       }
     });
@@ -175,11 +173,10 @@ export class LoadingComponent implements OnInit {
    * @returns A Promise resolving to whether the navigation succeeded.
    */
   private handleRequestError(err: any): Promise<boolean> {
-    console.error('Error from n8n webhook:', err);
     if (err.status === 429) {
-      alert('Quota erreicht! Du hast dein tägliches Limit erreicht oder das systemweite Limit ist ausgeschöpft. Bitte versuche es morgen wieder.');
+      this.dialogService.showError('Quota erreicht! Du hast dein tägliches Limit erreicht oder das systemweite Limit ist ausgeschöpft. Bitte versuche es morgen wieder.');
     } else {
-      alert('Error connecting to n8n. Please check browser console for CORS or network issues.');
+      this.dialogService.showError('Error connecting to n8n. Please check network connection.');
     }
     return this.router.navigate(['/preferences']);
   }

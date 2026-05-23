@@ -1,0 +1,10 @@
+@if (dialogService.dialogState().isVisible) {
+  <div class="dialog-backdrop" (click)="dialogService.closeDialog()">
+    <div class="dialog-content" (click)="$event.stopPropagation()">
+      <button class="close-button" (click)="dialogService.closeDialog()" aria-label="Close dialog">×</button>
+      <div class="dialog-message">
+        {{ dialogService.dialogState().message }}
+      </div>
+    </div>
+  </div>
+}

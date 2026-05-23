@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { RecipeService, Recipe } from '../../core/services/recipe.service';
 import { RecipeStateService } from '../../core/services/recipe-state.service';
+import { DialogService } from '../../core/services/dialog.service';
 import { Observable, of } from 'rxjs';
 
 /**
@@ -20,6 +21,7 @@ export class RecipeViewComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private recipeService = inject(RecipeService);
   private state = inject(RecipeStateService);
+  private dialogService = inject(DialogService);
 
   /** Observable of the recipe being displayed. */
   recipe$!: Observable<Recipe | undefined>;
@@ -141,7 +143,7 @@ export class RecipeViewComponent implements OnInit {
     try {
       await this.recipeService.updateRecipe(recipe.id, { likes: recipe.likes });
     } catch (err) {
-      console.error('Failed to update likes', err);
+      this.dialogService.showError('Failed to update likes. Please check your connection.');
       this.revertLikeChange(recipe, currentLikes);
     }
     return this.isLiked;
