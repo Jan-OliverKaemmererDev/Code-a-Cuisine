@@ -20,17 +20,6 @@
     <h1 class="preferences__title">Choose your preferences</h1>
   </div>
 
-  <!-- ===================== QUOTA INFO ===================== -->
-  @if (state.quotaInfo(); as quota) {
-    <div class="preferences__quota-banner" [class.is-empty]="quota.ipRemaining <= 0 || quota.systemRemaining <= 0">
-      <p class="preferences__quota-main">
-        Du kannst heute noch <strong>{{ quota.ipRemaining }}</strong> von {{ quota.ipQuota }} Rezepten generieren.
-      </p>
-      <p class="preferences__quota-sub">
-        (Systemweites Limit: {{ quota.systemRemaining }} / {{ quota.systemQuota }} übrig)
-      </p>
-    </div>
-  }
 
   <!-- ===================== COUNTERS ===================== -->
   <div class="preferences__counters">
