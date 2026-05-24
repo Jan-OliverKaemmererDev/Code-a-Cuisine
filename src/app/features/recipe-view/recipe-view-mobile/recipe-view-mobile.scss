@@ -109,10 +109,10 @@
     max-width: 100%;
     overflow: hidden;
     img[src*="ingredients"] {
-      content: url('assets/icons/detail-view-categories-mobile/ingredients.png');
+      content: url('../../../../../public/assets/icons/detail-view-categories-mobile/ingredients.png');
     }
     img[src*="directions"] {
-      content: url('assets/icons/detail-view-categories-mobile/directions.png');
+      content: url('../../../../../public/assets/icons/detail-view-categories-mobile/directions.png');
     }
   }
 
