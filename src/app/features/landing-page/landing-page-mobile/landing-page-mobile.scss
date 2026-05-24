@@ -37,48 +37,52 @@
     }
 
     &__content {
-      max-width: 60%;
+      max-width: 70%;
       z-index: 10;
       transform: none;
     }
 
     &__subtitle {
       text-align: left;
-      font-size: 20px;
-      font-weight: 600;
+      font-size: 24px;
+      font-weight: 400;
       margin-bottom: 8px;
+      max-width: 180px;
+      line-height: 1.2;
     }
 
     &__title {
       text-align: left;
       font-size: 0;
-      margin-bottom: 24px;
+      margin-bottom: 32px;
       line-height: 1.0;
 
       &::after {
         content: "Code à\A Cuisine";
-        font-size: 48px;
+        font-size: 64px;
         font-family: 'Ubuntu', sans-serif;
         font-weight: 700;
         color: #F5F5DC;
         white-space: pre-wrap;
         display: block;
-        line-height: 1.0;
+        line-height: 1.05;
       }
     }
 
     &__btn-primary {
       display: block;
-      font-size: 16px;
+      font-size: 18px;
+      font-weight: 600;
       padding: 12px 24px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 0;
+      box-shadow: none;
       width: fit-content;
       
       &:hover {
         background-color: #f5f1e9;
         color: #008000;
         transform: none;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: none;
       }
 
       &:active {
@@ -90,10 +94,10 @@
 
     &__plates {
       position: absolute;
-      right: -160px;
+      right: -200px;
       top: 50%;
       transform: translateY(-50%);
-      width: 300px;
+      width: 400px;
       display: flex;
       flex-direction: column;
       margin: 0;
@@ -104,7 +108,7 @@
       filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
 
       &--top {
-        margin-bottom: -90px;
+        margin-bottom: -110px;
         z-index: 1;
         transform: none;
       }
@@ -115,7 +119,7 @@
       }
 
       &--bottom {
-        margin-top: -90px;
+        margin-top: -110px;
         z-index: 3;
         transform: none;
       }
@@ -129,19 +133,26 @@
       flex-direction: column;
       align-items: flex-start;
       text-align: left;
-      gap: 6px;
+      gap: 16px;
       z-index: 10;
       position: relative;
+      margin-bottom: 16px;
 
       &-tagline {
-        font-size: 18px;
+        font-size: 26px;
+        font-weight: 500;
+        line-height: 1.2;
+        max-width: 160px;
         margin: 0;
       }
 
       &-link {
-        font-size: 16px;
-        padding: 8px 0;
+        font-size: 20px;
+        padding: 0;
         background-color: transparent;
+        display: flex;
+        align-items: center;
+        gap: 12px;
         
         &:hover {
           color: #F5F5DC;
@@ -158,32 +169,38 @@
 
 // ===================== EXTRA SMALL (Galaxy S9+) =====================
 
-@media (max-width: 400px) {
+@media (max-width: 432px) {
   .landing {
     &__title::after {
-      font-size: 40px;
+      font-size: 52px;
     }
     
     &__subtitle {
-      font-size: 18px;
+      font-size: 20px;
+      max-width: 140px;
     }
 
     &__plates {
-      width: 260px;
-      right: -140px;
+      width: 320px;
+      right: -210px;
     }
 
     &__plate {
       &--top {
-        margin-bottom: -70px;
+        margin-bottom: -90px;
       }
       &--bottom {
-        margin-top: -70px;
+        margin-top: -90px;
       }
     }
     
     &__footer-tagline {
-      font-size: 16px;
+      font-size: 22px;
+      max-width: 140px;
+    }
+
+    &__footer-link {
+      font-size: 18px;
     }
   }
 }
