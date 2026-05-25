@@ -131,7 +131,7 @@
         128
       ],
       "id": "13420945-cc0d-4dc5-bcb5-cd821245b694",
-      "name": "Is allowed?"
+      "name": "Passed Validation & Quota?"
     },
     {
       "parameters": {
@@ -219,14 +219,14 @@
       "main": [
         [
           {
-            "node": "Is allowed?",
+            "node": "Passed Validation & Quota?",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Is allowed?": {
+    "Passed Validation & Quota?": {
       "main": [
         [
           {

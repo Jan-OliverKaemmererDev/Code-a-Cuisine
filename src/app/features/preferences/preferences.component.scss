@@ -254,7 +254,11 @@
 
   &__chip-label {
     font-size: 15px;
-    color: #1a3c1a;
+    color: #1a3c1a !important;
+  }
+
+  &__chip--single {
+    color: #1a3c1a !important;
   }
 
   &__chip-sub {
